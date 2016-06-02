@@ -33,9 +33,14 @@ namespace CSharpGame.States
             this.states.Push(state);
         }
 
-        public void Update(GameTime deltaTime)
+        public State Peek()
         {
-            states.Peek().Update(deltaTime);
+            return this.states.Peek();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            states.Peek().Update(gameTime);
         }
 
         public void Draw(SpriteBatch batch)

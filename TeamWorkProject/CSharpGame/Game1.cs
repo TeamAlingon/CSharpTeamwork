@@ -22,13 +22,12 @@ namespace CSharpGame
         protected override void Initialize()
         {
             this.stateManager = new GameStateManager();
-            this.stateManager.Set(new MenuState(this.stateManager));
+            this.stateManager.Push(new MenuState(this.stateManager));
             base.Initialize();
         }
         
         protected override void LoadContent()
         {
-            
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
         
@@ -43,11 +42,7 @@ namespace CSharpGame
                 Exit();
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {
-                this.stateManager.Set(new PlayState(this.stateManager));
-            }
-            
+            this.stateManager.Update(gameTime);
             base.Update(gameTime);
         }
         

@@ -19,6 +19,10 @@ namespace CSharpGame.States
 
         public override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                this.stateManager.Set(new PlayState(this.stateManager));
+            }
         }
 
         public override void Draw(SpriteBatch batch)
