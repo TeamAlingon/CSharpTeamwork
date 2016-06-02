@@ -10,9 +10,11 @@ namespace CSharpGame.States
 {
     public class PlayState : State
     {
-        public PlayState(GameStateManager manager)
+        private GameStateManager stateManager;
+
+        public PlayState(GameStateManager stateManager)
         {
-            
+            this.stateManager = stateManager;
         }
 
         public override void Update(GameTime gameTime)

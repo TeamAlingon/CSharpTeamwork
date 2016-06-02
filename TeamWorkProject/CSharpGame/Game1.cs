@@ -9,6 +9,8 @@ namespace CSharpGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Texture texture;
+        private Texture2D texture2D;
         private GameStateManager stateManager;
 
         public Game1()
@@ -20,12 +22,13 @@ namespace CSharpGame
         protected override void Initialize()
         {
             this.stateManager = new GameStateManager();
-            this.stateManager.Push(new MenuState(this.stateManager));
+            this.stateManager.Set(new MenuState(this.stateManager));
             base.Initialize();
         }
         
         protected override void LoadContent()
         {
+            
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
         
@@ -35,10 +38,14 @@ namespace CSharpGame
         
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                this.stateManager.Set(new PlayState(this.stateManager));
             }
             
             base.Update(gameTime);
@@ -46,7 +53,7 @@ namespace CSharpGame
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
         }
