@@ -19,7 +19,7 @@ namespace CSharpGame.States
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void Draw(SpriteBatch batch)
