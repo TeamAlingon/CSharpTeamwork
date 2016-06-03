@@ -1,26 +1,10 @@
-﻿namespace CSharpGame.Models.Collectables 
+﻿namespace CSharpGame.Models.Collectables.Items 
 {
-    public class RegularCoin : AbstractItem
+    public class RegularCoin : Item
     {
-        private bool canCollect;
-
-        public RegularCoin()
+        public RegularCoin():base()
         {
-            canCollect = true;
-        }
-
-        public override void Collect()
-        {
-            canCollect = false;
-        }
-
-        public override bool isAvailable()
-        {
-            if (canCollect)
-            {
-                return true;
-            }
-            return false;
+           
         }
     }
 }

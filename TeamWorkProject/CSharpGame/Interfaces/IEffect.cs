@@ -1,6 +1,7 @@
 ﻿namespace CSharpGame.Interfaces
 {
-    public interface IEffect
+    public interface IEffect : ICollectable
     {
+
     }
 }

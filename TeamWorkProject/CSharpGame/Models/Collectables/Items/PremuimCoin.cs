@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSharpGame.Models.Collectables
+﻿namespace CSharpGame.Models.Collectables.Items
 {
-    public lic class PremuimCoin
+    public  class PremuimCoin :Item
     {
+
     }
 }

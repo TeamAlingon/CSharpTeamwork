@@ -44,9 +44,11 @@
     <Compile Include="Interfaces\ICollectable.cs" />
     <Compile Include="Interfaces\IEffect.cs" />
     <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\Collectables\AbstractItem.cs" />
-    <Compile Include="Models\Collectables\PremuimCoin.cs" />
-    <Compile Include="Models\Collectables\RegularCoin.cs" />
+    <Compile Include="Models\Collectables\Effects\Effect.cs" />
+    <Compile Include="Models\Collectables\Effects\SpeedUp.cs" />
+    <Compile Include="Models\Collectables\Items\Item.cs" />
+    <Compile Include="Models\Collectables\Items\PremuimCoin.cs" />
+    <Compile Include="Models\Collectables\Items\RegularCoin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\GameStateManager.cs" />

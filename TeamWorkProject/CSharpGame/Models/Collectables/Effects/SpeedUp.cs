@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace CSharpGame.Models.Collectables.Effects
 {
     class SpeedUp
-    {
+    { 
     }
 }

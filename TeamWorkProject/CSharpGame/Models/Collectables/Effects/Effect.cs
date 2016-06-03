@@ -1,12 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSharpGame.Models.Collectables.Effects
+﻿namespace CSharpGame.Models.Collectables.Effects
 {
-    class Effect
+    using Interfaces;
+
+    public class Effect : IEffect
     {
+
+        public Effect()
+        {
+            
+        }
+
+        public void Collect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool isAvailable()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

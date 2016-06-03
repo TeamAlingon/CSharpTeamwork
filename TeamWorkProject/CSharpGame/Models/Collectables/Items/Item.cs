@@ -1,11 +1,33 @@
-﻿namespace CSharpGame.Models.Collectables
+﻿namespace CSharpGame.Models.Collectables.Items
 {
     using Interfaces;
-    public abstract class AbstractItem : ICollectable
-    {
-        public abstract void Collect();
-        
-        public abstract bool isAvailable();
 
+    public  class Item : ICollectable
+    {
+        private bool canBeCollected;
+
+        public Item()
+        {
+            canBeCollected = true;
+        }
+
+        public  void Collect()
+        {
+            canBeCollected = false;
+        }
+
+        public  bool isAvailable()
+        {
+            if (canBeCollected)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Update()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

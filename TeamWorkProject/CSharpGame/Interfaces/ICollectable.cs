@@ -5,5 +5,7 @@
         void Collect();
 
         bool isAvailable();
+
+        void Update();
     }
 }
