@@ -4,25 +4,45 @@
 
     public class Effect : IEffect
     {
+        private bool canBeCollected;
+        private int timeOfEffect;
 
-        public Effect()
+        public Effect(int duration)
         {
-            
+            this.timeOfEffect = duration;
+            canBeCollected = true;
         }
 
-        public void Collect()
+        public void Collect(Character player)
         {
-            throw new System.NotImplementedException();
+            canBeCollected = false;
         }
 
         public bool isAvailable()
         {
-            throw new System.NotImplementedException();
+            if (canBeCollected)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            if (timeOfEffect <= 0)
+            {
+                //TODO: if duration == 0 stop effect and bring back default state
+            }
+            else
+            {
+                timeOfEffect -= 1;
+            }
+        }
+
+        public virtual void ApplyEffect(Character player)
+        {
+            //TODO: apply effect to player
         }
     }
 }

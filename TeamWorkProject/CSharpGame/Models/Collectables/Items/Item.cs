@@ -11,7 +11,7 @@
             canBeCollected = true;
         }
 
-        public  void Collect()
+        public void Collect(Character player)
         {
             canBeCollected = false;
         }

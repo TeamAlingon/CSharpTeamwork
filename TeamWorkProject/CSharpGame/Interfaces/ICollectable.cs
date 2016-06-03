@@ -1,8 +1,10 @@
 ﻿namespace CSharpGame.Interfaces
 {
+    using Models;
+
     public interface ICollectable
     {
-        void Collect();
+        void Collect(Character player);
 
         bool isAvailable();
 

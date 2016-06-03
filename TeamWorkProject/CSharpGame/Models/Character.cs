@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace CSharpGame.Models
 {
-    class Character
+
+    public class Character
     {
+        
+        
+        
     }
 }
