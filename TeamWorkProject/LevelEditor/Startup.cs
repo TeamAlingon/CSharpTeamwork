@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace LevelEditor
+﻿namespace LevelEditor
 {
+    using System;
+
     /// <summary>
     /// The main class.
     /// </summary>

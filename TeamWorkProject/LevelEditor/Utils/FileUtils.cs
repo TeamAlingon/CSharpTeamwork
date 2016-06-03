@@ -8,23 +8,23 @@
     {
         private const string ContentDir = @"..\..\..\..\Content\";
 
-        private static readonly ICollection<string> cachedFilenames = new List<string>();
+        private static readonly ICollection<string> CachedFilenames = new List<string>();
 
         private static readonly string[] FoldersToAvoid = { "bin", "obj", "Levels", "Font" };
 
         public static IEnumerable<string> GetFilenames(string targetDir = null)
         {
-            if (cachedFilenames.Count == 0)
+            if (CachedFilenames.Count == 0)
             {
-                LoadFilenames(ContentDir, cachedFilenames);
+                LoadFilenames(ContentDir, CachedFilenames);
             }
 
             if (targetDir != null)
             {
-                return cachedFilenames.Where(filename => filename.Contains(targetDir));
+                return CachedFilenames.Where(filename => filename.Contains(targetDir));
             }
 
-            return cachedFilenames;
+            return CachedFilenames;
         }
 
         private static void LoadFilenames(string sourceDir, ICollection<string> fileNames)
