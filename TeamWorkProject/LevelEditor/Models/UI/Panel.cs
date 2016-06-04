@@ -7,12 +7,16 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
 
     public class Panel : GameObject
     {
         private List<IGameObject> ChildrenObjects { get; set; }
 
         private Texture2D BackgroundTexture { get; set; }
+
+        // For testing purposes. TODO: When done should be separated in a proper class.
+        private Point lastMouseClick { get; set; }
 
         public Panel(Vector2 position, Rectangle size, Texture2D backgroundTexture)
         {
@@ -34,12 +38,29 @@
             this.ChildrenObjects.Remove(child);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, KeyboardState kbState, MouseState mState)
         {
-            //TODO: Implement panel movement.
+            // For testing purposes. TODO: When done should be separated in a proper class.
+            if (mState.LeftButton == ButtonState.Pressed)
+            {
+                if (this.lastMouseClick.Equals(Point.Zero))
+                {
+                    this.lastMouseClick = mState.Position;
+                }
 
-            // Testing children movement.
-            this.Transform.Position += Vector2.One;
+                if (this.Transform.Size.Contains(mState.Position))
+                {
+                    var mouseDelta = mState.Position - this.lastMouseClick;
+
+                    this.Transform.Position += mouseDelta.ToVector2();
+
+                    this.lastMouseClick = mState.Position;
+                }
+            }
+            else
+            {
+                this.lastMouseClick = Point.Zero;
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

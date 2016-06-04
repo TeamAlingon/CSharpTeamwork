@@ -4,12 +4,13 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
 
     public interface IGameObject
     {
         Transform2D Transform { get; set; }
 
-        void Update(GameTime gameTime);
+        void Update(GameTime gameTime, KeyboardState kbState, MouseState mState);
 
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
     }

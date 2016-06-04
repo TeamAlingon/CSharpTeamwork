@@ -1,5 +1,6 @@
 ﻿namespace LevelEditor
 {
+    using LevelEditor.Factory;
     using LevelEditor.Models;
     using LevelEditor.Models.UI;
     using LevelEditor.Utils;
@@ -13,8 +14,8 @@
     /// </summary>
     public class Engine : Game
     {
+        private PanelFactory panelFactory;
         private Panel testPanel;
-
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -35,26 +36,8 @@
         {
             // TODO: Add your initialization logic here
 
-            var panelPosition = new Vector2(100, 100);
-            var panelSize = new Rectangle(0, 0, 512, 512);
-            var panelTexture = this.Content.Load<Texture2D>("UiTiles/GrayTile");
-
-            this.testPanel = new Panel(
-                panelPosition,
-                panelSize,
-                panelTexture);
-
-            var spriteFont = this.Content.Load<SpriteFont>("Fonts/impact");
-            var levelFiles = FileUtils.GetFilenames("Level");
-
-            var textPosition = Vector2.Zero;
-            foreach (string levelFile in levelFiles)
-            {
-                var childTransform = new Transform2D(textPosition, Rectangle.Empty);
-                this.testPanel.AddChild(new Text(levelFile, spriteFont, childTransform));
-
-                textPosition = new Vector2(textPosition.X, textPosition.Y + 20);
-            }
+            this.panelFactory = new PanelFactory(this.Content);
+            this.testPanel = this.panelFactory.GenerateMapTileSelectorPanel();
 
             base.Initialize();
         }
@@ -93,10 +76,13 @@
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            var keyboardState = Keyboard.GetState();
+            var mouseState = Mouse.GetState();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
 
             // TODO: Add your update logic here
-            this.testPanel.Update(gameTime);
+            this.testPanel.Update(gameTime, keyboardState, mouseState);
 
             base.Update(gameTime);
         }

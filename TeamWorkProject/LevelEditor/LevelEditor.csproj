@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="EventHandlers\TransformMovedEventArgs.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="Factory\PanelFactory.cs" />
     <Compile Include="Interfaces\IGameObject.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Transform2D.cs" />

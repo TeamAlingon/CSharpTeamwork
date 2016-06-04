@@ -70,6 +70,7 @@
         private void MoveWithParent(Transform2D sender, TransformMovedEventArgs args)
         {
             this.Position -= args.Movement;
+            this.Size = new Rectangle((int)this.Position.X, (int)this.Position.Y, this.Size.Width, this.Size.Height);
         }
     }
 }
