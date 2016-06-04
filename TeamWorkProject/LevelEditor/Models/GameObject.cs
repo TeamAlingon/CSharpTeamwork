@@ -10,7 +10,7 @@
     {
         public Transform2D Transform { get; set; }
 
-        public abstract void Update(GameTime gameTime, KeyboardState kbState, MouseState mState);
+        public abstract void Update(GameTime gameTime);
 
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
     }

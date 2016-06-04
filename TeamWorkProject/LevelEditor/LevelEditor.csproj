@@ -42,9 +42,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EventHandlers\PointerEventDataArgs.cs" />
     <Compile Include="EventHandlers\TransformMovedEventArgs.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Factory\PanelFactory.cs" />
+    <Compile Include="Input\InputManager.cs" />
     <Compile Include="Interfaces\IGameObject.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Transform2D.cs" />

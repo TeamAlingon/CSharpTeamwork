@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using LevelEditor.EventHandlers;
+    using LevelEditor.Input;
     using LevelEditor.Interfaces;
     using LevelEditor.Models;
 
@@ -16,7 +18,7 @@
         private Texture2D BackgroundTexture { get; set; }
 
         // For testing purposes. TODO: When done should be separated in a proper class.
-        private Point lastMouseClick { get; set; }
+        private Point LastMouseClick { get; set; }
 
         public Panel(Vector2 position, Rectangle size, Texture2D backgroundTexture)
         {
@@ -25,6 +27,7 @@
             this.BackgroundTexture = backgroundTexture;
 
             this.ChildrenObjects = new List<IGameObject>();
+            InputManager.OnDrag += this.HandleMouseDragEvent;
         }
 
         public void AddChild(IGameObject child)
@@ -38,28 +41,11 @@
             this.ChildrenObjects.Remove(child);
         }
 
-        public override void Update(GameTime gameTime, KeyboardState kbState, MouseState mState)
+        public override void Update(GameTime gameTime)
         {
-            // For testing purposes. TODO: When done should be separated in a proper class.
-            if (mState.LeftButton == ButtonState.Pressed)
+            foreach (var childrenObject in this.ChildrenObjects)
             {
-                if (this.lastMouseClick.Equals(Point.Zero))
-                {
-                    this.lastMouseClick = mState.Position;
-                }
-
-                if (this.Transform.Size.Contains(mState.Position))
-                {
-                    var mouseDelta = mState.Position - this.lastMouseClick;
-
-                    this.Transform.Position += mouseDelta.ToVector2();
-
-                    this.lastMouseClick = mState.Position;
-                }
-            }
-            else
-            {
-                this.lastMouseClick = Point.Zero;
+                childrenObject.Update(gameTime);
             }
         }
 
@@ -83,6 +69,14 @@
             foreach (var childrenObject in this.ChildrenObjects)
             {
                 childrenObject.Draw(gameTime, spriteBatch);
+            }
+        }
+
+        private void HandleMouseDragEvent(PointerEventDataArgs args)
+        {
+            if (this.Transform.Size.Contains(args.Position))
+            {
+                this.Transform.Position += args.Delta;
             }
         }
     }

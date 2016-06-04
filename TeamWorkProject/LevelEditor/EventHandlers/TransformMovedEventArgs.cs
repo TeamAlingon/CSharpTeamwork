@@ -10,11 +10,11 @@
 
     public class TransformMovedEventArgs : EventArgs
     {
+        public Vector2 Movement { get; }
+
         public TransformMovedEventArgs(Vector2 movement)
         {
             this.Movement = movement;
         }
-
-        public Vector2 Movement { get; }
     }
 }

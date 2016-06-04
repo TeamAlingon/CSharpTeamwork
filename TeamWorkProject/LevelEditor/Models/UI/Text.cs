@@ -44,7 +44,7 @@
             this.Transform.Parent = parentTransform;
         }
 
-        public override void Update(GameTime gameTime, KeyboardState kbState, MouseState mState)
+        public override void Update(GameTime gameTime)
         {
         }
 

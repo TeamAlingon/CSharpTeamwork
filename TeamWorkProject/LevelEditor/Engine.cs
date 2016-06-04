@@ -1,9 +1,8 @@
 ﻿namespace LevelEditor
 {
     using LevelEditor.Factory;
-    using LevelEditor.Models;
+    using LevelEditor.Input;
     using LevelEditor.Models.UI;
-    using LevelEditor.Utils;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -82,8 +81,9 @@
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
 
             // TODO: Add your update logic here
-            this.testPanel.Update(gameTime, keyboardState, mouseState);
+            this.testPanel.Update(gameTime);
 
+            InputManager.UpdateMouse(gameTime, mouseState);
             base.Update(gameTime);
         }
 

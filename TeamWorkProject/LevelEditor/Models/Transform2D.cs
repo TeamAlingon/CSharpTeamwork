@@ -1,5 +1,7 @@
 ﻿namespace LevelEditor.Models
 {
+    using System;
+
     using LevelEditor.EventHandlers;
 
     using Microsoft.Xna.Framework;
@@ -65,11 +67,17 @@
             this.Size = size;
             this.Rotation = rotation;
             this.Parent = parent;
+
+            this.PositionChanged += this.UpdateSizePositionWithMovement;
         }
 
         private void MoveWithParent(Transform2D sender, TransformMovedEventArgs args)
         {
             this.Position -= args.Movement;
+        }
+
+        private void UpdateSizePositionWithMovement(Transform2D sender, TransformMovedEventArgs args)
+        {
             this.Size = new Rectangle((int)this.Position.X, (int)this.Position.Y, this.Size.Width, this.Size.Height);
         }
     }
