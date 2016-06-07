@@ -31,7 +31,7 @@
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Factory.Factory.GenerateMapTileSelectorPanel(this.Content);
+            Factory.Factory.GenerateLevelBuildingPanel(this.Content);
 
             base.Initialize();
         }

@@ -11,27 +11,31 @@
 
     public static class Factory
     {
-        public static void GenerateMapTileSelectorPanel(ContentManager content)
+        public static void GenerateLevelBuildingPanel(ContentManager content)
         {
             var panelTexture = content.Load<Texture2D>("UiTiles/GrayTile");
             var spriteFont = content.Load<SpriteFont>("Fonts/impact");
+            var buttonTexture = content.Load<Texture2D>("UiTiles/Button");
 
             var panelPosition = new Vector2(100, 100);
             var panelSize = new Rectangle((int)panelPosition.X, (int)panelPosition.Y, 512, 512);
             var levelFiles = FileUtils.GetFilenames("Level");
 
-            Panel mapTilePanel = new Panel(panelPosition, panelSize, panelTexture);
+            Panel levelBuildingPanel = new Panel(panelPosition, panelSize, panelTexture);
 
-            var textPosition = Vector2.Zero;
+            var buttonPosition = Vector2.Zero;
             foreach (string levelFile in levelFiles)
             {
-                var childTransform = new Transform2D(textPosition, Rectangle.Empty);
-                mapTilePanel.AddChild(new Text(levelFile, spriteFont, childTransform));
+                var childTransform = new Transform2D(buttonPosition, Rectangle.Empty);
+                var buttonText = new Text(levelFile, spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
+                var button = new Button(buttonTexture, buttonText, childTransform);
 
-                textPosition = new Vector2(textPosition.X, textPosition.Y + 20);
+                levelBuildingPanel.AddChild(button);
+
+                buttonPosition = new Vector2(buttonPosition.X, buttonPosition.Y + button.Texture.Height + 2);
             }
 
-            Repository.GameObjects.Add(mapTilePanel);
+            Repository.GameObjects.Add(levelBuildingPanel);
         }
     }
 }
