@@ -1,8 +1,8 @@
 ﻿namespace LevelEditor
 {
-    using LevelEditor.Factory;
+    using LevelEditor.Data;
     using LevelEditor.Input;
-    using LevelEditor.Models.UI;
+    using LevelEditor.Interfaces;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -13,9 +13,6 @@
     /// </summary>
     public class Engine : Game
     {
-        private PanelFactory panelFactory;
-        private Panel testPanel;
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -34,9 +31,7 @@
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            this.panelFactory = new PanelFactory(this.Content);
-            this.testPanel = this.panelFactory.GenerateMapTileSelectorPanel();
+            Factory.Factory.GenerateMapTileSelectorPanel(this.Content);
 
             base.Initialize();
         }
@@ -77,13 +72,13 @@
         {
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
-
-            // TODO: Add your update logic here
-            this.testPanel.Update(gameTime);
-
             InputManager.UpdateMouse(gameTime, mouseState);
+
+            foreach (IGameObject gameObject in Repository.GameObjects)
+            {
+                gameObject.Update(gameTime);
+            }
+
             base.Update(gameTime);
         }
 
@@ -96,7 +91,10 @@
             this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            this.testPanel.Draw(gameTime, this.spriteBatch);
+            foreach (IGameObject gameObject in Repository.GameObjects)
+            {
+                gameObject.Draw(gameTime, this.spriteBatch);
+            }
 
             base.Draw(gameTime);
         }

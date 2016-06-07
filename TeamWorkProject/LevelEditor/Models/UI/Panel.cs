@@ -9,16 +9,12 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
 
     public class Panel : GameObject
     {
         private List<IGameObject> ChildrenObjects { get; set; }
 
         private Texture2D BackgroundTexture { get; set; }
-
-        // For testing purposes. TODO: When done should be separated in a proper class.
-        private Point LastMouseClick { get; set; }
 
         public Panel(Vector2 position, Rectangle size, Texture2D backgroundTexture)
         {

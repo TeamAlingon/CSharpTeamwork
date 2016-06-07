@@ -13,7 +13,11 @@
 
         public static event PointerEventHandler OnDrag;
 
+        public static event PointerEventHandler OnRelease;
+
         private static Vector2 LastMouseClick { get; set; }
+
+        private static bool Pressed { get; set; }
 
         public static void UpdateMouse(GameTime gameTime, MouseState mState)
         {
@@ -26,8 +30,12 @@
                     delta = mState.Position.ToVector2() - LastMouseClick;
                 }
 
-                OnPress?.Invoke(new PointerEventDataArgs(curretnPosition, delta));
-                
+                if (!Pressed)
+                {
+                    OnPress?.Invoke(new PointerEventDataArgs(curretnPosition, delta));
+                    Pressed = true;
+                }
+
                 LastMouseClick = mState.Position.ToVector2();
 
                 if (delta != Vector2.Zero)
@@ -40,8 +48,11 @@
                     LastMouseClick = mState.Position.ToVector2();
                 }
             }
-            else
+            else if (Pressed)
             {
+                OnRelease?.Invoke(new PointerEventDataArgs(LastMouseClick, Vector2.Zero));
+                Pressed = false;
+
                 LastMouseClick = Vector2.Zero;
             }
         }

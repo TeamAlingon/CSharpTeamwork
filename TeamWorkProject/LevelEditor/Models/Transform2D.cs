@@ -1,7 +1,5 @@
 ﻿namespace LevelEditor.Models
 {
-    using System;
-
     using LevelEditor.EventHandlers;
 
     using Microsoft.Xna.Framework;
@@ -11,6 +9,7 @@
         private Vector2 position;
 
         private Transform2D parent;
+        private Transform2D transform;
 
         public event MovementEventHandler PositionChanged;
 
@@ -59,6 +58,12 @@
         public Transform2D()
             : this(Vector2.Zero, Rectangle.Empty)
         {
+        }
+
+        public Transform2D(Transform2D parentTransform)
+            : this(Vector2.Zero, Rectangle.Empty, 1.0f, parentTransform)
+        {
+
         }
 
         public Transform2D(Vector2 position, Rectangle size, float rotation = 1.0f, Transform2D parent = null)

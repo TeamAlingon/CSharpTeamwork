@@ -1,5 +1,6 @@
 ﻿namespace LevelEditor.Factory
 {
+    using LevelEditor.Data;
     using LevelEditor.Models;
     using LevelEditor.Models.UI;
     using LevelEditor.Utils;
@@ -8,21 +9,15 @@
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class PanelFactory
+    public static class Factory
     {
-        private ContentManager Content { get; }
-
-        public PanelFactory(ContentManager content)
+        public static void GenerateMapTileSelectorPanel(ContentManager content)
         {
-            this.Content = content;
-        }
+            var panelTexture = content.Load<Texture2D>("UiTiles/GrayTile");
+            var spriteFont = content.Load<SpriteFont>("Fonts/impact");
 
-        public Panel GenerateMapTileSelectorPanel()
-        {
             var panelPosition = new Vector2(100, 100);
             var panelSize = new Rectangle((int)panelPosition.X, (int)panelPosition.Y, 512, 512);
-            var panelTexture = this.Content.Load<Texture2D>("UiTiles/GrayTile");
-            var spriteFont = this.Content.Load<SpriteFont>("Fonts/impact");
             var levelFiles = FileUtils.GetFilenames("Level");
 
             Panel mapTilePanel = new Panel(panelPosition, panelSize, panelTexture);
@@ -36,7 +31,7 @@
                 textPosition = new Vector2(textPosition.X, textPosition.Y + 20);
             }
 
-            return mapTilePanel;
+            Repository.GameObjects.Add(mapTilePanel);
         }
     }
 }
