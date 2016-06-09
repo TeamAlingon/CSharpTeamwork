@@ -57,6 +57,9 @@
     <Compile Include="States\State.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Extended">
+      <HintPath>References\MonoGame.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
