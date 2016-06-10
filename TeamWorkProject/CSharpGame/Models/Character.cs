@@ -4,7 +4,7 @@ namespace CSharpGame.Models
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    class Character
+    public class Character
     {
         private string imageName = "Images/maincharacter";
         private int x = 20;
