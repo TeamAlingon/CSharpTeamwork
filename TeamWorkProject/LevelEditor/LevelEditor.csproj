@@ -49,6 +49,7 @@
     <Compile Include="Factory\Factory.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Interfaces\IGameObject.cs" />
+    <Compile Include="Models\Character.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Level\Level.cs" />
     <Compile Include="Models\Transform2D.cs" />

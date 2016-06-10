@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CSharpGame.Models
 {
 
-    public class Character
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    class Character
     {
-        
-        
-        
+        private string imageName = "Images/maincharacter";
+        private int x = 20;
+        private int y = 20;
+        public int X { get; set; }
+        public int Y { get; set; }
+        //private Rectangle rectangle = new Rectangle(X, Y, 1000, 200);
+        //  public Rectangle Rectangle { get; set; }
+
+        Texture2D imageTexture;
+        public string GetImage()
+        {
+            return imageName;
+        }
     }
 }
