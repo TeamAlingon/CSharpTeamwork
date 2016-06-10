@@ -42,13 +42,10 @@
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Models\Character.cs" />
-<<<<<<< HEAD
     <Compile Include="Models\Collectables\Effects\Effect.cs" />
     <Compile Include="Models\Collectables\Effects\SpeedUp.cs" />
     <Compile Include="Models\Collectables\Items\Item.cs" />
     <Compile Include="Models\Collectables\Items\RegularCoin.cs" />
-=======
->>>>>>> 4778c0c857c09e060ed09d1e7fa23d815c599813
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\GameStateManager.cs" />
