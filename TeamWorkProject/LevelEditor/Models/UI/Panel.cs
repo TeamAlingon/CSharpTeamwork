@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using LevelEditor.EventHandlers;
+    using LevelEditor.Input;
     using LevelEditor.Interfaces;
     using LevelEditor.Models;
 
@@ -21,6 +23,7 @@
             this.BackgroundTexture = backgroundTexture;
 
             this.ChildrenObjects = new List<IGameObject>();
+            InputManager.OnDrag += this.HandleMouseDragEvent;
         }
 
         public void AddChild(IGameObject child)
@@ -36,10 +39,10 @@
 
         public override void Update(GameTime gameTime)
         {
-            //TODO: Implement panel movement.
-
-            // Testing children movement.
-            this.Transform.Position += Vector2.One;
+            foreach (var childrenObject in this.ChildrenObjects)
+            {
+                childrenObject.Update(gameTime);
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -62,6 +65,14 @@
             foreach (var childrenObject in this.ChildrenObjects)
             {
                 childrenObject.Draw(gameTime, spriteBatch);
+            }
+        }
+
+        private void HandleMouseDragEvent(PointerEventDataArgs args)
+        {
+            if (this.Transform.Size.Contains(args.Position))
+            {
+                this.Transform.Position += args.Delta;
             }
         }
     }

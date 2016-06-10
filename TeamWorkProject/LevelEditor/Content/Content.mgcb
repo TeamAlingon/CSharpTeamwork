@@ -1,9 +1,9 @@
 
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:bin/$(Platform)
-/intermediateDir:obj/$(Platform)
-/platform:DesktopGL
+/outputDir:bin/Windows
+/intermediateDir:obj/Windows
+/platform:Windows
 /config:
 /profile:Reach
 /compress:False
@@ -13,18 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin LevelTiles/Inside_B.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:LevelTiles/Inside_B.png
-
 #begin UiTiles/GrayTile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -33,37 +21,111 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UiTiles/GrayTile.png
-
-#begin LevelTiles/JecAR8q.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:LevelTiles/JecAR8q.png
-
-#begin LevelTiles/PYqUByo.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:LevelTiles/PYqUByo.png
 
 #begin Fonts/impact.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:Fonts/impact.spritefont
+
+#begin LevelObjects/background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/background.png
+
+#begin LevelObjects/Barricade.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/Barricade.png
+
+#begin LevelObjects/Box.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/Box.png
+
+#begin LevelObjects/Inside_B.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/Inside_B.png
+
+#begin LevelObjects/JecAR8q.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/JecAR8q.png
+
+#begin LevelObjects/PYqUByo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/PYqUByo.png
+
+#begin LevelObjects/Tire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/Tire.png
+
+#begin LevelObjects/Trash.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:LevelObjects/Trash.png
+
+#begin UiTiles/Button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:UiTiles/Button.png
 

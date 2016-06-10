@@ -6,7 +6,7 @@
 
     public static class FileUtils
     {
-        private const string ContentDir = @"..\..\..\..\Content\";
+        private const string ContentDir = @"..\..\..\Content\";
 
         private static readonly ICollection<string> CachedFilenames = new List<string>();
 

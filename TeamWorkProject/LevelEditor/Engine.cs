@@ -1,8 +1,8 @@
 ﻿namespace LevelEditor
 {
-    using LevelEditor.Models;
-    using LevelEditor.Models.UI;
-    using LevelEditor.Utils;
+    using LevelEditor.Data;
+    using LevelEditor.Input;
+    using LevelEditor.Interfaces;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -13,9 +13,6 @@
     /// </summary>
     public class Engine : Game
     {
-        private Panel testPanel;
-
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -34,27 +31,7 @@
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            var panelPosition = new Vector2(100, 100);
-            var panelSize = new Rectangle(0, 0, 512, 512);
-            var panelTexture = this.Content.Load<Texture2D>("UiTiles/GrayTile");
-
-            this.testPanel = new Panel(
-                panelPosition,
-                panelSize,
-                panelTexture);
-
-            var spriteFont = this.Content.Load<SpriteFont>("Fonts/impact");
-            var levelFiles = FileUtils.GetFilenames("Level");
-
-            var textPosition = Vector2.Zero;
-            foreach (string levelFile in levelFiles)
-            {
-                var childTransform = new Transform2D(textPosition, Rectangle.Empty);
-                this.testPanel.AddChild(new Text(levelFile, spriteFont, childTransform));
-
-                textPosition = new Vector2(textPosition.X, textPosition.Y + 20);
-            }
+            Factory.Factory.GenerateLevelBuildingPanel(this.Content);
 
             base.Initialize();
         }
@@ -93,10 +70,14 @@
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
+            var keyboardState = Keyboard.GetState();
+            var mouseState = Mouse.GetState();
+            InputManager.UpdateMouse(gameTime, mouseState);
 
-            // TODO: Add your update logic here
-            this.testPanel.Update(gameTime);
+            foreach (IGameObject gameObject in Repository.GameObjects)
+            {
+                gameObject.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -110,7 +91,10 @@
             this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            this.testPanel.Draw(gameTime, this.spriteBatch);
+            foreach (IGameObject gameObject in Repository.GameObjects)
+            {
+                gameObject.Draw(gameTime, this.spriteBatch);
+            }
 
             base.Draw(gameTime);
         }

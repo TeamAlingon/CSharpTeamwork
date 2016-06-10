@@ -10,7 +10,7 @@
         Transform2D Transform { get; set; }
 
         void Update(GameTime gameTime);
-
+        
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
     }
 }
