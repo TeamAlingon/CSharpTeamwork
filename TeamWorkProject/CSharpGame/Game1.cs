@@ -17,6 +17,9 @@ namespace CSharpGame
         Texture2D mainCharacterTexture;
         Character mainCharacter = new Character();
 
+        private SpriteFont font;
+        private int score = 0;
+
         SoundEffect walkEffect;
         SoundEffectInstance walkInstance;
         SoundEffect levelTheme;
@@ -50,7 +53,9 @@ namespace CSharpGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
-
+            // Load font to print the scores
+            font = Content.Load<SpriteFont>("Score");
+            
             walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
             levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
             walkInstance = walkEffect.CreateInstance();
@@ -124,6 +129,7 @@ namespace CSharpGame
         {
             spriteBatch.Begin();
             spriteBatch.Draw(mainCharacterTexture,new Rectangle(character.X, character.Y, 500,500), color:Color.White);
+            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);
         }
