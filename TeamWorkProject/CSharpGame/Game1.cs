@@ -16,6 +16,10 @@ namespace CSharpGame
         Texture2D mainCharacterTexture;
         Character mainCharacter = new Character();
 
+        private SpriteFont font;
+        private int score = 0;
+
+
         Character character = new Character();
         public Game1()
         {
@@ -46,6 +50,9 @@ namespace CSharpGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
+
+            // Load font to print the scores
+            font = Content.Load<SpriteFont>("Score");
         }
 
         /// <summary>
@@ -97,7 +104,10 @@ namespace CSharpGame
         protected override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+
             spriteBatch.Draw(mainCharacterTexture,new Rectangle(character.X, character.Y, 500,500), color:Color.White);
+            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
