@@ -1,5 +1,6 @@
 ﻿using CSharpGame.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -16,9 +17,9 @@ namespace CSharpGame
         Texture2D mainCharacterTexture;
         Character mainCharacter = new Character();
 
-        private SpriteFont font;
-        private int score = 0;
-
+        SoundEffect walkEffect;
+        SoundEffectInstance walkInstance;
+        SoundEffect levelTheme;
 
         Character character = new Character();
         public Game1()
@@ -48,11 +49,17 @@ namespace CSharpGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
 
-            // Load font to print the scores
-            font = Content.Load<SpriteFont>("Score");
+            walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
+            levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
+            walkInstance = walkEffect.CreateInstance();
+            walkInstance.IsLooped = true;
+
+            SoundEffectInstance levelThemeInstance = levelTheme.CreateInstance();
+            levelThemeInstance.IsLooped = true;
+            levelThemeInstance.Volume = 0.1f;
+            levelThemeInstance.Play();
         }
 
         /// <summary>
@@ -73,7 +80,6 @@ namespace CSharpGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 this.GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -94,6 +100,19 @@ namespace CSharpGame
                 this.GraphicsDevice.Clear(Color.CornflowerBlue);
                 character.Y++;
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.Up) ||
+                Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                walkInstance.Play();
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.Up) && Keyboard.GetState().IsKeyUp(Keys.Down) &&
+                     Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
+            {
+                walkInstance.Stop();
+
+            }
+
             base.Update(gameTime);
         }
 
@@ -104,10 +123,7 @@ namespace CSharpGame
         protected override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-
             spriteBatch.Draw(mainCharacterTexture,new Rectangle(character.X, character.Y, 500,500), color:Color.White);
-            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
-
             spriteBatch.End();
             base.Draw(gameTime);
         }
