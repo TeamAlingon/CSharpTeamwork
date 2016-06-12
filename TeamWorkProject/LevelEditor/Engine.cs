@@ -3,6 +3,7 @@
     using LevelEditor.Data;
     using LevelEditor.Input;
     using LevelEditor.Interfaces;
+    using LevelEditor.Models.UI;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +16,8 @@
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        public static Text DebugText { get; set; }
 
         public Engine()
         {
@@ -47,6 +50,9 @@
             this.graphics.PreferredBackBufferWidth = 1280;
             this.graphics.PreferredBackBufferHeight = 720;
             this.graphics.ApplyChanges();
+
+            DebugText = new Text("Debug", this.Content.Load<SpriteFont>("Fonts/impact"));
+            Repository.GameObjects.Add(DebugText);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
@@ -91,7 +97,7 @@
             this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            foreach (IGameObject gameObject in Repository.GameObjects)
+            foreach (var gameObject in Repository.GameObjects)
             {
                 gameObject.Draw(gameTime, this.spriteBatch);
             }

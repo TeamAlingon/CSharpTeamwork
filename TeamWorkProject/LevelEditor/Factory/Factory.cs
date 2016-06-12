@@ -1,6 +1,9 @@
 ﻿namespace LevelEditor.Factory
 {
+    using System.Collections.Generic;
+
     using LevelEditor.Data;
+    using LevelEditor.Interfaces;
     using LevelEditor.Models;
     using LevelEditor.Models.UI;
     using LevelEditor.Utils;
@@ -19,23 +22,36 @@
 
             var panelPosition = new Vector2(100, 100);
             var panelSize = new Rectangle((int)panelPosition.X, (int)panelPosition.Y, 512, 512);
+            var levelBuilderPanel = new Panel(panelPosition, panelSize, panelTexture);
+
             var levelFiles = FileUtils.GetFilenames("Level");
-
-            Panel levelBuildingPanel = new Panel(panelPosition, panelSize, panelTexture);
-
-            var buttonPosition = Vector2.Zero;
+            var levelSelectorObjects = new List<IDrawableGameObject>();
             foreach (string levelFile in levelFiles)
             {
-                var childTransform = new Transform2D(buttonPosition, Rectangle.Empty);
-                var buttonText = new Text(levelFile, spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
-                var button = new Button(buttonTexture, buttonText, childTransform);
-
-                levelBuildingPanel.AddChild(button);
-
-                buttonPosition = new Vector2(buttonPosition.X, buttonPosition.Y + button.Texture.Height + 2);
+                var objectTexture = content.Load<Texture2D>(levelFile);
+                var texturedGameObject = new TexturedGameObject(objectTexture);
+                levelSelectorObjects.Add(texturedGameObject);
             }
+            var objectSelectorTransform = new Transform2D(levelBuilderPanel.Transform);
+            var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform);
+            
+            var nextButtonTransform = new Transform2D(new Vector2(410, 470), Rectangle.Empty);
+            var nextButtonText = new Text("Next", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
+            var nextButton = new Button(buttonTexture, nextButtonText, nextButtonTransform);
+            nextButton.OnPress += args => objectSelector.SwitchToNextObject();
+            
 
-            Repository.GameObjects.Add(levelBuildingPanel);
+            var previousButtonTransform = new Transform2D(new Vector2(0, 470), Rectangle.Empty);
+            var previousButtonText = new Text("Previous", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
+            var previousButton = new Button(buttonTexture, previousButtonText, previousButtonTransform);
+            previousButton.OnPress += args => objectSelector.SwitchToPreviousObject();
+            
+
+            levelBuilderPanel.AddChild(objectSelector);
+            levelBuilderPanel.AddChild(previousButton);
+            levelBuilderPanel.AddChild(nextButton);
+
+            Repository.GameObjects.Add(levelBuilderPanel);
         }
     }
 }

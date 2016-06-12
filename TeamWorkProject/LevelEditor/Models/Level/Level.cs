@@ -7,21 +7,21 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Level : GameObject
+    public class Level : GameObject, IDrawableGameObject
     {
-        public List<IGameObject> LevelObjects { get; set; }
+        public List<IDrawableGameObject> LevelObjects { get; set; }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (IGameObject levelObject in this.LevelObjects)
+            foreach (IDrawableGameObject levelObject in this.LevelObjects)
             {
                 levelObject.Update(gameTime);
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (IGameObject levelObject in this.LevelObjects)
+            foreach (IDrawableGameObject levelObject in this.LevelObjects)
             {
                 levelObject.Draw(gameTime, spriteBatch);
             }

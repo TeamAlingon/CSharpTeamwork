@@ -10,29 +10,29 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Panel : GameObject
+    public class Panel : GameObject, IDrawableGameObject
     {
-        private List<IGameObject> ChildrenObjects { get; set; }
+        private List<IDrawableGameObject> ChildrenObjects { get; set; }
 
-        private Texture2D BackgroundTexture { get; set; }
+        public Texture2D Texture { get; set; }
 
         public Panel(Vector2 position, Rectangle size, Texture2D backgroundTexture)
         {
             this.Transform = new Transform2D { Position = position, Size = size };
 
-            this.BackgroundTexture = backgroundTexture;
+            this.Texture = backgroundTexture;
 
-            this.ChildrenObjects = new List<IGameObject>();
+            this.ChildrenObjects = new List<IDrawableGameObject>();
             InputManager.OnDrag += this.HandleMouseDragEvent;
         }
 
-        public void AddChild(IGameObject child)
+        public void AddChild(IDrawableGameObject child)
         {
             child.Transform.Parent = this.Transform;
             this.ChildrenObjects.Add(child);
         }
 
-        public void RemoveChild(IGameObject child)
+        public void RemoveChild(IDrawableGameObject child)
         {
             this.ChildrenObjects.Remove(child);
         }
@@ -45,12 +45,12 @@
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap);
 
             spriteBatch.Draw(
-                this.BackgroundTexture,
+                this.Texture,
                 this.Transform.Position,
                 this.Transform.Size,
                 Color.White,

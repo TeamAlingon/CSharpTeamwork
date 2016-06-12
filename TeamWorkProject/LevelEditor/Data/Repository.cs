@@ -6,6 +6,6 @@
 
     public class Repository
     {
-        public static readonly List<IGameObject> GameObjects = new List<IGameObject>();
+        public static readonly List<IDrawableGameObject> GameObjects = new List<IDrawableGameObject>();
     }
 }

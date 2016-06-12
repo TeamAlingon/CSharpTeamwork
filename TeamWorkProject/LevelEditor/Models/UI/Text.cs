@@ -1,9 +1,11 @@
 ﻿namespace LevelEditor.Models.UI
 {
+    using LevelEditor.Interfaces;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Text : GameObject
+    public class Text : GameObject, IDrawableGameObject
     {
         public string TextContent { get; set; }
 
@@ -47,7 +49,7 @@
         {
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             spriteBatch.DrawString(this.SpriteFont, this.TextContent, this.Transform.Position, this.FontColor);

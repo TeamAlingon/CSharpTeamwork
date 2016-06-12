@@ -3,14 +3,21 @@
     using LevelEditor.Interfaces;
 
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     public abstract class GameObject : IGameObject
     {
         public Transform2D Transform { get; set; }
 
-        public abstract void Update(GameTime gameTime);
+        protected GameObject()
+        {
+            
+        }
 
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        protected GameObject(Transform2D transform)
+        {
+            this.Transform = transform;
+        }
+
+        public abstract void Update(GameTime gameTime);
     }
 }
