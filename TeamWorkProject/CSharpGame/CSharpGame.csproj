@@ -70,6 +70,8 @@
     <Content Include="Content\Images\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\MainChar.png" />
+    <Content Include="Content\Images\MapSample.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

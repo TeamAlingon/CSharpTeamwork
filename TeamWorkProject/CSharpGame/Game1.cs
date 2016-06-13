@@ -3,19 +3,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace CSharpGame
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Game1 : Game
     {
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D mainCharacterTexture;
-        Character mainCharacter = new Character();
+        private Texture2D background;
+        private Texture2D mainCharacterTexture;
+        private Character mainCharacter = new Character();
+        private Camera2D camera;
 
         private SpriteFont font;
         private int score = 0;
@@ -24,35 +24,25 @@ namespace CSharpGame
         SoundEffectInstance walkInstance;
         SoundEffect levelTheme;
 
-        Character character = new Character();
+        //Character character = new Character();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
-
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+        
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            camera = new Camera2D(viewPortAdapter);
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
+            background = Content.Load<Texture2D>("Images/MapSample");
             // Load font to print the scores
             font = Content.Load<SpriteFont>("Score");
             
@@ -67,43 +57,41 @@ namespace CSharpGame
             levelThemeInstance.Play();
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
 
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            this.camera.LookAt(new Vector2(this.mainCharacter.X, this.mainCharacter.Y));
+            
+            if (mainCharacter.Y < 350)
+            {
+                this.mainCharacter.Y+= 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                this.GraphicsDevice.Clear(Color.CornflowerBlue);
-                character.X++;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) ||
+                Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                this.GraphicsDevice.Clear(Color.CornflowerBlue);
-                character.X--;
+                this.mainCharacter.MoveRight();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) ||
+                Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                this.GraphicsDevice.Clear(Color.CornflowerBlue);
-                character.Y--;
+                this.mainCharacter.MoveLeft();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) ||
+                Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                mainCharacter.Jump();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                this.GraphicsDevice.Clear(Color.CornflowerBlue);
-                character.Y++;
+                mainCharacter.Y++;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.Up) ||
@@ -120,15 +108,14 @@ namespace CSharpGame
 
             base.Update(gameTime);
         }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(mainCharacterTexture,new Rectangle(character.X, character.Y, 500,500), color:Color.White);
+            var transformMatrix = camera.GetViewMatrix();
+            spriteBatch.Begin(transformMatrix: transformMatrix);
+            this.spriteBatch.Draw(this.background, Vector2.Zero);
+            spriteBatch.Draw(mainCharacterTexture,new Rectangle(
+                mainCharacter.X, mainCharacter.Y, 125,125), color:Color.White);
             spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);

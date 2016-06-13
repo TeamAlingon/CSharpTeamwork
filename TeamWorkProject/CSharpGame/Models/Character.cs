@@ -6,7 +6,7 @@ namespace CSharpGame.Models
     using Microsoft.Xna.Framework.Graphics;
     public class Character
     {
-        private string imageName = "Images/maincharacter";
+        private string imageName = "Images/MainChar";
         private int x = 20;
         private int y = 20;
         public int X { get; set; }
@@ -18,6 +18,21 @@ namespace CSharpGame.Models
         public string GetImage()
         {
             return imageName;
+        }
+
+        public void MoveRight()
+        {
+            this.X += 5;
+        }
+
+        public void MoveLeft()
+        {
+            this.X -= 5;
+        }
+
+        public void Jump()
+        {
+            this.Y -= 10;
         }
     }
 }
