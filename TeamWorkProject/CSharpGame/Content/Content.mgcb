@@ -952,12 +952,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/obstacles/spikes/spikes.png
 
-#begin Score.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Score.spritefont
-
 #begin Fonts/Score.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

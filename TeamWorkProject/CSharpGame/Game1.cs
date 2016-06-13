@@ -30,7 +30,7 @@ namespace CSharpGame
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
-        
+
         protected override void Initialize()
         {
             var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
@@ -44,8 +44,8 @@ namespace CSharpGame
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
             background = Content.Load<Texture2D>("Images/MapSample");
             // Load font to print the scores
-            font = Content.Load<SpriteFont>("Score");
-            
+            //font = Content.Load<SpriteFont>("Score");
+
             walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
             levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
             walkInstance = walkEffect.CreateInstance();
@@ -65,10 +65,10 @@ namespace CSharpGame
         protected override void Update(GameTime gameTime)
         {
             this.camera.LookAt(new Vector2(this.mainCharacter.X, this.mainCharacter.Y));
-            
-            if (mainCharacter.Y < 350)
+
+            if (mainCharacter.Y < 380)
             {
-                this.mainCharacter.Y+= 5;
+                this.mainCharacter.Y += 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -78,11 +78,13 @@ namespace CSharpGame
                 Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 this.mainCharacter.MoveRight();
+                mainCharacter.Orientation = SpriteEffects.None;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left) ||
                 Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 this.mainCharacter.MoveLeft();
+                mainCharacter.Orientation = SpriteEffects.FlipHorizontally;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) ||
                 Keyboard.GetState().IsKeyDown(Keys.W))
@@ -108,15 +110,24 @@ namespace CSharpGame
 
             base.Update(gameTime);
         }
-        
+
         protected override void Draw(GameTime gameTime)
         {
+            Vector2 origin = new Vector2(2, 3);
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
             this.spriteBatch.Draw(this.background, Vector2.Zero);
-            spriteBatch.Draw(mainCharacterTexture,new Rectangle(
-                mainCharacter.X, mainCharacter.Y, 125,125), color:Color.White);
-            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
+            spriteBatch.Draw(
+                mainCharacterTexture,
+                new Rectangle(mainCharacter.X, mainCharacter.Y, 100, 100),
+                new Rectangle(0, 0, 160, 300),
+                Color.White,
+                rotation: 0,
+                origin: new Vector2(),
+               effects: mainCharacter.Orientation,
+               layerDepth: 0f);
+
+            // spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);
         }

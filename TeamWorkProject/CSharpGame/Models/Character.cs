@@ -6,15 +6,20 @@ namespace CSharpGame.Models
     using Microsoft.Xna.Framework.Graphics;
     public class Character
     {
-        private string imageName = "Images/MainChar";
+        private string imageName = "Images/maincharacter";
         private int x = 20;
         private int y = 20;
         public int X { get; set; }
         public int Y { get; set; }
         //private Rectangle rectangle = new Rectangle(X, Y, 1000, 200);
         //  public Rectangle Rectangle { get; set; }
-
+        public SpriteEffects Orientation { get; set; }
         Texture2D imageTexture;
+        public int HorizontalSquareMove { get; set; }
+        public Character()
+        {
+            Orientation = SpriteEffects.None;
+        }
         public string GetImage()
         {
             return imageName;
@@ -23,6 +28,11 @@ namespace CSharpGame.Models
         public void MoveRight()
         {
             this.X += 5;
+            HorizontalSquareMove += 260;
+            if (HorizontalSquareMove > 2000)
+            {
+                HorizontalSquareMove = 0;
+            }
         }
 
         public void MoveLeft()
