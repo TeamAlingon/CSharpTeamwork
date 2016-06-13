@@ -1,6 +1,7 @@
 namespace CSharpGame.Models.Collectables.Effects
 {
     using Interfaces;
+    using Microsoft.Xna.Framework.Graphics;
 
     public class Effect : IEffect
     {
@@ -38,6 +39,14 @@ namespace CSharpGame.Models.Collectables.Effects
             {
                 timeOfEffect -= 1;
             }
+        }
+
+        public Texture2D ImageTexture2D { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public string GetImage()
+        {
+            throw new System.NotImplementedException();
         }
 
         public virtual void ApplyEffect(Character player)
