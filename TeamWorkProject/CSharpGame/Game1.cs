@@ -26,6 +26,11 @@ namespace CSharpGame
         SoundEffect walkEffect;
         SoundEffectInstance walkInstance;
         SoundEffect levelTheme;
+        SoundEffect jumpEffect;
+        SoundEffectInstance jumpInstance;
+        SoundEffect hitEffect;
+        SoundEffectInstance hitInstance;
+
 
         //Character character = new Character();
         public Game1()
@@ -52,10 +57,21 @@ namespace CSharpGame
             //font = Content.Load<SpriteFont>("Score");
 
             walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
-            levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
             walkInstance = walkEffect.CreateInstance();
             walkInstance.IsLooped = true;
 
+            jumpEffect = Content.Load<SoundEffect>("Soundtrack/jump");
+            jumpInstance = jumpEffect.CreateInstance();
+            jumpInstance.IsLooped = false;
+
+            //Hit effect for breaking or knocking enemies
+            /*
+            hitEffect = Content.Load<SoundEffect>("Soundtrack/scratch");
+            hitInstance = hitEffect.CreateInstance();
+            hitInstance.IsLooped = false;
+            */
+
+            levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
             SoundEffectInstance levelThemeInstance = levelTheme.CreateInstance();
             levelThemeInstance.IsLooped = true;
             levelThemeInstance.Volume = 0.1f;
@@ -94,20 +110,21 @@ namespace CSharpGame
             if (Keyboard.GetState().IsKeyDown(Keys.Up) ||
                 Keyboard.GetState().IsKeyDown(Keys.W))
             {
+                jumpInstance.Play();
                 mainCharacter.Jump();
             }
+            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
+                jumpInstance.Stop();
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 mainCharacter.Y++;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.Up) ||
-                Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 walkInstance.Play();
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Up) && Keyboard.GetState().IsKeyUp(Keys.Down) &&
-                     Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
+            else if (Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
             {
                 walkInstance.Stop();
 
