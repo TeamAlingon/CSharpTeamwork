@@ -5,6 +5,7 @@
     using LevelEditor.Data;
     using LevelEditor.Interfaces;
     using LevelEditor.Models;
+    using LevelEditor.Models.Level;
     using LevelEditor.Models.UI;
     using LevelEditor.Utils;
 
@@ -16,7 +17,7 @@
     {
         public static void GenerateLevelBuildingPanel(ContentManager content)
         {
-            var panelTexture = content.Load<Texture2D>("UiTiles/GrayTile");
+            var panelTexture = content.Load<Texture2D>("UiTiles/GrayTileTransparency");
             var spriteFont = content.Load<SpriteFont>("Fonts/impact");
             var buttonTexture = content.Load<Texture2D>("UiTiles/Button");
 
@@ -33,24 +34,30 @@
                 levelSelectorObjects.Add(texturedGameObject);
             }
             var objectSelectorTransform = new Transform2D(levelBuilderPanel.Transform);
-            var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform);
+            var level = new Level();
+            var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform, level);
             
             var nextButtonTransform = new Transform2D(new Vector2(410, 470), Rectangle.Empty);
             var nextButtonText = new Text("Next", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
             var nextButton = new Button(buttonTexture, nextButtonText, nextButtonTransform);
             nextButton.OnPress += args => objectSelector.SwitchToNextObject();
-            
 
             var previousButtonTransform = new Transform2D(new Vector2(0, 470), Rectangle.Empty);
             var previousButtonText = new Text("Previous", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
             var previousButton = new Button(buttonTexture, previousButtonText, previousButtonTransform);
             previousButton.OnPress += args => objectSelector.SwitchToPreviousObject();
-            
+
+            var placeObjectButtonTransform = new Transform2D(new Vector2(120, 470), Rectangle.Empty);
+            var placeObjectButtonText = new Text("Place", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
+            var placeObjectButton = new Button(buttonTexture, placeObjectButtonText, placeObjectButtonTransform);
+            placeObjectButton.OnPress += args => objectSelector.PlaceGameObjectInLevel();
 
             levelBuilderPanel.AddChild(objectSelector);
             levelBuilderPanel.AddChild(previousButton);
             levelBuilderPanel.AddChild(nextButton);
+            levelBuilderPanel.AddChild(placeObjectButton);
 
+            Repository.GameObjects.Add(level);
             Repository.GameObjects.Add(levelBuilderPanel);
         }
     }
