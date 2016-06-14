@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using System.Collections.Generic;
 
 namespace CSharpGame
 {
@@ -15,6 +16,8 @@ namespace CSharpGame
         private Texture2D background;
         private Texture2D mainCharacterTexture;
         private Character mainCharacter = new Character();
+        private Models.Collectables.Items.RegularCoin regularCoin = new Models.Collectables.Items.RegularCoin(400, 380);
+        private List<Models.Collectables.Items.RegularCoin> coins = new List<Models.Collectables.Items.RegularCoin>();
         private Camera2D camera;
 
         private SpriteFont font;
@@ -34,6 +37,7 @@ namespace CSharpGame
         protected override void Initialize()
         {
             var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            regularCoin.InitializeList(coins);
             camera = new Camera2D(viewPortAdapter);
             base.Initialize();
         }
@@ -43,6 +47,7 @@ namespace CSharpGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
             background = Content.Load<Texture2D>("Images/MapSample");
+            regularCoin.imageTexture = Content.Load<Texture2D>(regularCoin.GetImage());
             // Load font to print the scores
             //font = Content.Load<SpriteFont>("Score");
 
@@ -126,6 +131,13 @@ namespace CSharpGame
                 origin: new Vector2(),
                effects: mainCharacter.Orientation,
                layerDepth: 0f);
+            foreach (var coin in coins)
+            {
+                if (regularCoin.Intersect(mainCharacter, coin, spriteBatch))
+                {
+                    spriteBatch.Draw(regularCoin.imageTexture, new Rectangle(coin.X, coin.Y, 80, 80), Color.White);
+                }
+            }
 
             // spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
             spriteBatch.End();
