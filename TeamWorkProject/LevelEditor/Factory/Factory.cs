@@ -37,19 +37,13 @@
             var level = new Level();
             var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform, level);
             
-            var nextButtonTransform = new Transform2D(new Vector2(410, 470), Rectangle.Empty);
-            var nextButtonText = new Text("Next", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
-            var nextButton = new Button(buttonTexture, nextButtonText, nextButtonTransform);
+            var nextButton = GenerateButton(spriteFont, buttonTexture, "Next", new Vector2(410, 470));
             nextButton.OnPress += args => objectSelector.SwitchToNextObject();
 
-            var previousButtonTransform = new Transform2D(new Vector2(0, 470), Rectangle.Empty);
-            var previousButtonText = new Text("Previous", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
-            var previousButton = new Button(buttonTexture, previousButtonText, previousButtonTransform);
+            var previousButton = GenerateButton(spriteFont, buttonTexture, "Previous", new Vector2(0, 470));
             previousButton.OnPress += args => objectSelector.SwitchToPreviousObject();
 
-            var placeObjectButtonTransform = new Transform2D(new Vector2(120, 470), Rectangle.Empty);
-            var placeObjectButtonText = new Text("Place", spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
-            var placeObjectButton = new Button(buttonTexture, placeObjectButtonText, placeObjectButtonTransform);
+            var placeObjectButton = GenerateButton(spriteFont, buttonTexture, "Place", new Vector2(120, 470));
             placeObjectButton.OnPress += args => objectSelector.PlaceGameObjectInLevel();
 
             levelBuilderPanel.AddChild(objectSelector);
@@ -59,6 +53,14 @@
 
             Repository.GameObjects.Add(level);
             Repository.GameObjects.Add(levelBuilderPanel);
+        }
+
+        private static Button GenerateButton(SpriteFont spriteFont, Texture2D buttonTexture, string buttonText, Vector2 buttonPosition)
+        {
+            var nextButtonTransform = new Transform2D(buttonPosition, Rectangle.Empty);
+            var nextButtonText = new Text(buttonText, spriteFont, new Transform2D(Vector2.Zero, Rectangle.Empty));
+            var nextButton = new Button(buttonTexture, nextButtonText, nextButtonTransform);
+            return nextButton;
         }
     }
 }
