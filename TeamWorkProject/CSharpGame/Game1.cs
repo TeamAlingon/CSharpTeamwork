@@ -87,7 +87,7 @@ namespace CSharpGame
         {
             this.camera.LookAt(new Vector2(this.mainCharacter.X, this.mainCharacter.Y));
 
-            if (mainCharacter.Y < 380)
+            if (mainCharacter.Y < 345)
             {
                 this.mainCharacter.Y += 5;
             }
@@ -135,13 +135,14 @@ namespace CSharpGame
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.Black);
             Vector2 origin = new Vector2(2, 3);
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
             this.spriteBatch.Draw(this.background, Vector2.Zero);
             spriteBatch.Draw(
                 mainCharacterTexture,
-                new Rectangle(mainCharacter.X, mainCharacter.Y, 100, 100),
+                new Rectangle(mainCharacter.X, mainCharacter.Y, 100, 150),
                 new Rectangle(0, 0, 160, 300),
                 Color.White,
                 rotation: 0,
