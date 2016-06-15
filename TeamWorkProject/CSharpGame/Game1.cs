@@ -53,8 +53,8 @@ namespace CSharpGame
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
             background = Content.Load<Texture2D>("Images/MapSample");
             regularCoin.imageTexture = Content.Load<Texture2D>(regularCoin.GetImage());
-            // Load font to print the scores
-            //font = Content.Load<SpriteFont>("Score");
+            
+            font = Content.Load<SpriteFont>("Score");
 
             walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
             walkInstance = walkEffect.CreateInstance();
@@ -157,7 +157,7 @@ namespace CSharpGame
                 }
             }
 
-            // spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(10, 10), Color.Silver);
+            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(-390 + mainCharacter.X, 120), Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);
         }
