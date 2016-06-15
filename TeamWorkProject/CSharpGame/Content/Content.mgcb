@@ -994,3 +994,9 @@
 /processorParam:Quality=Best
 /build:Soundtrack/scratch.mp3
 
+#begin Score.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Score.spritefont
+
