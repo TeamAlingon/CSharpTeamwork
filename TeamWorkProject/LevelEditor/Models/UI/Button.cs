@@ -57,11 +57,11 @@
             this.Text.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch, viewMatrix);
 
-            this.Text.Draw(gameTime, spriteBatch);
+            this.Text.Draw(gameTime, spriteBatch, viewMatrix);
         }
 
         private void HandleButtonPress(PointerEventDataArgs args)

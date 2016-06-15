@@ -2,7 +2,9 @@
 {
     using System;
 
+    using LevelEditor.Data;
     using LevelEditor.EventHandlers;
+    using LevelEditor.Models;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
@@ -15,37 +17,45 @@
 
         public static event PointerEventHandler OnRelease;
 
+        private static Camera2D currentCamera;
+
         private static Vector2 LastMouseClick { get; set; }
 
         private static bool Pressed { get; set; }
 
         public static void UpdateMouse(GameTime gameTime, MouseState mState)
         {
+            if (currentCamera == null)
+            {
+                currentCamera = Repository.GetSelectedCamera();
+            }
+
             if (mState.LeftButton == ButtonState.Pressed)
             {
-                var curretnPosition = mState.Position.ToVector2();
+                // Taking into account the camera position since it is causing issues when the camera is moved.
+                var currentMousePosition = mState.Position.ToVector2() + currentCamera.Transform.Position;
                 var delta = Vector2.Zero;
                 if (!LastMouseClick.Equals(Vector2.Zero))
                 {
-                    delta = mState.Position.ToVector2() - LastMouseClick;
+                    delta = currentMousePosition - LastMouseClick;
                 }
 
                 if (!Pressed)
                 {
-                    OnPress?.Invoke(new PointerEventDataArgs(curretnPosition, delta));
+                    OnPress?.Invoke(new PointerEventDataArgs(currentMousePosition, delta));
                     Pressed = true;
                 }
 
-                LastMouseClick = mState.Position.ToVector2();
+                LastMouseClick = currentMousePosition;
 
                 if (delta != Vector2.Zero)
                 {
-                    OnDrag?.Invoke(new PointerEventDataArgs(curretnPosition, delta));
+                    OnDrag?.Invoke(new PointerEventDataArgs(currentMousePosition, delta));
                 }
 
                 if (LastMouseClick.Equals(Vector2.Zero))
                 {
-                    LastMouseClick = mState.Position.ToVector2();
+                    LastMouseClick = currentMousePosition;
                 }
             }
             else if (Pressed)

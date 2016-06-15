@@ -9,21 +9,40 @@
 
     public class Level : GameObject, IDrawableGameObject
     {
-        public List<IDrawableGameObject> LevelObjects { get; set; }
+        private List<IDrawableGameObject> DrawableLevelObjects { get; }
+
+        private List<IGameObject> AllLevelObjects { get; }
+
+        public Level()
+        {
+            this.DrawableLevelObjects = new List<IDrawableGameObject>();
+            this.AllLevelObjects = new List<IGameObject>();
+        }
+
+        public void AddGameObject(IGameObject gameObject)
+        {
+            var drawableObject = gameObject as IDrawableGameObject;
+            if (drawableObject != null)
+            {
+                this.DrawableLevelObjects.Add(drawableObject);
+            }
+
+            this.AllLevelObjects.Add(gameObject);
+        }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (IDrawableGameObject levelObject in this.LevelObjects)
+            foreach (IGameObject gameObject in this.AllLevelObjects)
             {
-                levelObject.Update(gameTime);
+                gameObject.Update(gameTime);
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            foreach (IDrawableGameObject levelObject in this.LevelObjects)
+            foreach (IDrawableGameObject levelObject in this.DrawableLevelObjects)
             {
-                levelObject.Draw(gameTime, spriteBatch);
+                levelObject.Draw(gameTime, spriteBatch, viewMatrix);
             }
         }
     }

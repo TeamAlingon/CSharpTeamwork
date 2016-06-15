@@ -40,6 +40,7 @@
             }
             set
             {
+                // If changing the parent, detach from the previous parent.
                 if (this.parent != null)
                 {
                     this.parent.PositionChanged -= this.MoveWithParent;

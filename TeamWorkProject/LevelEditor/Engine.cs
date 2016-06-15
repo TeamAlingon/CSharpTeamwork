@@ -2,7 +2,7 @@
 {
     using LevelEditor.Data;
     using LevelEditor.Input;
-    using LevelEditor.Interfaces;
+    using LevelEditor.Models;
     using LevelEditor.Models.UI;
 
     using Microsoft.Xna.Framework;
@@ -34,8 +34,12 @@
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Factory.Factory.GenerateLevelBuildingPanel(this.Content);
+            this.graphics.PreferredBackBufferWidth = 1280;
+            this.graphics.PreferredBackBufferHeight = 720;
+            this.graphics.ApplyChanges();
 
+            Factory.Factory.GenerateCamera(this.graphics.GraphicsDevice.Viewport);
+            Factory.Factory.GenerateLevelBuildingPanel(this.Content);
             base.Initialize();
         }
 
@@ -47,11 +51,8 @@
         {
             this.IsMouseVisible = true;
 
-            this.graphics.PreferredBackBufferWidth = 1280;
-            this.graphics.PreferredBackBufferHeight = 720;
-            this.graphics.ApplyChanges();
-
             DebugText = new Text("Debug", this.Content.Load<SpriteFont>("Fonts/impact"));
+            DebugText.Transform.Parent = Repository.GetSelectedCamera().Transform;
             Repository.GameObjects.Add(DebugText);
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -80,9 +81,14 @@
             var mouseState = Mouse.GetState();
             InputManager.UpdateMouse(gameTime, mouseState);
 
-            foreach (IGameObject gameObject in Repository.GameObjects)
+            foreach (var gameObject in Repository.GameObjects)
             {
                 gameObject.Update(gameTime);
+            }
+
+            foreach (var camera in Repository.Cameras)
+            {
+                camera.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -99,7 +105,7 @@
             // TODO: Add your drawing code here
             foreach (var gameObject in Repository.GameObjects)
             {
-                gameObject.Draw(gameTime, this.spriteBatch);
+                gameObject.Draw(gameTime, this.spriteBatch, Repository.GetSelectedCamera().GetViewMatrix());
             }
 
             base.Draw(gameTime);
