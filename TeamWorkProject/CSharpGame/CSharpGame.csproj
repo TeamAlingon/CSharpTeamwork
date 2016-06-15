@@ -53,6 +53,7 @@
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScoreSystem\HighScores.cs" />
     <Compile Include="States\GameStateManager.cs" />
     <Compile Include="States\MenuState.cs" />
     <Compile Include="States\PlayState.cs" />
