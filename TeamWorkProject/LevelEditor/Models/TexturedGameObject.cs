@@ -40,9 +40,9 @@
         {
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: viewMatrix);
             spriteBatch.Draw(this.Texture, this.Transform.Size, Color.White);
             spriteBatch.End();
         }

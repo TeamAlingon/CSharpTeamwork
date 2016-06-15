@@ -38,11 +38,11 @@
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
             foreach (IDrawableGameObject levelObject in this.DrawableLevelObjects)
             {
-                levelObject.Draw(gameTime, spriteBatch);
+                levelObject.Draw(gameTime, spriteBatch, viewMatrix);
             }
         }
     }

@@ -45,9 +45,9 @@
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, transformMatrix: viewMatrix);
 
             spriteBatch.Draw(
                 this.Texture,
@@ -64,7 +64,7 @@
 
             foreach (var childrenObject in this.ChildrenObjects)
             {
-                childrenObject.Draw(gameTime, spriteBatch);
+                childrenObject.Draw(gameTime, spriteBatch, viewMatrix);
             }
         }
 

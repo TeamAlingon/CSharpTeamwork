@@ -70,9 +70,9 @@
             this.ObjectPool[this.CurrentObjectIndex].Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            this.ObjectPool[this.CurrentObjectIndex].Draw(gameTime, spriteBatch);
+            this.ObjectPool[this.CurrentObjectIndex].Draw(gameTime, spriteBatch, viewMatrix);
         }
     }
 }

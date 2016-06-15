@@ -49,9 +49,9 @@
         {
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: viewMatrix);
             spriteBatch.DrawString(this.SpriteFont, this.TextContent, this.Transform.Position, this.FontColor);
             spriteBatch.End();
         }

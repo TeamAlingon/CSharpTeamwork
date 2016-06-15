@@ -15,6 +15,13 @@
 
     public static class Factory
     {
+        public static void GenerateCamera(Viewport viewport)
+        {
+            var newCamera = new Camera2D(viewport);
+            Repository.Cameras.Add(newCamera);
+            Repository.SelectedCameraIndex = Repository.Cameras.Count - 1;
+        }
+
         public static void GenerateLevelBuildingPanel(ContentManager content)
         {
             var panelTexture = content.Load<Texture2D>("UiTiles/GrayTileTransparency");
@@ -33,6 +40,7 @@
                 var texturedGameObject = new TexturedGameObject(objectTexture);
                 levelSelectorObjects.Add(texturedGameObject);
             }
+
             var objectSelectorTransform = new Transform2D(levelBuilderPanel.Transform);
             var level = new Level();
             var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform, level);

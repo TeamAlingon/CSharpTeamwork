@@ -50,6 +50,7 @@
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Interfaces\IDrawableGameObject.cs" />
     <Compile Include="Interfaces\IGameObject.cs" />
+    <Compile Include="Models\Camera2D.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Level\Level.cs" />
     <Compile Include="Models\TexturedGameObject.cs" />
