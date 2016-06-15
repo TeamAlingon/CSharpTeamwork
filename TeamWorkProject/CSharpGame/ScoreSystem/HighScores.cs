@@ -19,6 +19,10 @@ namespace CSharpGame.ScoreSystem
         List<string> scores;
         SpriteFont scoreFont;
         KeyboardState oldState;
+        SpriteFont itemFont;
+        SpriteBatch spriteBatch;
+        GraphicsDeviceManager graphics;
+        Texture2D selectionArrow;
 
         public override void Initialize()
         {
@@ -45,9 +49,29 @@ namespace CSharpGame.ScoreSystem
             base.Update(gameTime);
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            Vector2 position = new Vector2(graphics.PreferredBackBufferWidth / 2 - 150, graphics.PreferredBackBufferHeight / 2 - 200);
+            spriteBatch.Begin();
 
+            for (int i = 0; i < 10; i++)
+            {
+                spriteBatch.DrawString(scoreFont, (i + 1).ToString() + ".", new Vector2(position.X, position.Y + (30 * i)), Color.White);
+                if (i < scores.Count)
+                {
+                    spriteBatch.DrawString(scoreFont, scores[i], new Vector2(position.X + 50, position.Y + (30 * i)), Color.White);
+                }
+            }
 
+            Vector2 itemPosition;
+            itemPosition.X = (graphics.PreferredBackBufferWidth / 2) - 100;
+            itemPosition.Y = (graphics.PreferredBackBufferHeight / 2) + 200;
+            spriteBatch.Draw(selectionArrow, new Vector2(itemPosition.X - 50, itemPosition.Y), Color.White);
+            spriteBatch.DrawString(itemFont, "Return", itemPosition, Color.Yellow);
 
+            spriteBatch.End();
+        }
 
     }
 }
