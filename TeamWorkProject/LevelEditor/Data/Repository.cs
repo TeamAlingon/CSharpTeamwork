@@ -5,6 +5,8 @@
     using LevelEditor.Interfaces;
     using LevelEditor.Models;
 
+    using Microsoft.Xna.Framework.Content;
+
     public class Repository
     {
         public static readonly List<IDrawableGameObject> GameObjects = new List<IDrawableGameObject>();
@@ -12,6 +14,8 @@
         public static readonly List<Camera2D> Cameras = new List<Camera2D>();
 
         public static int SelectedCameraIndex { get; set; }
+
+        public static ContentManager ContentManager { get; set; }
 
         public static Camera2D GetSelectedCamera()
         {

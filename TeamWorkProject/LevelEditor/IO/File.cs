@@ -1,16 +1,39 @@
-﻿namespace LevelEditor.Utils
+﻿namespace LevelEditor.IO
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Xml.Serialization;
 
-    public static class FileUtils
+    public static class File
     {
         private const string ContentDir = @"..\..\..\Content\";
 
+        private const string SerializationDir = @"..\..\..\Content\Serialized\";
+
         private static readonly ICollection<string> CachedFilenames = new List<string>();
 
-        private static readonly string[] FoldersToAvoid = { "bin", "obj", "Levels", "Font" };
+        private static readonly string[] KeywordsToAvoid = { "bin", "obj" };
+
+        public static void Save<T>(string file, T obj, string path = SerializationDir)
+        {
+            using (TextWriter writer = new StreamWriter(path + file))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(obj.GetType());
+                xmlSerializer.Serialize(writer, obj);
+            }
+        }
+
+        public static T Load<T>(string file, string path = SerializationDir)
+        {
+            T result;
+            using (TextReader reader = new StreamReader(path + file))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+                result = (T)xmlSerializer.Deserialize(reader);
+            }
+            return result;
+        }
 
         public static IEnumerable<string> GetFilenames(string targetDir = null)
         {
@@ -31,7 +54,7 @@
         {
             foreach (var dir in Directory.GetDirectories(sourceDir))
             {
-                if (!FoldersToAvoid.Any(dir.Contains))
+                if (!KeywordsToAvoid.Any(dir.Contains))
                 {
                     foreach (var file in Directory.GetFiles(dir))
                     {
@@ -47,7 +70,7 @@
             var filePath = path.Split('\\');
 
             var targetPath = new List<string>();
-            var contentReached = false; 
+            var contentReached = false;
             foreach (string folder in filePath)
             {
                 if (contentReached)
@@ -63,7 +86,10 @@
 
             // Get rid of the extension:
             var filename = targetPath[targetPath.Count - 1];
-            targetPath[targetPath.Count - 1] = filename.Substring(0, filename.LastIndexOf('.'));
+            if (filename.Contains("."))
+            {
+                targetPath[targetPath.Count - 1] = filename.Substring(0, filename.LastIndexOf('.'));
+            }
 
             return string.Join("/", targetPath);
         }

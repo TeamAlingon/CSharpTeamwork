@@ -61,7 +61,7 @@
     <Compile Include="Models\UI\Text.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="IO\File.cs" />
     <Compile Include="Utils\Vector2Utils.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using LevelEditor.Interfaces;
+    using LevelEditor.IO;
     using LevelEditor.Models.Level;
 
     using Microsoft.Xna.Framework;
@@ -65,14 +66,26 @@
             }
         }
 
+        public void SaveLevel()
+        {
+            var test = this.ObjectPool[this.CurrentObjectIndex];
+            File.Save("WatIsDis.xml", test);
+        }
+
         public override void Update(GameTime gameTime)
         {
-            this.ObjectPool[this.CurrentObjectIndex].Update(gameTime);
+            if (this.CurrentObjectIndex >= 0 && this.CurrentObjectIndex < this.ObjectPool.Count)
+            {
+                this.ObjectPool[this.CurrentObjectIndex].Update(gameTime);
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Matrix viewMatrix)
         {
-            this.ObjectPool[this.CurrentObjectIndex].Draw(gameTime, spriteBatch, viewMatrix);
+            if (this.CurrentObjectIndex >= 0 && this.CurrentObjectIndex < this.ObjectPool.Count)
+            {
+                this.ObjectPool[this.CurrentObjectIndex].Draw(gameTime, spriteBatch, viewMatrix);
+            }
         }
     }
 }

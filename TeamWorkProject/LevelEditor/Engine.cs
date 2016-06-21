@@ -2,7 +2,6 @@
 {
     using LevelEditor.Data;
     using LevelEditor.Input;
-    using LevelEditor.Models;
     using LevelEditor.Models.UI;
 
     using Microsoft.Xna.Framework;
@@ -38,6 +37,7 @@
             this.graphics.PreferredBackBufferHeight = 720;
             this.graphics.ApplyChanges();
 
+            Repository.ContentManager = this.Content;
             Factory.Factory.GenerateCamera(this.graphics.GraphicsDevice.Viewport);
             Factory.Factory.GenerateLevelBuildingPanel(this.Content);
             base.Initialize();

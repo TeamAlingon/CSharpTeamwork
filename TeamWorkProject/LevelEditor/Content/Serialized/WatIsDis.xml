@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TexturedGameObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Transform>
+    <Position>
+      <X>153</X>
+      <Y>98</Y>
+    </Position>
+    <Size>
+      <X>153</X>
+      <Y>98</Y>
+      <Width>44</Width>
+      <Height>48</Height>
+      <Location>
+        <X>153</X>
+        <Y>98</Y>
+      </Location>
+      <Size>
+        <X>44</X>
+        <Y>48</Y>
+      </Size>
+    </Size>
+    <Rotation>1</Rotation>
+    <Parent>
+      <Position>
+        <X>153</X>
+        <Y>98</Y>
+      </Position>
+      <Size>
+        <X>153</X>
+        <Y>98</Y>
+        <Width>512</Width>
+        <Height>512</Height>
+        <Location>
+          <X>153</X>
+          <Y>98</Y>
+        </Location>
+        <Size>
+          <X>512</X>
+          <Y>512</Y>
+        </Size>
+      </Size>
+      <Rotation>1</Rotation>
+    </Parent>
+  </Transform>
+  <TextureFilePath>LevelObjects/Barricade</TextureFilePath>
+</TexturedGameObject>

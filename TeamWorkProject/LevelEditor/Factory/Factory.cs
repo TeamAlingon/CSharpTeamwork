@@ -4,10 +4,10 @@
 
     using LevelEditor.Data;
     using LevelEditor.Interfaces;
+    using LevelEditor.IO;
     using LevelEditor.Models;
     using LevelEditor.Models.Level;
     using LevelEditor.Models.UI;
-    using LevelEditor.Utils;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
@@ -32,11 +32,11 @@
             var panelSize = new Rectangle((int)panelPosition.X, (int)panelPosition.Y, 512, 512);
             var levelBuilderPanel = new Panel(panelPosition, panelSize, panelTexture);
 
-            var levelFiles = FileUtils.GetFilenames("Level");
+            var filePath = File.GetFilenames("LevelObjects");
             var levelSelectorObjects = new List<IDrawableGameObject>();
-            foreach (string levelFile in levelFiles)
+            foreach (string path in filePath)
             {
-                var objectTexture = content.Load<Texture2D>(levelFile);
+                var objectTexture = content.Load<Texture2D>(path);
                 var texturedGameObject = new TexturedGameObject(objectTexture);
                 levelSelectorObjects.Add(texturedGameObject);
             }
@@ -51,13 +51,18 @@
             var previousButton = GenerateButton(spriteFont, buttonTexture, "Previous", new Vector2(0, 470));
             previousButton.OnPress += args => objectSelector.SwitchToPreviousObject();
 
-            var placeObjectButton = GenerateButton(spriteFont, buttonTexture, "Place", new Vector2(120, 470));
+            var placeObjectButton = GenerateButton(spriteFont, buttonTexture, "Place", new Vector2(130, 470));
             placeObjectButton.OnPress += args => objectSelector.PlaceGameObjectInLevel();
+
+            // TODO: add when serialization is done.
+            var saveLevelButton = GenerateButton(spriteFont, buttonTexture, "Save", new Vector2(260, 470));
+            saveLevelButton.OnPress += args => objectSelector.SaveLevel();
 
             levelBuilderPanel.AddChild(objectSelector);
             levelBuilderPanel.AddChild(previousButton);
             levelBuilderPanel.AddChild(nextButton);
             levelBuilderPanel.AddChild(placeObjectButton);
+            levelBuilderPanel.AddChild(saveLevelButton);
 
             Repository.GameObjects.Add(level);
             Repository.GameObjects.Add(levelBuilderPanel);

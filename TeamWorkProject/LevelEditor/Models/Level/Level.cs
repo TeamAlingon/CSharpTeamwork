@@ -1,22 +1,30 @@
 ﻿namespace LevelEditor.Models.Level
 {
     using System.Collections.Generic;
+    using System.Xml.Serialization;
 
     using LevelEditor.Interfaces;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    [XmlRoot("Level")]
+    [XmlInclude(typeof(GameObject))]
     public class Level : GameObject, IDrawableGameObject
     {
-        private List<IDrawableGameObject> DrawableLevelObjects { get; }
+        private readonly List<IDrawableGameObject> drawableLevelObjects;
 
-        private List<IGameObject> AllLevelObjects { get; }
+        [XmlElement("AllLevelObjects")]
+        private readonly List<IGameObject> allLevelObjects;
+
+        private List<IDrawableGameObject> DrawableLevelObjects => this.drawableLevelObjects;
+
+        private List<IGameObject> AllLevelObjects => this.allLevelObjects;
 
         public Level()
         {
-            this.DrawableLevelObjects = new List<IDrawableGameObject>();
-            this.AllLevelObjects = new List<IGameObject>();
+            this.drawableLevelObjects = new List<IDrawableGameObject>();
+            this.allLevelObjects = new List<IGameObject>();
         }
 
         public void AddGameObject(IGameObject gameObject)
