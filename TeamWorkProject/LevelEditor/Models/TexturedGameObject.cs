@@ -26,6 +26,7 @@
                 {
                     this.texture = Repository.ContentManager.Load<Texture2D>(this.TextureFilePath);
                 }
+
                 return this.texture;
             }
             set

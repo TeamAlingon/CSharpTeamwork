@@ -68,8 +68,7 @@
 
         public void SaveLevel()
         {
-            var test = this.ObjectPool[this.CurrentObjectIndex];
-            File.Save("WatIsDis.xml", test);
+            File.Save("Level.xml", this.CurrentLevel);
         }
 
         public override void Update(GameTime gameTime)

@@ -1,41 +1,37 @@
 ﻿namespace LevelEditor.Models.Level
 {
     using System.Collections.Generic;
-    using System.Xml.Serialization;
 
     using LevelEditor.Interfaces;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    [XmlRoot("Level")]
-    [XmlInclude(typeof(GameObject))]
     public class Level : GameObject, IDrawableGameObject
     {
-        private readonly List<IDrawableGameObject> drawableLevelObjects;
-
-        [XmlElement("AllLevelObjects")]
-        private readonly List<IGameObject> allLevelObjects;
-
-        private List<IDrawableGameObject> DrawableLevelObjects => this.drawableLevelObjects;
-
-        private List<IGameObject> AllLevelObjects => this.allLevelObjects;
+        public List<TexturedGameObject> DrawableLevelObjects { get; }
+        
+        public List<GameObject> AllLevelObjects { get; }
 
         public Level()
         {
-            this.drawableLevelObjects = new List<IDrawableGameObject>();
-            this.allLevelObjects = new List<IGameObject>();
+            this.DrawableLevelObjects = new List<TexturedGameObject>();
+            this.AllLevelObjects = new List<GameObject>();
         }
 
         public void AddGameObject(IGameObject gameObject)
         {
-            var drawableObject = gameObject as IDrawableGameObject;
+            var drawableObject = gameObject as TexturedGameObject;
             if (drawableObject != null)
             {
                 this.DrawableLevelObjects.Add(drawableObject);
             }
 
-            this.AllLevelObjects.Add(gameObject);
+            var castedGameObject = gameObject as GameObject;
+            if (castedGameObject != null)
+            {
+                this.AllLevelObjects.Add(castedGameObject);
+            }
         }
 
         public override void Update(GameTime gameTime)

@@ -40,9 +40,9 @@
                 var texturedGameObject = new TexturedGameObject(objectTexture);
                 levelSelectorObjects.Add(texturedGameObject);
             }
-
+            
+            var level = File.Load<Level>("Level.xml");
             var objectSelectorTransform = new Transform2D(levelBuilderPanel.Transform);
-            var level = new Level();
             var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform, level);
             
             var nextButton = GenerateButton(spriteFont, buttonTexture, "Next", new Vector2(410, 470));
