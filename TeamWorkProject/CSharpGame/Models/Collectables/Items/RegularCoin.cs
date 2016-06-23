@@ -22,7 +22,7 @@ namespace CSharpGame.Models.Collectables.Items
         public bool isCollected;
         public bool Intersect(Character charater, RegularCoin coin, SpriteBatch spriteBatch)
         {
-            Rectangle characterRectangle = new Rectangle(charater.X, charater.Y, 125, 125);
+            Rectangle characterRectangle = new Rectangle(charater.Position.ToPoint(), new Point(125, 125));
             Rectangle coinRectangle = new Rectangle(coin.X, coin.Y, 80, 80);
             if (!coin.isCollected)
             {

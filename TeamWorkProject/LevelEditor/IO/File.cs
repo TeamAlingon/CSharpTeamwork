@@ -35,16 +35,16 @@
             return result;
         }
 
-        public static IEnumerable<string> GetFilenames(string targetDir = null)
+        public static IEnumerable<string> GetFilenames(string targetKeyword = null)
         {
             if (CachedFilenames.Count == 0)
             {
                 LoadFilenames(ContentDir, CachedFilenames);
             }
 
-            if (targetDir != null)
+            if (targetKeyword != null)
             {
-                return CachedFilenames.Where(filename => filename.Contains(targetDir));
+                return CachedFilenames.Where(filename => filename.Contains(targetKeyword));
             }
 
             return CachedFilenames;
@@ -85,8 +85,8 @@
             }
 
             // Get rid of the extension:
-            var filename = targetPath[targetPath.Count - 1];
-            if (filename.Contains("."))
+            var filename = targetPath.LastOrDefault();
+            if (filename != null && filename.Contains("."))
             {
                 targetPath[targetPath.Count - 1] = filename.Substring(0, filename.LastIndexOf('.'));
             }

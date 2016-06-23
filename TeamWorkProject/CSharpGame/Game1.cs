@@ -53,7 +53,7 @@ namespace CSharpGame
             mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
             background = Content.Load<Texture2D>("Images/MapSample");
             regularCoin.imageTexture = Content.Load<Texture2D>(regularCoin.GetImage());
-            
+
             font = Content.Load<SpriteFont>("Score");
 
             walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
@@ -80,16 +80,16 @@ namespace CSharpGame
 
         protected override void UnloadContent()
         {
-
+            this.Content.Dispose();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            this.camera.LookAt(new Vector2(this.mainCharacter.X, this.mainCharacter.Y));
+            this.camera.LookAt(this.mainCharacter.Position);
 
-            if (mainCharacter.Y < 345)
+            if (mainCharacter.Position.Y < 345)
             {
-                this.mainCharacter.Y += 5;
+                this.mainCharacter.MoveDown();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -115,10 +115,6 @@ namespace CSharpGame
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
                 jumpInstance.Stop();
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                mainCharacter.Y++;
-            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -139,10 +135,10 @@ namespace CSharpGame
             Vector2 origin = new Vector2(2, 3);
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
-            this.spriteBatch.Draw(this.background, Vector2.Zero);
+            spriteBatch.Draw(this.background, new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)), Color.White);
             spriteBatch.Draw(
                 mainCharacterTexture,
-                new Rectangle(mainCharacter.X, mainCharacter.Y, 100, 150),
+                new Rectangle(this.mainCharacter.Position.ToPoint(), new Point(100, 150)),
                 new Rectangle(0, 0, 160, 300),
                 Color.White,
                 rotation: 0,
@@ -157,7 +153,7 @@ namespace CSharpGame
                 }
             }
 
-            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(-390 + mainCharacter.X, 120), Color.Silver);
+            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(-390 + this.mainCharacter.Position.X, 120), Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);
         }
