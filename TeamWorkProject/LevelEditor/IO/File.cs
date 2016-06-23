@@ -7,15 +7,17 @@
 
     public static class File
     {
-        private const string ContentDir = @"..\..\..\Content\";
+        private const string ContentDir = @"Content\";
 
-        private const string SerializationDir = @"..\..\..\Content\Serialized\";
+        private const string SerializationDir = @"Content\Serialized\";
 
-        private static readonly ICollection<string> CachedFilenames = new List<string>();
+        private static readonly ICollection<string> CachedFilePaths = new List<string>();
+
+        private static readonly ICollection<string> CachedFilesContentReady = new List<string>();
 
         private static readonly string[] KeywordsToAvoid = { "bin", "obj" };
 
-        public static void Save<T>(string file, T obj, string path = SerializationDir)
+        public static void SaveXmlFile<T>(string file, T obj, string path = SerializationDir)
         {
             using (TextWriter writer = new StreamWriter(path + file))
             {
@@ -24,7 +26,7 @@
             }
         }
 
-        public static T Load<T>(string file, string path = SerializationDir)
+        public static T LoadXmlFile<T>(string file, string path = SerializationDir)
         {
             T result;
             using (TextReader reader = new StreamReader(path + file))
@@ -35,22 +37,48 @@
             return result;
         }
 
+        public static IEnumerable<string> ReadTextFile(string targetKeyword)
+        {
+            CacheFilenamesIfNeeded();
+
+            var targetFile = CachedFilePaths.FirstOrDefault(f => f.Contains(targetKeyword));
+
+            if (targetFile == null)
+            {
+                throw new FileNotFoundException();
+            }
+
+            var result = System.IO.File.ReadLines(targetFile);
+
+            return result;
+        }
+
         public static IEnumerable<string> GetFilenames(string targetKeyword = null)
         {
-            if (CachedFilenames.Count == 0)
-            {
-                LoadFilenames(ContentDir, CachedFilenames);
-            }
+            CacheFilenamesIfNeeded();
 
             if (targetKeyword != null)
             {
-                return CachedFilenames.Where(filename => filename.Contains(targetKeyword));
+                return CachedFilesContentReady.Where(filename => filename.Contains(targetKeyword));
             }
 
-            return CachedFilenames;
+            return CachedFilesContentReady;
         }
 
-        private static void LoadFilenames(string sourceDir, ICollection<string> fileNames)
+        private static void CacheFilenamesIfNeeded()
+        {
+            if (CachedFilePaths.Count == 0)
+            {
+                LoadFilePaths(ContentDir, CachedFilePaths);
+
+                foreach (string cachedFullFilename in CachedFilePaths)
+                {
+                    CachedFilesContentReady.Add(FormatNameForContentLoad(cachedFullFilename));
+                }
+            }
+        }
+
+        private static void LoadFilePaths(string sourceDir, ICollection<string> fileNames)
         {
             foreach (var dir in Directory.GetDirectories(sourceDir))
             {
@@ -58,10 +86,10 @@
                 {
                     foreach (var file in Directory.GetFiles(dir))
                     {
-                        fileNames.Add(FormatNameForContentLoad(file));
+                        fileNames.Add(file);
                     }
                 }
-                LoadFilenames(dir, fileNames);
+                LoadFilePaths(dir, fileNames);
             }
         }
 

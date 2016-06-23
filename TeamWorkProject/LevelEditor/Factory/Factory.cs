@@ -41,7 +41,7 @@
                 levelSelectorObjects.Add(texturedGameObject);
             }
             
-            var level = File.Load<Level>("Level.xml");
+            var level = File.LoadXmlFile<Level>("Level.xml");
             var objectSelectorTransform = new Transform2D(levelBuilderPanel.Transform);
             var objectSelector = new ObjectSelector(levelSelectorObjects, objectSelectorTransform, level);
             

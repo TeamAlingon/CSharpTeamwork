@@ -68,7 +68,7 @@
 
         public void SaveLevel()
         {
-            File.Save("Level.xml", this.CurrentLevel);
+            File.SaveXmlFile("Level.xml", this.CurrentLevel);
         }
 
         public override void Update(GameTime gameTime)

@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using CSharpGame.Models.Animations;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -9,20 +11,24 @@
     {
         private const float Speed = 5;
 
+        private const string ImageFile = "Images/maincharacter";
+
         private readonly Dictionary<string, Vector2> movements;
 
-        private const string ImageName = "Images/maincharacter";
+        private string CurrentAnimationKey { get; set; }
 
-        //private Texture2D imageTexture;
-        public Vector2 Position { get; set; }
+        private Dictionary<string, Animation> Animations { get; }
 
-        //private Rectangle rectangle = new Rectangle(X, Y, 1000, 200);
-        //  public Rectangle Rectangle { get; set; }
-        public SpriteEffects Orientation { get; set; }
+        public SpriteEffects Orientation { get; private set; }
 
-        //public int HorizontalSquareMove { get; set; }
-        public Character()
+        public Vector2 Position { get; private set; }
+
+        public Rectangle BoundingBox
+            => new Rectangle(this.Position.ToPoint(), new Point(this.GetCurrentFrame().Height, this.GetCurrentFrame().Width));
+
+        public Character(Dictionary<string, Animation> animations)
         {
+            this.Animations = animations;
             this.movements = new Dictionary<string, Vector2>
                                  {
                                      { "right", new Vector2(Speed, 0) },
@@ -32,37 +38,40 @@
                                      { "jump", new Vector2(0, -Speed * 2) }
                                  };
 
+            this.CurrentAnimationKey = "running";
             this.Orientation = SpriteEffects.None;
         }
 
-        public string GetImage()
+        public Texture2D GetTexture()
         {
-            return ImageName;
+            return this.Animations[this.CurrentAnimationKey].SpriteSheet;
         }
 
-        public void MoveRight()
+        public Rectangle GetCurrentFrame()
         {
-            this.Position += this.movements["right"];
+            return this.Animations[this.CurrentAnimationKey].GetCurrentFrame();
         }
 
-        public void MoveLeft()
+        public void Move(string direction, GameTime gameTime)
         {
-            this.Position += this.movements["left"];
+            this.Position += this.movements[direction];
+
+            if (direction == "right" || direction == "left")
+            {
+                this.CurrentAnimationKey = "running";
+                this.Orientation = direction == "right" ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            }
+            else if (direction == "jump")
+            {
+                this.CurrentAnimationKey = "runningJump";
+            }
+
+            this.UpdateCurrentAnimation(gameTime);
         }
 
-        public void Jump()
+        private void UpdateCurrentAnimation(GameTime gameTime)
         {
-            this.Position += this.movements["jump"];
-        }
-
-        public void MoveUp()
-        {
-            this.Position += this.movements["up"];
-        }
-
-        public void MoveDown()
-        {
-            this.Position += this.movements["down"];
+            this.Animations[this.CurrentAnimationKey].Play(gameTime);
         }
     }
 }

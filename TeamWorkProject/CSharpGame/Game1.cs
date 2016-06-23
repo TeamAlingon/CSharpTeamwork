@@ -1,25 +1,27 @@
-﻿using CSharpGame.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
-using MonoGame.Extended.ViewportAdapters;
-using System.Collections.Generic;
-
-namespace CSharpGame
+﻿namespace CSharpGame
 {
+    using System.Collections.Generic;
+
+    using CSharpGame.Models;
+    using CSharpGame.Models.Animations;
+
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Audio;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+    using MonoGame.Extended;
+    using MonoGame.Extended.ViewportAdapters;
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D background;
-        private Texture2D mainCharacterTexture;
-        private Character mainCharacter = new Character();
+        private Character mainCharacter;
         private Models.Collectables.Items.RegularCoin regularCoin = new Models.Collectables.Items.RegularCoin(400, 380);
         private List<Models.Collectables.Items.RegularCoin> coins = new List<Models.Collectables.Items.RegularCoin>();
         private Camera2D camera;
-
         private SpriteFont font;
         private int score = 0;
 
@@ -30,7 +32,6 @@ namespace CSharpGame
         SoundEffectInstance jumpInstance;
         SoundEffect hitEffect;
         SoundEffectInstance hitInstance;
-
 
         //Character character = new Character();
         public Game1()
@@ -50,7 +51,15 @@ namespace CSharpGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mainCharacterTexture = Content.Load<Texture2D>(mainCharacter.GetImage());
+
+            var mainCharacterTexture = Content.Load<Texture2D>("Images/maincharacter");
+            var mainCharacterSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
+
+            var mainCharacterAnimations = AnimationParser.ReadSpriteSheetData(
+                mainCharacterTexture,
+                mainCharacterSpriteData);
+
+            mainCharacter = new Character(mainCharacterAnimations);
             background = Content.Load<Texture2D>("Images/MapSample");
             regularCoin.imageTexture = Content.Load<Texture2D>(regularCoin.GetImage());
 
@@ -89,32 +98,27 @@ namespace CSharpGame
 
             if (mainCharacter.Position.Y < 345)
             {
-                this.mainCharacter.MoveDown();
+                this.mainCharacter.Move("down", gameTime);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                Exit();
+                //string breakpoint = string.Empty;
+                //Exit();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) ||
-                Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                this.mainCharacter.MoveRight();
-                mainCharacter.Orientation = SpriteEffects.None;
+                this.mainCharacter.Move("right", gameTime);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) ||
-                Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                this.mainCharacter.MoveLeft();
-                mainCharacter.Orientation = SpriteEffects.FlipHorizontally;
+                this.mainCharacter.Move("left", gameTime);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) ||
-                Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 jumpInstance.Play();
-                mainCharacter.Jump();
+                this.mainCharacter.Move("jump", gameTime);
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
-                jumpInstance.Stop();
+            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W)) jumpInstance.Stop();
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -123,7 +127,6 @@ namespace CSharpGame
             else if (Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
             {
                 walkInstance.Stop();
-
             }
 
             base.Update(gameTime);
@@ -135,16 +138,20 @@ namespace CSharpGame
             Vector2 origin = new Vector2(2, 3);
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
-            spriteBatch.Draw(this.background, new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)), Color.White);
             spriteBatch.Draw(
-                mainCharacterTexture,
+                this.background,
+                new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
+                Color.White);
+
+            spriteBatch.Draw(
+                this.mainCharacter.GetTexture(),
                 new Rectangle(this.mainCharacter.Position.ToPoint(), new Point(100, 150)),
-                new Rectangle(0, 0, 160, 300),
-                Color.White,
+                this.mainCharacter.GetCurrentFrame(),
+            Color.White,
                 rotation: 0,
                 origin: new Vector2(),
-               effects: mainCharacter.Orientation,
-               layerDepth: 0f);
+                effects: mainCharacter.Orientation,
+                layerDepth: 0f);
             foreach (var coin in coins)
             {
                 if (regularCoin.Intersect(mainCharacter, coin, spriteBatch))
@@ -153,7 +160,11 @@ namespace CSharpGame
                 }
             }
 
-            spriteBatch.DrawString(font, $"SCORE: {score}", new Vector2(-390 + this.mainCharacter.Position.X, 120), Color.Silver);
+            spriteBatch.DrawString(
+                font,
+                $"SCORE: {score}",
+                new Vector2(-390 + this.mainCharacter.Position.X, 120),
+                Color.Silver);
             spriteBatch.End();
             base.Draw(gameTime);
         }
