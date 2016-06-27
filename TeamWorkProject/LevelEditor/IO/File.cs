@@ -34,6 +34,7 @@
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
                 result = (T)xmlSerializer.Deserialize(reader);
             }
+
             return result;
         }
 
@@ -42,7 +43,6 @@
             CacheFilenamesIfNeeded();
 
             var targetFile = CachedFilePaths.FirstOrDefault(f => f.Contains(targetKeyword));
-
             if (targetFile == null)
             {
                 throw new FileNotFoundException();

@@ -96,29 +96,29 @@
         {
             this.camera.LookAt(this.mainCharacter.Position);
 
-            if (mainCharacter.Position.Y < 345)
-            {
-                this.mainCharacter.Move("down", gameTime);
-            }
+            var characterMovementParameters = new List<string>();
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                //string breakpoint = string.Empty;
-                //Exit();
+                Exit();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                this.mainCharacter.Move("right", gameTime);
+                characterMovementParameters.Add("right");
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                this.mainCharacter.Move("left", gameTime);
+                characterMovementParameters.Add("left");
             }
+
             if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 jumpInstance.Play();
-                this.mainCharacter.Move("jump", gameTime);
+                characterMovementParameters.Add("jump");
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W)) jumpInstance.Stop();
+            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                jumpInstance.Stop();
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -128,7 +128,8 @@
             {
                 walkInstance.Stop();
             }
-
+            
+            this.mainCharacter.Move(gameTime, characterMovementParameters.ToArray());
             base.Update(gameTime);
         }
 
@@ -144,9 +145,9 @@
                 Color.White);
 
             spriteBatch.Draw(
-                this.mainCharacter.GetTexture(),
+                this.mainCharacter.Texture,
                 new Rectangle(this.mainCharacter.Position.ToPoint(), new Point(100, 150)),
-                this.mainCharacter.GetCurrentFrame(),
+                this.mainCharacter.CurrentFrame,
             Color.White,
                 rotation: 0,
                 origin: new Vector2(),

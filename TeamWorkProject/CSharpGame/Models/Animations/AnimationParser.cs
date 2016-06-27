@@ -33,11 +33,12 @@
                         .Select(int.Parse)
                         .ToArray();
 
-                var rectangle = new Rectangle(
-                    frameParameters[0],
-                    animationSpriteSheet.Height - frameParameters[1] - frameParameters[3],
-                    frameParameters[2],
-                    frameParameters[3]);
+                var rectangleX = frameParameters[0];
+                var rectangleY = animationSpriteSheet.Height - frameParameters[1] - frameParameters[3];
+                var rectangleWidth = frameParameters[2];
+                var rectangleHeight = frameParameters[3];
+
+                var rectangle = new Rectangle(rectangleX, rectangleY, rectangleWidth, rectangleHeight);
 
                 animationFrames[animationName].Add(rectangle);
             }
