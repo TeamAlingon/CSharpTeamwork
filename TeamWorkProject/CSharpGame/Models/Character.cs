@@ -2,30 +2,25 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
-
+    using System.Security.Policy;
+    using Collectables.Items;
     using CSharpGame.Enums;
     using CSharpGame.Models.Animations;
-
+    using Interfaces;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     public class Character
     {
         private const float MovementSpeed = 5f;
-
         private const float GroundPosition = 345f;
-
         private const string ImageFile = "Images/maincharacter";
-
         private const float DefaultJumpVelocity = MovementSpeed * 3;
-
         private const float VelocityDampingSpeed = 0.3f;
-
         private readonly Dictionary<string, Vector2> movements;
-
         private float currentJumpVelocity = 0;
-
         private string currentAnimationKey;
+        private Inventory inventory;
 
         public Character(Dictionary<string, Animation> animations)
         {
@@ -40,6 +35,7 @@
 
             this.CurrentAnimationKey = "running";
             this.Orientation = SpriteEffects.None;
+            this.inventory=new Inventory();
         }
 
         private string CurrentAnimationKey
@@ -146,5 +142,13 @@
 
             this.Animations[this.CurrentAnimationKey].Play(gameTime);
         }
+
+        public void Collect(ICollectable item)
+        {
+            this.inventory.Collect(item);
+        }
+
+        public Inventory Inventory => this.inventory;
+
     }
 }

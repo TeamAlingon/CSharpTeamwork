@@ -1,5 +1,6 @@
 ﻿namespace CSharpGame
 {
+    using System;
     using System.Collections.Generic;
 
     using CSharpGame.Models;
@@ -130,6 +131,7 @@
             }
             
             this.mainCharacter.Move(gameTime, characterMovementParameters.ToArray());
+            
             base.Update(gameTime);
         }
 
@@ -155,9 +157,14 @@
                 layerDepth: 0f);
             foreach (var coin in coins)
             {
+                if(!coin.isCollected)
+                spriteBatch.Draw(regularCoin.imageTexture, new Rectangle(coin.X, coin.Y, 80, 80), Color.White);
                 if (regularCoin.Intersect(mainCharacter, coin, spriteBatch))
                 {
-                    spriteBatch.Draw(regularCoin.imageTexture, new Rectangle(coin.X, coin.Y, 80, 80), Color.White);
+                    
+                    this.mainCharacter.Collect(coin);
+                    this.score = this.mainCharacter.Inventory.Coins.Count;
+                    Console.WriteLine("Collected");
                 }
             }
 

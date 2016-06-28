@@ -29,12 +29,10 @@ namespace CSharpGame.Models.Collectables.Items
                 if (coinRectangle.Intersects(characterRectangle))
                 {
                     coin.isCollected = true;
+                    return true;
                 }
             }
-            if (!coin.isCollected)
-            {
-                return true;
-            }
+          
             return false;
         }
         public void InitializeList(List<RegularCoin> a)
