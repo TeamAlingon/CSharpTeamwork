@@ -132,6 +132,7 @@
             
             this.mainCharacter.Move(gameTime, characterMovementParameters.ToArray());
             
+
             base.Update(gameTime);
         }
 
@@ -145,26 +146,17 @@
                 this.background,
                 new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
                 Color.White);
-
-            spriteBatch.Draw(
-                this.mainCharacter.Texture,
-                new Rectangle(this.mainCharacter.Position.ToPoint(), new Point(100, 150)),
-                this.mainCharacter.CurrentFrame,
-            Color.White,
-                rotation: 0,
-                origin: new Vector2(),
-                effects: mainCharacter.Orientation,
-                layerDepth: 0f);
+            this.mainCharacter.Draw(spriteBatch);
+            
             foreach (var coin in coins)
             {
-                if(!coin.isCollected)
-                spriteBatch.Draw(regularCoin.imageTexture, new Rectangle(coin.X, coin.Y, 80, 80), Color.White);
-                if (regularCoin.Intersect(mainCharacter, coin, spriteBatch))
+                coin.Draw(regularCoin,spriteBatch);
+
+                if (regularCoin.Intersect(mainCharacter, coin))
                 {
                     
                     this.mainCharacter.Collect(coin);
                     this.score = this.mainCharacter.Inventory.Coins.Count;
-                    Console.WriteLine("Collected");
                 }
             }
 

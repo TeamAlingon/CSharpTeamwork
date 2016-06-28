@@ -150,5 +150,18 @@
 
         public Inventory Inventory => this.inventory;
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                this.Texture,
+                new Rectangle(this.Position.ToPoint(), new Point(100, 150)),
+                this.CurrentFrame,
+            Color.White,
+                rotation: 0,
+                origin: new Vector2(),
+                effects: this.Orientation,
+                layerDepth: 0f);
+        }
+
     }
 }

@@ -3,24 +3,30 @@ namespace CSharpGame.Models.Collectables.Items
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using System.Collections.Generic;
+
     public class RegularCoin : Item
     {
         private int x;
         private int y;
         public Texture2D imageTexture;
         private const string imageCoins = "Images/Coin";
-        //private Rectangle rectangle = new Rectangle(X, Y, 1000, 200);
-        //  public Rectangle Rectangle { get; set; }
-
-
-
+        
         public RegularCoin(int x, int y) : base(x,y)
         {
             X = x;
             Y = y;
         }
         public bool isCollected;
-        public bool Intersect(Character charater, RegularCoin coin, SpriteBatch spriteBatch)
+       
+        public string GetImage()
+        {
+            return imageCoins;
+        }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Texture2D ImageTexture2D { get; set; }
+
+        public bool Intersect(Character charater, RegularCoin coin)
         {
             Rectangle characterRectangle = new Rectangle(charater.Position.ToPoint(), new Point(125, 125));
             Rectangle coinRectangle = new Rectangle(coin.X, coin.Y, 80, 80);
@@ -32,9 +38,10 @@ namespace CSharpGame.Models.Collectables.Items
                     return true;
                 }
             }
-          
+
             return false;
         }
+
         public void InitializeList(List<RegularCoin> a)
         {
             for (int i = 0; i < 100; i++)
@@ -57,12 +64,12 @@ namespace CSharpGame.Models.Collectables.Items
                 a.Add(new RegularCoin((400 + i * 400), 380));
             }
         }
-        public string GetImage()
+
+        public void Draw(RegularCoin regularCoin,SpriteBatch spriteBatch)
         {
-            return imageCoins;
+            if (!this.isCollected)
+                spriteBatch.Draw(regularCoin.imageTexture, new Rectangle(this.X, this.Y, 80, 80), Color.White);
         }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Texture2D ImageTexture2D { get; set; }
+
     }
 }
