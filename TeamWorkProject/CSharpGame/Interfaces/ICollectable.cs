@@ -5,15 +5,21 @@ namespace CSharpGame.Interfaces
 
     public interface ICollectable
     {
+        Texture2D ImageTexture2D { get; set; }
+
+        int X { get; set; }
+
+        int Y { get; set; }
+
         void Collect(Character player);
 
-        bool isAvailable();
+        bool IsAvailable();
 
         void Update();
 
-        Texture2D ImageTexture2D { get; set; }
-        int X { get; set; }
-        int Y { get; set; }
         string GetImage();
+
+       
+
     }
 }

@@ -8,7 +8,7 @@ namespace CSharpGame.Models.Collectables.Items
     {
         private int x;
         private int y;
-        public Texture2D imageTexture;
+        private Texture2D imageTexture;
         private const string imageCoins = "Images/Coin";
         
         public RegularCoin(int x, int y) : base(x,y)
@@ -24,7 +24,12 @@ namespace CSharpGame.Models.Collectables.Items
         }
         public int X { get; set; }
         public int Y { get; set; }
-        public Texture2D ImageTexture2D { get; set; }
+
+        public Texture2D ImageTexture2D
+        {
+            get { return this.imageTexture; }
+            set { this.imageTexture = value; }
+        }
 
         public bool Intersect(Character charater, RegularCoin coin)
         {

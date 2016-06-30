@@ -5,7 +5,7 @@ namespace CSharpGame.Models.Collectables.Items
 
     public  class Item : ICollectable
     {
-        private bool canBeCollected;
+        private bool isCollected;
         private int x;
         private int y;
         private string Image;
@@ -16,27 +16,37 @@ namespace CSharpGame.Models.Collectables.Items
             this.Y = y;
         }
 
-        public int Y { get; set; }
+        public int Y
+        {
+            get { return this.y; }
+            set { this.y = value; }
+
+        }
+
+        public int X
+        {
+            get { return this.x; }
+            set { this.x = value; }
+
+        }
+
         public string GetImage()
         {
             return this.Image;
         }
 
-        public int X { get; set; }
-
-        public Item()
-        {
-            canBeCollected = true;
-        }
+        public Texture2D ImageTexture2D { get; set; }
+        
 
         public void Collect(Character player)
         {
-            canBeCollected = false;
+            isCollected = true;
         }
 
-        public  bool isAvailable()
+        
+        public  bool IsAvailable()
         {
-            if (canBeCollected)
+            if (isCollected)
             {
                 return true;
             }
@@ -48,6 +58,6 @@ namespace CSharpGame.Models.Collectables.Items
             throw new System.NotImplementedException();
         }
 
-        public Texture2D ImageTexture2D { get; set; }
+       
     }
 }

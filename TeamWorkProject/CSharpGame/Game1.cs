@@ -7,6 +7,7 @@
     using Microsoft.Xna.Framework.Input;
     using Models;
     using Models.Animations;
+    using Models.Collectables.Effects;
     using Models.Collectables.Items;
     using MonoGame.Extended;
     using MonoGame.Extended.ViewportAdapters;
@@ -20,6 +21,7 @@
         private Character mainCharacter;
         private RegularCoin regularCoin = new RegularCoin(400, 380);
         private List<RegularCoin> coins = new List<RegularCoin>();
+        private SpeedUp speedUp=new SpeedUp(100,280, 20);
         private Camera2D camera;
         private SpriteFont font;
         private int score = 0;
@@ -43,6 +45,7 @@
         {
             var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
             regularCoin.InitializeList(coins);
+            
             camera = new Camera2D(viewPortAdapter);
             base.Initialize();
         }
@@ -60,7 +63,9 @@
 
             mainCharacter = new Character(mainCharacterAnimations);
             background = Content.Load<Texture2D>("Images/MapSample");
-            regularCoin.imageTexture = Content.Load<Texture2D>(regularCoin.GetImage());
+
+            regularCoin.ImageTexture2D = Content.Load<Texture2D>(regularCoin.GetImage());
+            speedUp.ImageTexture2D = Content.Load<Texture2D>(speedUp.GetImage());
 
             font = Content.Load<SpriteFont>("Score");
 
@@ -145,10 +150,11 @@
                 new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
                 Color.White);
             this.mainCharacter.Draw(spriteBatch);
-            
+            this.speedUp.Draw(spriteBatch);
+
             foreach (var coin in coins)
             {
-                coin.Draw(regularCoin,spriteBatch);
+                coin.Draw(regularCoin, spriteBatch);
 
                 if (regularCoin.Intersect(mainCharacter, coin))
                 {
