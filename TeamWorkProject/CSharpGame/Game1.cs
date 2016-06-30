@@ -1,18 +1,16 @@
 ﻿namespace CSharpGame
 {
-    using System;
     using System.Collections.Generic;
-
-    using CSharpGame.Models;
-    using CSharpGame.Models.Animations;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Audio;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
-
+    using Models;
+    using Models.Animations;
+    using Models.Collectables.Items;
     using MonoGame.Extended;
     using MonoGame.Extended.ViewportAdapters;
+
 
     public class Game1 : Game
     {
@@ -20,8 +18,8 @@
         SpriteBatch spriteBatch;
         private Texture2D background;
         private Character mainCharacter;
-        private Models.Collectables.Items.RegularCoin regularCoin = new Models.Collectables.Items.RegularCoin(400, 380);
-        private List<Models.Collectables.Items.RegularCoin> coins = new List<Models.Collectables.Items.RegularCoin>();
+        private RegularCoin regularCoin = new RegularCoin(400, 380);
+        private List<RegularCoin> coins = new List<RegularCoin>();
         private Camera2D camera;
         private SpriteFont font;
         private int score = 0;
@@ -34,7 +32,7 @@
         SoundEffect hitEffect;
         SoundEffectInstance hitInstance;
 
-        //Character character = new Character();
+     
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -156,7 +154,7 @@
                 {
                     
                     this.mainCharacter.Collect(coin);
-                    this.score = this.mainCharacter.Inventory.Coins.Count;
+                    this.score = this.mainCharacter.Inventory.ScoreConins;
                 }
             }
 

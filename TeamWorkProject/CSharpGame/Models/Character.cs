@@ -2,10 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Security.Policy;
-    using Collectables.Items;
-    using CSharpGame.Enums;
-    using CSharpGame.Models.Animations;
+    using Enums;
+    using Animations;
     using Interfaces;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +16,7 @@
         private const float DefaultJumpVelocity = MovementSpeed * 3;
         private const float VelocityDampingSpeed = 0.3f;
         private readonly Dictionary<string, Vector2> movements;
-        private float currentJumpVelocity = 0;
+        private float currentJumpVelocity;
         private string currentAnimationKey;
         private Inventory inventory;
 
