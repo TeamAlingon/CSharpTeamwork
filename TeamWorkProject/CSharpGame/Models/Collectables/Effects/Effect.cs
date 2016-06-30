@@ -8,23 +8,35 @@ namespace CSharpGame.Models.Collectables.Effects
         private bool isCollected;
         private int timeOfEffect;
         private string image;
+        private Texture2D imageTexture;
         private int x;
         private int y;
 
-        public Effect(int x, int y, int duration)
+        public Effect(int x, int y, int duration , string image)
         {
             this.timeOfEffect = duration;
             isCollected = false;
             this.X = x;
             this.Y = y;
+            this.image = image;
         }
 
-        public Texture2D ImageTexture2D { get; set; }
+        public Texture2D ImageTexture2D
+        {
+            get { return this.imageTexture; }
+            set { this.imageTexture = value; }
+        }
+        public int X
+        {
+            get { return this.x; }
+            set { this.x = value;}
+        }
 
-        public int X { get; set; }
-
-        public int Y { get; set; }
-
+        public int Y
+        {
+            get { return this.y; }
+            set { this.y = value; }
+        }
 
         public void Collect(Character player)
         {
@@ -58,6 +70,11 @@ namespace CSharpGame.Models.Collectables.Effects
             return this.image;
         }
 
+        public bool IsCollected
+        {
+            get { return this.isCollected; }
+            protected set { this.isCollected = value; }
+        }
         public virtual void ApplyEffect(Character player)
         {
             //TODO: apply effect to player

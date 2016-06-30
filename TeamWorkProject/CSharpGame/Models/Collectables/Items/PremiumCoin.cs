@@ -2,7 +2,7 @@
 {
     public  class PremuimCoin :Item
     {
-        public PremuimCoin(int x, int y) : base(x, y)
+        public PremuimCoin(int x, int y, string image) : base(x, y, image)
         {
         }
     }
