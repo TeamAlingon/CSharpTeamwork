@@ -41,7 +41,11 @@
     <Compile Include="CollisionHandler\CollisionHandler.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Enums\CharacterState.cs" />
+    <Compile Include="EventHandlers\GameActionEventArgs.cs" />
+    <Compile Include="EventHandlers\PointerEventDataArgs.cs" />
+    <Compile Include="EventHandlers\TransformMovedEventArgs.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Input\InputManager.cs" />
     <Compile Include="Interfaces\ICollectable.cs" />
     <Compile Include="Interfaces\IEffect.cs" />
     <Compile Include="Interfaces\IInventory.cs" />

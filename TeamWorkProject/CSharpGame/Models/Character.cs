@@ -1,9 +1,11 @@
 ﻿namespace CSharpGame.Models
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using Enums;
     using Animations;
+    
+    using CSharpGame.Input;
+
     using Interfaces;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -15,15 +17,15 @@
         private const string ImageFile = "Images/maincharacter";
         private const float DefaultJumpVelocity = MovementSpeed * 3;
         private const float VelocityDampingSpeed = 0.3f;
-        private readonly Dictionary<string, Vector2> movements;
+        private readonly Dictionary<string, Vector2> movementVectors;
         private float currentJumpVelocity;
         private string currentAnimationKey;
         private Inventory inventory;
 
-        public Character(Dictionary<string, Animation> animations)
+        public Character(Dictionary<string, Animation> animations, InputManager inputManager)
         {
             this.Animations = animations;
-            this.movements = new Dictionary<string, Vector2>
+            this.movementVectors = new Dictionary<string, Vector2>
                                  {
                                      { "right", new Vector2(MovementSpeed, 0) },
                                      { "left", new Vector2(-MovementSpeed, 0) },
@@ -34,6 +36,10 @@
             this.CurrentAnimationKey = "running";
             this.Orientation = SpriteEffects.None;
             this.inventory=new Inventory();
+
+            inputManager.Jump += this.OnJump;
+            inputManager.MoveRight += this.MoveRight;
+            inputManager.MoveLeft += this.MoveLeft;
         }
 
         private string CurrentAnimationKey
@@ -63,36 +69,48 @@
 
         public Vector2 Position { get; private set; }
 
-        public Rectangle BoundingBox => this.Animations[this.CurrentAnimationKey].CurrentFrame;
-
         public Texture2D Texture => this.Animations[this.CurrentAnimationKey].SpriteSheet;
 
         public Rectangle CurrentFrame => this.Animations[this.CurrentAnimationKey].CurrentFrame;
 
-        public void Move(GameTime gameTime, params string[] movementParams)
-        {
-            foreach (var movement in movementParams)
-            {
-                if ((movement == "right" || movement == "left") && this.State != CharacterState.Jumping)
-                {
-                    this.State = movement == "right" ? CharacterState.RunningRight : CharacterState.RunningLeft;
-                    this.Orientation = movement == "right" ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-                }
-                if (movement == "jump" && this.State != CharacterState.Jumping && this.IsGrounded)
-                {
-                    this.State = CharacterState.Jumping;
-                    this.currentJumpVelocity = DefaultJumpVelocity;
-                }
+        public Rectangle BoundingBox => this.CurrentFrame;
 
-                if (this.movements.ContainsKey(movement))
-                {
-                    this.Position += this.movements[movement];
-                }
+        private void MoveRight()
+        {
+            if (this.State != CharacterState.Jumping)
+            {
+                this.State =  CharacterState.RunningRight;
+                this.Orientation = SpriteEffects.None;
             }
 
+            this.Position += this.movementVectors["right"];
+        }
+
+        private void MoveLeft()
+        {
+            if (this.State != CharacterState.Jumping)
+            {
+                this.State = CharacterState.RunningLeft;
+                this.Orientation = SpriteEffects.FlipHorizontally;
+            }
+
+            this.Position += this.movementVectors["left"];
+        }
+
+        private void OnJump()
+        {
+            if (this.State != CharacterState.Jumping && this.IsGrounded)
+            {
+                this.State = CharacterState.Jumping;
+                this.currentJumpVelocity = DefaultJumpVelocity;
+            }
+        }
+
+        public void Update(GameTime gameTime)
+        {
             if (!this.IsGrounded)
             {
-                this.Position += this.movements["down"];
+                this.Position += this.movementVectors["down"];
             }
 
             if (this.State == CharacterState.Jumping)
@@ -100,15 +118,16 @@
                 this.HandleJumping();
             }
 
-            Debug.WriteLine(this.currentJumpVelocity);
-            Debug.WriteLine(this.State);
+            //Debug.WriteLine(this.currentJumpVelocity);
+            //Debug.WriteLine(this.State);
 
             this.UpdateCurrentAnimation(gameTime);
         }
 
         private void HandleJumping()
         {
-            this.Position += this.movements["up"] * (this.currentJumpVelocity / 3);
+            var upVector = new Vector2(0, -MovementSpeed);
+            this.Position += upVector * (this.currentJumpVelocity / 3);
             this.currentJumpVelocity -= VelocityDampingSpeed;
 
             if (this.IsGrounded)

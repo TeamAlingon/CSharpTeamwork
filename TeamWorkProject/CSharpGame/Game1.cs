@@ -1,6 +1,9 @@
 ﻿namespace CSharpGame
 {
     using System.Collections.Generic;
+
+    using CSharpGame.Input;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Audio;
     using Microsoft.Xna.Framework.Graphics;
@@ -12,11 +15,12 @@
     using MonoGame.Extended;
     using MonoGame.Extended.ViewportAdapters;
 
-
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        private InputManager input;
         private Texture2D background;
         private Character mainCharacter;
         private RegularCoin regularCoin = new RegularCoin(400, 380);
@@ -47,6 +51,7 @@
             regularCoin.InitializeList(coins);
             
             camera = new Camera2D(viewPortAdapter);
+            this.input = new InputManager(this, this.camera);
             base.Initialize();
         }
 
@@ -61,7 +66,7 @@
                 mainCharacterTexture,
                 mainCharacterSpriteData);
 
-            mainCharacter = new Character(mainCharacterAnimations);
+            mainCharacter = new Character(mainCharacterAnimations, this.input);
             background = Content.Load<Texture2D>("Images/MapSample");
 
             regularCoin.ImageTexture2D = Content.Load<Texture2D>(regularCoin.GetImage());
@@ -100,24 +105,9 @@
         {
             this.camera.LookAt(this.mainCharacter.Position);
 
-            var characterMovementParameters = new List<string>();
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                characterMovementParameters.Add("right");
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                characterMovementParameters.Add("left");
-            }
-
             if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 jumpInstance.Play();
-                characterMovementParameters.Add("jump");
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
             {
@@ -133,7 +123,7 @@
                 walkInstance.Stop();
             }
             
-            this.mainCharacter.Move(gameTime, characterMovementParameters.ToArray());
+            this.mainCharacter.Update(gameTime);
             
 
             base.Update(gameTime);
