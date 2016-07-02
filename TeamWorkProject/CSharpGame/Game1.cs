@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using CSharpGame.Input;
-
+    using Interfaces;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Audio;
     using Microsoft.Xna.Framework.Graphics;
@@ -24,11 +24,11 @@
         private Texture2D background;
         private Character mainCharacter;
         private RegularCoin regularCoin = new RegularCoin(400, 380);
-        private List<RegularCoin> coins = new List<RegularCoin>();
+        private List<ICollectable> coins = new List<ICollectable>();
         private SpeedUp speedUp=new SpeedUp(100,280, 20);
         private Camera2D camera;
         private SpriteFont font;
-        private int score = 0;
+        private CollisionHandler.CollisionHandler collisionHandler;
 
         SoundEffect walkEffect;
         SoundEffectInstance walkInstance;
@@ -49,9 +49,10 @@
         {
             var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
             regularCoin.InitializeList(coins);
-            
+            coins.Add(this.speedUp);
             camera = new Camera2D(viewPortAdapter);
             this.input = new InputManager(this, this.camera);
+            this.collisionHandler = new CollisionHandler.CollisionHandler();
             base.Initialize();
         }
 
@@ -66,21 +67,21 @@
                 mainCharacterTexture,
                 mainCharacterSpriteData);
 
-            mainCharacter = new Character(mainCharacterAnimations, this.input);
-            background = Content.Load<Texture2D>("Images/MapSample");
+            this.mainCharacter = new Character(mainCharacterAnimations, this.input);
+            this.background = this.Content.Load<Texture2D>("Images/MapSample");
 
-            regularCoin.ImageTexture2D = Content.Load<Texture2D>(regularCoin.GetImage());
-            speedUp.ImageTexture2D = Content.Load<Texture2D>(speedUp.GetImage());
+            this.regularCoin.ImageTexture2D = Content.Load<Texture2D>(this.regularCoin.GetImage());
+            this.speedUp.ImageTexture2D = this.Content.Load<Texture2D>(this.speedUp.GetImage());
 
-            font = Content.Load<SpriteFont>("Score");
+            this.font = this.Content.Load<SpriteFont>("Score");
 
-            walkEffect = Content.Load<SoundEffect>("Soundtrack/footstep_cut");
-            walkInstance = walkEffect.CreateInstance();
-            walkInstance.IsLooped = true;
+            this.walkEffect = this.Content.Load<SoundEffect>("Soundtrack/footstep_cut");
+            this.walkInstance = this.walkEffect.CreateInstance();
+            this.walkInstance.IsLooped = true;
 
-            jumpEffect = Content.Load<SoundEffect>("Soundtrack/jump");
-            jumpInstance = jumpEffect.CreateInstance();
-            jumpInstance.IsLooped = false;
+            this.jumpEffect = Content.Load<SoundEffect>("Soundtrack/jump");
+            this.jumpInstance = jumpEffect.CreateInstance();
+            this.jumpInstance.IsLooped = false;
 
             //Hit effect for breaking or knocking enemies
             /*
@@ -89,7 +90,7 @@
             hitInstance.IsLooped = false;
             */
 
-            levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
+            this.levelTheme = Content.Load<SoundEffect>("Soundtrack/level");
             SoundEffectInstance levelThemeInstance = levelTheme.CreateInstance();
             levelThemeInstance.IsLooped = true;
             levelThemeInstance.Volume = 0.1f;
@@ -124,39 +125,39 @@
             }
             
             this.mainCharacter.Update(gameTime);
-            
+            foreach (var collectable in this.coins)
+            {
+             if  (this.collisionHandler.Intersect(this.mainCharacter, collectable))
+                {
 
+                    this.mainCharacter.Collect(collectable);
+                }
+            }
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            Vector2 origin = new Vector2(2, 3);
+           // Vector2 origin = new Vector2(2, 3);
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
             spriteBatch.Draw(
                 this.background,
                 new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
                 Color.White);
-            this.mainCharacter.Draw(spriteBatch);
-            this.speedUp.Draw(spriteBatch);
+            this.mainCharacter.Draw(this.spriteBatch);
+            this.speedUp.Draw(this.spriteBatch);
 
-            foreach (var coin in coins)
+            foreach (var coin in this.coins)
             {
                 coin.Draw(regularCoin, spriteBatch);
 
-                if (regularCoin.Intersect(mainCharacter, coin))
-                {
-                    
-                    this.mainCharacter.Collect(coin);
-                    this.score = this.mainCharacter.Inventory.ScoreConins;
-                }
             }
 
             spriteBatch.DrawString(
                 font,
-                $"SCORE: {score}",
+                $"SCORE: {this.mainCharacter.Inventory.ScoreCoins}",
                 new Vector2(-390 + this.mainCharacter.Position.X, 120),
                 Color.Silver);
             spriteBatch.End();

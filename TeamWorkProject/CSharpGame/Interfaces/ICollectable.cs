@@ -19,7 +19,13 @@ namespace CSharpGame.Interfaces
 
         string GetImage();
 
-       
+        bool IsCollected { get; set; }
+
+        void Draw(ICollectable collectable, SpriteBatch spriteBatch);
+
+        void Draw(SpriteBatch spriteBatch);
+
+
 
     }
 }

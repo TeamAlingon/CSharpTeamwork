@@ -4,7 +4,7 @@
     using Enums;
     using Animations;
     
-    using CSharpGame.Input;
+    using Input;
 
     using Interfaces;
     using Microsoft.Xna.Framework;

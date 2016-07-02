@@ -1,6 +1,7 @@
 namespace CSharpGame.Models.Collectables.Items
 {
     using Interfaces;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     public  class Item : ICollectable
@@ -50,6 +51,7 @@ namespace CSharpGame.Models.Collectables.Items
             {
                 return true;
             }
+
             return false;
         }
 
@@ -64,12 +66,21 @@ namespace CSharpGame.Models.Collectables.Items
             throw new System.NotImplementedException();
         }
 
-        protected bool IsCollected
+        public bool IsCollected
         {
             get { return this.isCollected; }
             set { this.isCollected = value; }
         }
 
-       
+        public virtual void Draw(ICollectable collectable, SpriteBatch spriteBatch)
+        {
+            if (!this.IsAvailable())
+                spriteBatch.Draw(collectable.ImageTexture2D, new Rectangle(this.X, this.Y, 80, 80), Color.White);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            //
+        }
     }
 }

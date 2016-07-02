@@ -1,6 +1,7 @@
 namespace CSharpGame.Models.Collectables.Effects
 {
     using Interfaces;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     public class Effect : IEffect
@@ -73,8 +74,20 @@ namespace CSharpGame.Models.Collectables.Effects
         public bool IsCollected
         {
             get { return this.isCollected; }
-            protected set { this.isCollected = value; }
+            set { this.isCollected = value; }
         }
+
+        public void Draw(ICollectable collectable, SpriteBatch spriteBatch)
+        {
+            if (!this.IsAvailable())
+                spriteBatch.Draw(this.ImageTexture2D, new Rectangle(this.X, this.Y, 80, 80), Color.White);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+           
+        }
+
         public virtual void ApplyEffect(Character player)
         {
             //TODO: apply effect to player

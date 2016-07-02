@@ -39,7 +39,7 @@
             }
         }
 
-        public int ScoreConins
+        public int ScoreCoins
         {
             get { return this.scoreCoins; }
 

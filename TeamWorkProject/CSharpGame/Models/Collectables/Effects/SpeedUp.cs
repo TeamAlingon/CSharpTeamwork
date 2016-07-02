@@ -16,11 +16,7 @@ namespace CSharpGame.Models.Collectables.Effects
        public string ImageSpeedUp => imageSpeedUp;
 
     
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            if (!base.IsAvailable())
-                spriteBatch.Draw(this.ImageTexture2D, new Rectangle(this.X, this.Y, 80, 80), Color.White);
-        }
+ 
        
     }
 }
