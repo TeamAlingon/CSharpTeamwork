@@ -57,6 +57,7 @@
     <Compile Include="Models\Collectables\Items\Item.cs" />
     <Compile Include="Models\Collectables\Items\PremiumCoin.cs" />
     <Compile Include="Models\Collectables\Items\RegularCoin.cs" />
+    <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

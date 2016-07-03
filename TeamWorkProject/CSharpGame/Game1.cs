@@ -14,7 +14,7 @@
     using Models.Collectables.Items;
     using MonoGame.Extended;
     using MonoGame.Extended.ViewportAdapters;
-
+    using System.Threading.Tasks;
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -25,6 +25,8 @@
         private Character mainCharacter;
         private RegularCoin regularCoin = new RegularCoin(400, 380);
         private List<ICollectable> coins = new List<ICollectable>();
+        private Enemy enemy = new Enemy();
+        private List<Enemy> enemys = new List<Enemy>();
         private SpeedUp speedUp=new SpeedUp(100,280, 20);
         private Camera2D camera;
         private SpriteFont font;
@@ -49,6 +51,7 @@
         {
             var viewPortAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
             regularCoin.InitializeList(coins);
+            Enemy.InitializeEnemies(enemys);
             coins.Add(this.speedUp);
             camera = new Camera2D(viewPortAdapter);
             this.input = new InputManager(this, this.camera);
@@ -62,10 +65,11 @@
 
             var mainCharacterTexture = Content.Load<Texture2D>("Images/maincharacter");
             var mainCharacterSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
-
             var mainCharacterAnimations = AnimationParser.ReadSpriteSheetData(
                 mainCharacterTexture,
                 mainCharacterSpriteData);
+
+            this.enemy.ImageTexture2D = Content.Load<Texture2D>(this.enemy.GetImage());
 
             this.mainCharacter = new Character(mainCharacterAnimations, this.input);
             this.background = this.Content.Load<Texture2D>("Images/MapSample");
@@ -124,6 +128,10 @@
                 walkInstance.Stop();
             }
             
+           foreach (var item in enemys)
+           {
+                item.Update(gameTime);
+           }
             this.mainCharacter.Update(gameTime);
             foreach (var collectable in this.coins)
             {
@@ -148,7 +156,10 @@
                 Color.White);
             this.mainCharacter.Draw(this.spriteBatch);
             this.speedUp.Draw(this.spriteBatch);
-
+            foreach (var item in this.enemys)
+            {
+                item.Draw(enemy,this.spriteBatch);
+            }
             foreach (var coin in this.coins)
             {
                 coin.Draw(regularCoin, spriteBatch);
