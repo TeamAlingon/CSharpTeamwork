@@ -7,7 +7,6 @@
     public class Transform2D
     {
         private Vector2 position;
-
         private Transform2D parent;
         private Transform2D transform;
 
@@ -84,7 +83,7 @@
 
         private void UpdateSizePositionWithMovement(Transform2D sender, TransformMovedEventArgs args)
         {
-            this.Size = new Rectangle((int)this.Position.X, (int)this.Position.Y, this.Size.Width, this.Size.Height);
+            this.Size = new Rectangle(this.position.ToPoint(), new Point(this.Size.Width, this.Size.Height));
         }
     }
 }

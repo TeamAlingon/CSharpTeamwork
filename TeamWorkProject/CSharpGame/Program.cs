@@ -16,7 +16,6 @@ namespace CSharpGame
         {
             using (var game = new Game1())
                 game.Run();
-            var a = 0;
         }
     }
 #endif

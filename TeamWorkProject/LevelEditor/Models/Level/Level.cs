@@ -10,7 +10,7 @@
     public class Level : GameObject, IDrawableGameObject
     {
         public List<TexturedGameObject> DrawableLevelObjects { get; }
-        
+
         public List<GameObject> AllLevelObjects { get; }
 
         public Level()
@@ -19,19 +19,14 @@
             this.AllLevelObjects = new List<GameObject>();
         }
 
-        public void AddGameObject(IGameObject gameObject)
+        public void AddGameObject(GameObject gameObject)
         {
-            var drawableObject = gameObject as TexturedGameObject;
-            if (drawableObject != null)
-            {
-                this.DrawableLevelObjects.Add(drawableObject);
-            }
+            this.AllLevelObjects.Add(gameObject);
+        }
 
-            var castedGameObject = gameObject as GameObject;
-            if (castedGameObject != null)
-            {
-                this.AllLevelObjects.Add(castedGameObject);
-            }
+        public void AddGameObject(TexturedGameObject gameObject)
+        {
+            this.DrawableLevelObjects.Add(gameObject);
         }
 
         public override void Update(GameTime gameTime)

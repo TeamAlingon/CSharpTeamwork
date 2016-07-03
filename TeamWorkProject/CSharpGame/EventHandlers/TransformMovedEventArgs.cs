@@ -2,9 +2,9 @@
 {
     using System;
 
-    using LevelEditor.Models;
-
     using Microsoft.Xna.Framework;
+
+    using Transform2D = CSharpGame.Models.Foundations.Transform2D;
 
     public delegate void MovementEventHandler(Transform2D sender, TransformMovedEventArgs args);
 

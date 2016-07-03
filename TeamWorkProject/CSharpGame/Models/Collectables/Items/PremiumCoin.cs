@@ -1,8 +1,11 @@
 ﻿namespace CSharpGame.Models.Collectables.Items
 {
-    public  class PremuimCoin :Item
+    using CSharpGame.Data;
+
+    public  class PremuimCoin : Item
     {
-        public PremuimCoin(int x, int y, string image) : base(x, y, image)
+        public PremuimCoin(int x, int y, string image, GameRepository gameRepository) 
+            : base(x, y, image, gameRepository)
         {
         }
     }

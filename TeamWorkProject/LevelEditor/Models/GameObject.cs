@@ -6,15 +6,12 @@
 
     using Microsoft.Xna.Framework;
 
-    [XmlType("GameObject")]
     public abstract class GameObject : IGameObject
     {
-        [XmlElement("Transform")]
         public Transform2D Transform { get; set; }
 
         protected GameObject()
         {
-            
         }
 
         protected GameObject(Transform2D transform)

@@ -1,7 +1,5 @@
 ﻿namespace CSharpGame.Input
 {
-    using System;
-    using System.Diagnostics;
     using System.Linq;
 
     using CSharpGame.EventHandlers;
@@ -27,6 +25,8 @@
 
         public event GameActionEventHandler Attack;
 
+        private Camera2D currentCamera;
+
         public Keys[] MoveRightKeys { get; set; }
 
         public Keys[] MoveLeftKeys { get; set; }
@@ -34,9 +34,6 @@
         public Keys[] JumpKeys { get; set; }
 
         public Keys[] ExitKeys { get; set; }
-
-
-        private Camera2D currentCamera;
 
         public InputManager(Game game, Camera2D camera)
             : base(game)

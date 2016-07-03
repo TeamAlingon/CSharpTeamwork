@@ -1,75 +1,44 @@
 namespace CSharpGame.Models.Collectables.Items
 {
+    using CSharpGame.Data;
+    using CSharpGame.Models.Foundations;
+
     using Interfaces;
+
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public  class Item : ICollectable
+    public  class Item : TexturedGameObject, ICollectable
     {
-        private bool isCollected;
-        private int x;
-        private int y;
-        private string image;
-        private Texture2D imageTexture;
+        protected bool isCollected;
 
-        public Item(int x, int y, string image)
+        public Item(int x, int y, string image, GameRepository gameRepository)
+            : base(new Transform2D(new Vector2(x, y), Rectangle.Empty), image, gameRepository)
         {
-            this.X = x;
-            this.Y = y;
-            this.image = image;
+            this.isCollected = false;
         }
-
-        public int Y
-        {
-            get { return this.y; }
-            set { this.y = value; }
-
-        }
-
-        public int X
-        {
-            get { return this.x; }
-            set { this.x = value; }
-
-        }
-
-        public string GetImage()
-        {
-            return this.image;
-        }
-
-      
-        public void Collect(Character player)
-        {
-            isCollected = true;
-        }
-
-        
-        public  bool IsAvailable()
-        {
-            if (IsCollected)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public Texture2D ImageTexture2D
-        {
-            get { return this.imageTexture; }
-            set { this.imageTexture = value; }
-        }
-
-        public void Update()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected bool IsCollected
+        public bool IsCollected
         {
             get { return this.isCollected; }
             set { this.isCollected = value; }
         }
 
-       
+        public string GetImage()
+        {
+            return this.TextureFilePath;
+        }
+
+        public void Collect(Character player)
+        {
+            this.isCollected = true;
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            if (!this.isCollected)
+            {
+                spriteBatch.Draw(this.Texture, this.Transform.BoundingBox, Color.White);
+            }
+        }
     }
 }

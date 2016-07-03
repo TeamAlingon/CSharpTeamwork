@@ -47,7 +47,9 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Interfaces\ICollectable.cs" />
+    <Compile Include="Interfaces\IDrawableGameObject.cs" />
     <Compile Include="Interfaces\IEffect.cs" />
+    <Compile Include="Interfaces\IGameObject.cs" />
     <Compile Include="Interfaces\IInventory.cs" />
     <Compile Include="Models\Animations\Animation.cs" />
     <Compile Include="Models\Animations\AnimationParser.cs" />
@@ -57,7 +59,12 @@
     <Compile Include="Models\Collectables\Items\Item.cs" />
     <Compile Include="Models\Collectables\Items\PremiumCoin.cs" />
     <Compile Include="Models\Collectables\Items\RegularCoin.cs" />
+    <Compile Include="Models\Foundations\GameObject.cs" />
+    <Compile Include="Models\Foundations\TexturedGameObject.cs" />
+    <Compile Include="Models\Foundations\Transform2D.cs" />
+    <Compile Include="Data\GameRepository.cs" />
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\Level.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScoreSystem\HighScores.cs" />
