@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CSharpGame.Models
 {
     using Animations;
-    class Enemy
+    public class Enemy
     {
         private const int enemySpeed = 2;
         private const string imageEnemys = "Images/enemies";
@@ -12,10 +12,10 @@ namespace CSharpGame.Models
         private int x;
         private int y;
         public Vector2 Position { get; private set; }
-        private Point enemyFrameSize = new Point(127, 229);
-        private Point enemySheetSize = new Point(8, 2);
+        private Point enemyFrameSize = new Point(133, 229);
+        private Point enemySheetSize = new Point(7, 2);
         private Point enemyCurrentFrame = new Point(0, 0);
-        private float timeBetweenFrames = 0.1f;
+        private float timeBetweenFrames = 0.4f;
         private float timeSinceLastFrame;
         public Enemy(int x, int y)
         {
@@ -43,31 +43,40 @@ namespace CSharpGame.Models
         public static void InitializeEnemies(List<Enemy> a)
         {
             a.Add(new Enemy(1020, 280));
+            a.Add(new Enemy(1500, 280));
         }
         public virtual void Draw(Enemy enemy, SpriteBatch spriteBatch)
         {
-
-            spriteBatch.Draw(enemy.ImageTexture2D, new Vector2(this.X, this.Y), new Rectangle(enemyCurrentFrame.X * enemyFrameSize.X,
-              enemyFrameSize.Y, enemyFrameSize.X, enemyFrameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                if (this.flag)
+                {
+                    spriteBatch.Draw(enemy.ImageTexture2D, new Vector2(this.X, this.Y), new Rectangle(enemyCurrentFrame.X * enemyFrameSize.X,
+                      enemyFrameSize.Y, enemyFrameSize.X, enemyFrameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                }
+                else
+                {
+                    spriteBatch.Draw(enemy.ImageTexture2D, new Vector2(this.X, this.Y), new Rectangle(enemyCurrentFrame.X * enemyFrameSize.X,
+                      enemyFrameSize.Y, enemyFrameSize.X, enemyFrameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                }
+            
 
 
         }
-        private static bool flag;
-        static Enemy()
+        private bool flag = true;
+        
+        public void Update(GameTime gametime,Enemy enemy,Character character)
         {
-            flag = false;
-        }
-        public void Update(GameTime gametime)
-        {
-            if (this.X == 1900)
+            if (CollisionHandler.CollisionHandler.EnemyColide(character,enemy))
             {
-                flag = true;
+                if(this.flag)
+                {
+                    this.flag = false;
+                }
+                else
+                {
+                    this.flag = true;
+                }
             }
-            if (this.X == 1020)
-            {
-                flag = false;
-            }
-            if (flag)
+            if (this.flag)
             {
                 this.X -= enemySpeed;
             }

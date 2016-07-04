@@ -130,7 +130,14 @@
             
            foreach (var item in enemys)
            {
-                item.Update(gameTime);
+                try
+                {
+                    item.Update(gameTime, item, mainCharacter);
+                }
+                catch(System.Exception)
+                {
+                    Exit();
+                }
            }
             this.mainCharacter.Update(gameTime);
             foreach (var collectable in this.coins)
