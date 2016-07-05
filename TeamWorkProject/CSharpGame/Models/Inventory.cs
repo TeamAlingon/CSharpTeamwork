@@ -1,13 +1,12 @@
 ﻿namespace CSharpGame.Models
 {
-    using System.Collections.Generic;
     using Collectables.Effects;
     using Collectables.Items;
     using Interfaces;
 
     public class Inventory
     {
-        private IList<ICollectable> powerUps;
+        private bool speedUP;
         private int scoreCoins;
 
         public Inventory()
@@ -17,14 +16,14 @@
 
         public void InitInventory()
         {
-            this.powerUps = new List<ICollectable>();
+           
         }
 
-        public IList<ICollectable> PowerUps
+        public bool SpeedUp
         {
 
-            get { return this.powerUps; }
-            set { this.powerUps = value; }
+            get { return this.speedUP; }
+            set { this.speedUP = value; }
         }
 
         public void Collect(ICollectable item)
@@ -35,7 +34,7 @@
             }
             if (item is SpeedUp)
             {
-                this.PowerUps.Add(item);
+                this.SpeedUp = true;
             }
         }
 

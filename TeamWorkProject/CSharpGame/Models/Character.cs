@@ -15,15 +15,17 @@
         private const float MovementSpeed = 5f;
         private const float GroundPosition = 345f;
         private const string ImageFile = "Images/maincharacter";
-        private const float DefaultJumpVelocity = MovementSpeed * 3;
+        private float DefaultJumpVelocity = MovementSpeed * 3;
         private const float VelocityDampingSpeed = 0.3f;
-        private readonly Dictionary<string, Vector2> movementVectors;
+        private  Dictionary<string, Vector2> movementVectors;
         private float currentJumpVelocity;
         private string currentAnimationKey;
+        private float currentRunVelocity;
         private Inventory inventory;
 
         public Character(Dictionary<string, Animation> animations, InputManager inputManager)
         {
+            this.currentRunVelocity = MovementSpeed;
             this.Animations = animations;
             this.movementVectors = new Dictionary<string, Vector2>
                                  {
@@ -102,7 +104,7 @@
             if (this.State != CharacterState.Jumping && this.IsGrounded)
             {
                 this.State = CharacterState.Jumping;
-                this.currentJumpVelocity = DefaultJumpVelocity;
+                this.currentJumpVelocity = this.DefaultJumpVelocity;
             }
         }
 
@@ -118,6 +120,19 @@
                 this.HandleJumping();
             }
 
+            
+
+            if (this.inventory.SpeedUp)
+            {
+                this.currentRunVelocity +=0.2f;
+                this.movementVectors = new Dictionary<string, Vector2>
+                                 {
+                                     { "right", new Vector2(currentRunVelocity, 0) },
+                                     { "left", new Vector2(-currentRunVelocity, 0) },
+                                     { "up", new Vector2(0, -currentRunVelocity) },
+                                     { "down", new Vector2(0, currentRunVelocity) }
+                                 };
+            }
             //Debug.WriteLine(this.currentJumpVelocity);
             //Debug.WriteLine(this.State);
 

@@ -16,7 +16,7 @@ namespace CSharpGame.Models.Collectables.Effects
         public Effect(int x, int y, int duration , string image)
         {
             this.timeOfEffect = duration;
-            isCollected = false;
+            this.isCollected = false;
             this.X = x;
             this.Y = y;
             this.image = image;
@@ -41,12 +41,12 @@ namespace CSharpGame.Models.Collectables.Effects
 
         public void Collect(Character player)
         {
-            isCollected = false;
+            this.isCollected = false;
         }
         
         public bool IsAvailable()
         {
-            if (isCollected)
+            if (this.isCollected)
             {
                 return true;
             }
@@ -56,13 +56,15 @@ namespace CSharpGame.Models.Collectables.Effects
 
         public void Update()
         {
-            if (timeOfEffect <= 0)
+
+            
+            if (this.timeOfEffect <= 0)
             {
                 //TODO: if duration == 0 stop effect and bring back default state
             }
             else
             {
-                timeOfEffect -= 1;
+                this.timeOfEffect -= 1;
             }
         }
        
