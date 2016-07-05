@@ -27,9 +27,10 @@
         private List<ICollectable> coins = new List<ICollectable>();
         private Enemy enemy = new Enemy();
         private List<Enemy> enemys = new List<Enemy>();
-        private SpeedUp speedUp=new SpeedUp(100,280, 20);
+        private SpeedUp speedUp = new SpeedUp(100, 280, 20);
         private Camera2D camera;
         private SpriteFont font;
+        private SpriteFont fontGameOver;
         private CollisionHandler.CollisionHandler collisionHandler;
 
         SoundEffect walkEffect;
@@ -40,7 +41,14 @@
         SoundEffect hitEffect;
         SoundEffectInstance hitInstance;
 
-     
+        enum GameState
+        {
+            MainMenu,
+            Gameplay,
+            EndOfGame,
+        }
+        GameState stateOfGame;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -57,6 +65,7 @@
             this.input = new InputManager(this, this.camera);
             this.collisionHandler = new CollisionHandler.CollisionHandler();
             base.Initialize();
+            stateOfGame = GameState.Gameplay;
         }
 
         protected override void LoadContent()
@@ -78,6 +87,7 @@
             this.speedUp.ImageTexture2D = this.Content.Load<Texture2D>(this.speedUp.GetImage());
 
             this.font = this.Content.Load<SpriteFont>("Score");
+            this.fontGameOver = this.Content.Load<SpriteFont>("Fonts/game_over");
 
             this.walkEffect = this.Content.Load<SoundEffect>("Soundtrack/footstep_cut");
             this.walkInstance = this.walkEffect.CreateInstance();
@@ -108,78 +118,105 @@
 
         protected override void Update(GameTime gameTime)
         {
-            this.camera.LookAt(this.mainCharacter.Position);
+            switch (stateOfGame)
+            {
+                case GameState.MainMenu:
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                jumpInstance.Play();
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                jumpInstance.Stop();
-            }
+                    break;
+                case GameState.Gameplay:
+                    base.Update(gameTime);
+                    this.camera.LookAt(this.mainCharacter.Position);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                walkInstance.Play();
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
-            {
-                walkInstance.Stop();
-            }
-            
-           foreach (var item in enemys)
-           {
-                try
-                {
-                    item.Update(gameTime, item, mainCharacter);
-                }
-                catch(System.Exception)
-                {
-                    Exit();
-                }
-           }
-            this.mainCharacter.Update(gameTime);
-            foreach (var collectable in this.coins)
-            {
-             if  (this.collisionHandler.Intersect(this.mainCharacter, collectable))
-                {
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
+                    {
+                        jumpInstance.Play();
+                    }
+                    else if (Keyboard.GetState().IsKeyUp(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W))
+                    {
+                        jumpInstance.Stop();
+                    }
 
-                    this.mainCharacter.Collect(collectable);
-                }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right))
+                    {
+                        walkInstance.Play();
+                    }
+                    else if (Keyboard.GetState().IsKeyUp(Keys.Right) && Keyboard.GetState().IsKeyUp(Keys.Left))
+                    {
+                        walkInstance.Stop();
+                    }
+
+                    foreach (var item in enemys)
+                    {
+                        try
+                        {
+                            item.Update(gameTime, item, mainCharacter);
+                        }
+                        catch (System.Exception)
+                        {
+                            stateOfGame = GameState.EndOfGame;
+                        }
+                    }
+                    this.mainCharacter.Update(gameTime);
+                    foreach (var collectable in this.coins)
+                    {
+                        if (this.collisionHandler.Intersect(this.mainCharacter, collectable))
+                        {
+
+                            this.mainCharacter.Collect(collectable);
+                        }
+                    }
+                    base.Update(gameTime);
+                    break;
+                case GameState.EndOfGame:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                        Exit();
+                    }
+                    break;
             }
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-           // Vector2 origin = new Vector2(2, 3);
-            var transformMatrix = camera.GetViewMatrix();
-            spriteBatch.Begin(transformMatrix: transformMatrix);
-            spriteBatch.Draw(
-                this.background,
-                new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
-                Color.White);
-            this.mainCharacter.Draw(this.spriteBatch);
-            this.speedUp.Draw(this.spriteBatch);
-            foreach (var item in this.enemys)
+            switch (stateOfGame)
             {
-                item.Draw(enemy,this.spriteBatch);
-            }
-            foreach (var coin in this.coins)
-            {
-                coin.Draw(regularCoin, spriteBatch);
+                case GameState.MainMenu:
 
-            }
+                    break;
+                case GameState.Gameplay:
+                    GraphicsDevice.Clear(Color.Black);
+                    // Vector2 origin = new Vector2(2, 3);
+                    var transformMatrix = camera.GetViewMatrix();
+                    spriteBatch.Begin(transformMatrix: transformMatrix);
+                    spriteBatch.Draw(
+                        this.background,
+                        new Rectangle(-500, -330, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
+                        Color.White);
+                    this.mainCharacter.Draw(this.spriteBatch);
+                    this.speedUp.Draw(this.spriteBatch);
+                    foreach (var item in this.enemys)
+                    {
+                        item.Draw(enemy, this.spriteBatch);
+                    }
+                    foreach (var coin in this.coins)
+                    {
+                        coin.Draw(regularCoin, spriteBatch);
+                    }
 
-            spriteBatch.DrawString(
-                font,
-                $"SCORE: {this.mainCharacter.Inventory.ScoreCoins}",
-                new Vector2(-390 + this.mainCharacter.Position.X, 120),
-                Color.Silver);
-            spriteBatch.End();
-            base.Draw(gameTime);
+                    spriteBatch.DrawString(
+                        font,
+                        $"SCORE: {this.mainCharacter.Inventory.ScoreCoins}",
+                        new Vector2(this.mainCharacter.Position.X - 390, 120),
+                        Color.Silver);
+                    spriteBatch.End();
+                    base.Draw(gameTime);
+                    break;
+                case GameState.EndOfGame:
+                    spriteBatch.Begin();
+                    spriteBatch.DrawString(fontGameOver, $"GAME OVER", new Vector2(210, 180), Color.DarkRed);
+                    spriteBatch.End();
+                    break;
+            }
         }
     }
 }
