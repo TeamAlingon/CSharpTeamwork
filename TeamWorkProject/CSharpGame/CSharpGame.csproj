@@ -84,6 +84,7 @@
     <Content Include="Content\Images\MainChar.png" />
     <Content Include="Content\Images\MapSample.png" />
     <Content Include="Icon.ico" />
+    <Content Include="Content\Fonts\*.*" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

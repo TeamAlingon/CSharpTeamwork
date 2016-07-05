@@ -1012,3 +1012,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/SpeedUp.jpg
 
+#begin Fonts/game_over.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/game_over.spritefont
+
