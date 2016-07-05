@@ -96,7 +96,7 @@
 
         }
 
-        public Transform2D(Vector2 position, Rectangle boundingBox, float scale = 1.0f, float rotation = 1.0f, Transform2D parent = null)
+        public Transform2D(Vector2 position, Rectangle boundingBox, float scale = 1.0f, float rotation = 0f, Transform2D parent = null)
         {
             this.Position = position;
             this.BoundingBox = boundingBox;
@@ -107,7 +107,7 @@
             this.PositionChanged += this.UpdateSizePositionWithMovement;
         }
 
-        protected Rectangle ScaleIfNeeded(Rectangle inputRectangle)
+        private Rectangle ScaleIfNeeded(Rectangle inputRectangle)
         {
             Rectangle result = inputRectangle;
             if (this.Scale > 1)

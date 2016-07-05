@@ -13,9 +13,6 @@
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
-    using MonoGame.Extended;
-    using MonoGame.Extended.ViewportAdapters;
-
     public class GameRepository : DrawableGameComponent
     {
         public readonly Level Level;
@@ -67,9 +64,7 @@
 
         private void InitializeLevel()
         {
-            var viewPortAdapter = new BoxingViewportAdapter(this.Game.Window, this.Game.GraphicsDevice, 800, 480);
-
-            Camera2D camera = new Camera2D(viewPortAdapter);
+            Camera2D camera = new Camera2D(this, this.Game.GraphicsDevice.Viewport);
             this.Camera = camera;
 
             var background = new TexturedGameObject(this, "Images/MapSample");

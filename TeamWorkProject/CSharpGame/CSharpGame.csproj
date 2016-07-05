@@ -53,6 +53,7 @@
     <Compile Include="Interfaces\IInventory.cs" />
     <Compile Include="Models\Animations\Animation.cs" />
     <Compile Include="Models\Animations\AnimationParser.cs" />
+    <Compile Include="Models\Camera2D.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\Collectables\Effects\Effect.cs" />
     <Compile Include="Models\Collectables\Effects\SpeedUp.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Models\Collectables\Items\PremiumCoin.cs" />
     <Compile Include="Models\Collectables\Items\RegularCoin.cs" />
     <Compile Include="Models\Foundations\GameObject.cs" />
+    <Compile Include="Models\Foundations\SpriteGameObject.cs" />
     <Compile Include="Models\Foundations\TexturedGameObject.cs" />
     <Compile Include="Models\Foundations\Transform2D.cs" />
     <Compile Include="Data\GameRepository.cs" />

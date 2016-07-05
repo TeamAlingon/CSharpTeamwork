@@ -3,11 +3,10 @@
     using System.Linq;
 
     using CSharpGame.EventHandlers;
+    using CSharpGame.Models;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
-
-    using MonoGame.Extended;
 
     public class InputManager : GameComponent
     {

@@ -13,7 +13,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class Character : GameObject
+    public class Character : SpriteGameObject
     {
         private const float MovementSpeed = 5f;
         private const float GroundPosition = 540;
@@ -21,7 +21,6 @@
         private const float VelocityDampingSpeed = 0.3f;
         private readonly Dictionary<string, Vector2> movementVectors;
         private float currentJumpVelocity;
-        private string currentAnimationKey;
         private Inventory inventory;
 
         public Character(Dictionary<string, Animation> animations, InputManager inputManager, GameRepository repository)
@@ -30,9 +29,8 @@
         }
 
         public Character(Vector2 position, Dictionary<string, Animation> animations, InputManager inputManager, GameRepository repository)
-            : base(new Transform2D(position, Rectangle.Empty), repository)
+            : base(new Transform2D(position, Rectangle.Empty), animations, repository)
         {
-            this.Animations = animations;
             this.movementVectors = new Dictionary<string, Vector2>
                                  {
                                      { "right", new Vector2(MovementSpeed, 0) },
@@ -41,8 +39,6 @@
                                      { "down", new Vector2(0, MovementSpeed) }
                                  };
 
-            this.CurrentAnimationKey = "running";
-            this.Orientation = SpriteEffects.None;
             this.inventory=new Inventory();
 
             inputManager.Jump += this.OnJump;
@@ -50,32 +46,9 @@
             inputManager.MoveLeft += this.MoveLeft;
         }
 
-        private string CurrentAnimationKey
-        {
-            get
-            {
-                return this.currentAnimationKey;
-            }
-            set
-            {
-                if (this.currentAnimationKey != null)
-                {
-                    this.Animations[this.currentAnimationKey].Reset();
-                }
-
-                this.currentAnimationKey = value;
-            }
-        }
-
-        private Dictionary<string, Animation> Animations { get; }
-
         public int Score { get; set; }
 
         public bool IsGrounded => this.Position.Y >= GroundPosition;
-
-        public CharacterState State { get; private set; }
-
-        public SpriteEffects Orientation { get; private set; }
 
         public Texture2D Texture => this.Animations[this.CurrentAnimationKey].SpriteSheet;
 
@@ -85,8 +58,7 @@
         {
             get
             {
-                this.Transform.BoundingBox = new Rectangle(this.Position.ToPoint(), this.CurrentFrame.Size);
-                return this.Transform.BoundingBox;
+                return this.Transform.BoundingBox = new Rectangle(this.Position.ToPoint(), this.CurrentFrame.Size);
             }
         }
 
@@ -121,7 +93,7 @@
             }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (!this.IsGrounded)
             {
@@ -149,30 +121,6 @@
             {
                 this.State = CharacterState.RunningRight;
             }
-        }
-
-        private void UpdateCurrentAnimation(GameTime gameTime)
-        {
-            if ((this.State == CharacterState.RunningLeft || this.State == CharacterState.RunningRight)
-                && this.CurrentAnimationKey != "running")
-            {
-                this.CurrentAnimationKey = "running";
-            }
-            else if (this.State == CharacterState.Jumping 
-                && this.CurrentAnimationKey != "runningJump")
-            {
-                this.CurrentAnimationKey = "runningJump";
-            }
-            else if (this.State == CharacterState.Attacking)
-            {
-                // TODO: Attack animation.
-            }
-            else if (this.State == CharacterState.Idle)
-            {
-                // TODO: Idle animation
-            }
-
-            this.Animations[this.CurrentAnimationKey].Play(gameTime);
         }
 
         public void Collect(ICollectable item)
