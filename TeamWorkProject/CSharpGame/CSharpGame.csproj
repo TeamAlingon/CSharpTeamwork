@@ -41,6 +41,7 @@
     <Compile Include="CollisionHandler\CollisionHandler.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Enums\CharacterState.cs" />
+    <Compile Include="Enums\GameState.cs" />
     <Compile Include="EventHandlers\GameActionEventArgs.cs" />
     <Compile Include="EventHandlers\PointerEventDataArgs.cs" />
     <Compile Include="EventHandlers\TransformMovedEventArgs.cs" />
