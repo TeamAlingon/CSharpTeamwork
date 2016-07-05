@@ -7,31 +7,41 @@ namespace CSharpGame.Models.Collectables.Effects
 
     using Microsoft.Xna.Framework;
 
-    public class Effect : Item, IEffect
+    public abstract class Effect : Item, IEffect
     {
-        private int timeOfEffect;
+        private bool effectIsApplied;
 
         public Effect(int x, int y, int duration, string image, GameRepository gameRepository)
             : base(x, y, image, gameRepository)
         {
-            this.timeOfEffect = duration;
+            this.Duration = duration;
+            this.effectIsApplied = false;
+            this.EffectIsOver = false;
         }
+
+        public float Duration { get; private set; }
+
+        public bool EffectIsOver { get; private set; }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.timeOfEffect <= 0)
+            this.Duration -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (!this.effectIsApplied && this.Collector != null)
             {
-                //TODO: if duration == 0 stop effect and bring back default state
+                this.effectIsApplied = true;
+                this.ApplyEffect();
             }
-            else
+
+            if (this.Duration <= 0 && !this.HasBeenUsed)
             {
-                this.timeOfEffect -= 1;
+                this.HasBeenUsed = true;
+                this.RemoveEffect();
             }
         }
 
-        public virtual void ApplyEffect(Character player)
-        {
-            //TODO: apply effect to player
-        }
+        public abstract void RemoveEffect();
+
+        public abstract void ApplyEffect();
     }
 }

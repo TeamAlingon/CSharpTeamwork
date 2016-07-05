@@ -99,13 +99,13 @@
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.Black);
-            var transformMatrix = this.gameRepository.GetSelectedCamera().GetViewMatrix();
+            var transformMatrix = this.gameRepository.Camera.GetViewMatrix();
             this.spriteBatch.Begin(transformMatrix: transformMatrix);
 
             this.gameRepository.Draw(gameTime, this.spriteBatch);
 
             this.spriteBatch.DrawString(this.font,
-                $"SCORE: {this.gameRepository.MainCharacter.Score}",
+                $"SCORE: {this.gameRepository.MainCharacter.ScoreCoins}",
                 new Vector2(this.gameRepository.Camera.Position.X + 5, this.gameRepository.Camera.Position.Y + 5),
                 Color.Silver);
 

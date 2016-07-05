@@ -4,6 +4,8 @@ namespace CSharpGame.Interfaces
 
     public interface IEffect : ICollectable
     {
-        void ApplyEffect(Character player);
+        void ApplyEffect();
+
+        void RemoveEffect();
     }
 }

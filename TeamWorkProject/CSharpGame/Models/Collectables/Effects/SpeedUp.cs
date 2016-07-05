@@ -6,9 +6,22 @@ namespace CSharpGame.Models.Collectables.Effects
     {
         private const string ImageSpeedUp = "Images/SpeedUp";
 
-        public SpeedUp(int x, int y, int time, GameRepository gameRepository)
+        private readonly float speedBonus;
+
+        public SpeedUp(int x, int y, int time, float speedBonus, GameRepository gameRepository)
             :base(x, y, time, ImageSpeedUp, gameRepository)
-       {
-       }
+        {
+            this.speedBonus = speedBonus;
+        }
+
+        public override void RemoveEffect()
+        {
+            this.Collector.CurrentSpeed -= this.speedBonus;
+        }
+
+        public override void ApplyEffect()
+        {
+            this.Collector.CurrentSpeed += this.speedBonus;
+        }
     }
 }

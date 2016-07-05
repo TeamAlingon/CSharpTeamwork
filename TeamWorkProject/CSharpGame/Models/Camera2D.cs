@@ -20,7 +20,7 @@
             this.viewport = viewport;
 
             this.Speed = 250;
-            this.Zoom = 1;
+            this.Zoom = 0.5f;
         }
 
         public Matrix GetViewMatrix()
@@ -35,7 +35,7 @@
 
         public void LookAt(Vector2 targetPosition)
         {
-            this.Transform.Position = targetPosition - this.Transform.BoundingBox.Size.ToVector2() / 2f;
+            this.Transform.Position = targetPosition - this.Transform.BoundingBox.Size.ToVector2();
         }
     }
 }

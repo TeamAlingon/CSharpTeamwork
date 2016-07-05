@@ -7,16 +7,17 @@
 
     class CollisionHandler
     {
-        public bool Intersect(Character charater, ICollectable coin)
+        public bool Intersect(Character charater, ICollectable collectable)
         {
             Rectangle characterRectangle = charater.BoundingBox;
-            Rectangle coinRectangle = coin.Transform.BoundingBox;
-            if (!coin.IsCollected)
+            Rectangle coinRectangle = collectable.BoundingBox;
+            if (!collectable.IsCollected)
             {
                 if (coinRectangle.Intersects(characterRectangle) || characterRectangle.Intersects(coinRectangle))
                 {
-                    charater.Score++;
-                    coin.IsCollected = true;
+                    collectable.Collector = charater;
+                    charater.Collect(collectable);
+                    collectable.IsCollected = true;
                     return true;
                 }
             }

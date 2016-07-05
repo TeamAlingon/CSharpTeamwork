@@ -10,10 +10,11 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
 
     public class Level : GameObject, IDrawableGameObject
     {
-        private CollisionHandler collisionHandler;
+        private readonly CollisionHandler collisionHandler;
 
         public Character MainCharacter { get; set; }
 
@@ -54,12 +55,22 @@
 
         public override void Update(GameTime gameTime)
         {
+            KeyboardState kb = Keyboard.GetState();
             foreach (IGameObject gameObject in this.AllLevelObjects)
             {
                 gameObject.Update(gameTime);
+
+                if (kb.IsKeyDown(Keys.Space))
+                {
+                    gameObject.Transform.Scale += 0.1f;
+                }
+                else if (kb.IsKeyDown(Keys.LeftAlt))
+                {
+                    gameObject.Transform.Scale -= 0.1f;
+                }
             }
 
-            foreach (ICollectable collectableObject in CollectableObjects)
+            foreach (ICollectable collectableObject in this.CollectableObjects)
             {
                 this.collisionHandler.Intersect(this.MainCharacter, collectableObject);
             }

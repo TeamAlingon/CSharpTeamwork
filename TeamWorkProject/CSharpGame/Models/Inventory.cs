@@ -1,52 +1,33 @@
 ﻿namespace CSharpGame.Models
 {
     using System.Collections.Generic;
-    using Collectables.Effects;
-    using Collectables.Items;
+    using System.Linq;
+
     using Interfaces;
+
+    using Microsoft.Xna.Framework;
 
     public class Inventory
     {
-        private IList<ICollectable> powerUps;
-        private int scoreCoins;
-
         public Inventory()
         {
-            InitInventory();
+            this.Collectables = new List<ICollectable>();
         }
 
-        public void InitInventory()
-        {
-            this.powerUps = new List<ICollectable>();
-        }
-
-        public IList<ICollectable> PowerUps
-        {
-
-            get { return this.powerUps; }
-            set { this.powerUps = value; }
-        }
+        public List<ICollectable> Collectables { get; private set; }
 
         public void Collect(ICollectable item)
         {
-            if (item is RegularCoin)
-            {
-                this.scoreCoins++;
-            }
-            if (item is SpeedUp)
-            {
-                this.PowerUps.Add(item);
-            }
+            this.Collectables.Add(item);
         }
 
-        public int ScoreConins
+        public void Update(GameTime gameTime, Character character)
         {
-            get { return this.scoreCoins; }
+            this.Collectables = this.Collectables.Where(c => !c.HasBeenUsed).ToList();
 
-            set
+            foreach (ICollectable collectable in this.Collectables)
             {
-                this.scoreCoins += value;
-                
+                collectable.Update(gameTime);
             }
         }
     }

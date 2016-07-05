@@ -32,7 +32,7 @@
         {
             get
             {
-                return this.ScaleIfNeeded(this.boundingBox);
+                return this.ScaleBoundingBoxIfNeeded(this.boundingBox);
             }
             set
             {
@@ -107,32 +107,26 @@
             this.PositionChanged += this.UpdateSizePositionWithMovement;
         }
 
-        private Rectangle ScaleIfNeeded(Rectangle inputRectangle)
+        public Rectangle ScaleBoundingBoxIfNeeded(Rectangle inputRectangle)
         {
             Rectangle result = inputRectangle;
             if (this.Scale > 1)
             {
-                var width = inputRectangle.Width;
-                var height = inputRectangle.Height;
-                var scaledWidth = inputRectangle.Width * this.Scale;
-                var scaledHeight = inputRectangle.Height * this.Scale;
+                var size = inputRectangle.Size.ToVector2();
+                var scaledSize = size * this.Scale;
 
-                var scaledX = this.boundingBox.X - (scaledWidth - width) / 2;
-                var scaledY = this.boundingBox.Y - (scaledHeight - height) / 2;
+                var scaledPosition = inputRectangle.Location.ToVector2() - (scaledSize - size) / 2;
 
-                result = new Rectangle((int)scaledX, (int)scaledY, (int)scaledWidth, (int)scaledHeight);
+                result = new Rectangle(scaledPosition.ToPoint(), scaledSize.ToPoint());
             }
             else if (this.Scale < 1)
             {
-                var width = inputRectangle.Width;
-                var height = inputRectangle.Height;
-                var scaledWidth = inputRectangle.Width * this.Scale;
-                var scaledHeight = inputRectangle.Height * this.Scale;
+                var size = inputRectangle.Size.ToVector2();
+                var scaledSize = size * this.Scale;
 
-                var scaledX = this.boundingBox.X + (scaledWidth - width) / 2;
-                var scaledY = this.boundingBox.Y + (scaledHeight - height) / 2;
+                var scaledPosition = inputRectangle.Location.ToVector2() + (size - scaledSize) / 2;
 
-                result = new Rectangle((int)scaledX, (int)scaledY, (int)scaledWidth, (int)scaledHeight);
+                result = new Rectangle(scaledPosition.ToPoint(), scaledSize.ToPoint());
             }
 
             return result;

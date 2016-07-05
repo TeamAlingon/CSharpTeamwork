@@ -36,11 +36,6 @@
             return this.ContentManager.Load<T>(path);
         }
 
-        public Camera2D GetSelectedCamera()
-        {
-            return this.Camera;
-        }
-
         public void AddGameObject(TexturedGameObject drawableGameObject)
         {
             this.Level.AddGameObject(drawableGameObject);
@@ -53,7 +48,7 @@
 
         public override void Update(GameTime gameTime)
         {
-            this.GetSelectedCamera().LookAt(this.Level.MainCharacter.Position);
+            this.Camera.LookAt(this.Level.MainCharacter.Position);
             this.Level.Update(gameTime);
         }
 
@@ -68,7 +63,7 @@
             this.Camera = camera;
 
             var background = new TexturedGameObject(this, "Images/MapSample");
-            background.Transform.Scale = 2f;
+            background.Transform.Scale = 2.8f;
 
             var random = new Random();
             for (int i = 0; i < 100; i++)
@@ -76,15 +71,15 @@
                 var coin = new RegularCoin((400 + i * 400), random.Next(300, 600), this) { Transform = { Scale = 2f } };
             }
 
-            SpeedUp speedUp = new SpeedUp(100, 280, 20, this);
+            SpeedUp speedUp = new SpeedUp(70, 200, 20, 7, this);
             speedUp.Texture = this.LoadContent<Texture2D>(speedUp.GetImage());
-            speedUp.Transform.Scale = 0.5f;
+            speedUp.Transform.Scale = 0.2f;
 
             InputManager input = new InputManager(this.Game, camera);
             var mainCharTexture = this.LoadContent<Texture2D>("Images/maincharacter");
             var mainCharSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
             var mainCharAnimations = AnimationParser.ReadSpriteSheetData(mainCharTexture, mainCharSpriteData);
-            var mainCharacter = new Character(new Vector2(-500, 500), mainCharAnimations, input, this) { Transform = { Scale = 0.7f } };
+            var mainCharacter = new Character(new Vector2(-500, 600), mainCharAnimations, input, this) { Transform = { Scale = 0.7f } };
 
             this.Level.MainCharacter = mainCharacter;
         }
