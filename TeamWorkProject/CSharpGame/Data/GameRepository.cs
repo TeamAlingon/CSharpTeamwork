@@ -75,11 +75,11 @@
             speedUp.Texture = this.LoadContent<Texture2D>(speedUp.GetImage());
             speedUp.Transform.Scale = 0.2f;
 
-            InputManager input = new InputManager(this.Game, camera);
+            PlayerInput playerInput = new PlayerInput(this.Game, camera);
             var mainCharTexture = this.LoadContent<Texture2D>("Images/maincharacter");
             var mainCharSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
             var mainCharAnimations = AnimationParser.ReadSpriteSheetData(mainCharTexture, mainCharSpriteData);
-            var mainCharacter = new Character(new Vector2(-500, 600), mainCharAnimations, input, this) { Transform = { Scale = 0.7f } };
+            var mainCharacter = new Character(new Vector2(-500, 600), mainCharAnimations, playerInput, this) { Transform = { Scale = 0.7f } };
 
             this.Level.MainCharacter = mainCharacter;
         }

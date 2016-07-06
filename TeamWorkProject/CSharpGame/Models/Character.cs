@@ -24,12 +24,12 @@
 
         private float currentJumpVelocity;
 
-        public Character(Dictionary<string, Animation> animations, InputManager inputManager, GameRepository repository)
-            : this(Vector2.Zero, animations, inputManager, repository)
+        public Character(Dictionary<string, Animation> animations, CharacterInput playerInput, GameRepository repository)
+            : this(Vector2.Zero, animations, playerInput, repository)
         {
         }
 
-        public Character(Vector2 position, Dictionary<string, Animation> animations, InputManager inputManager, GameRepository repository)
+        public Character(Vector2 position, Dictionary<string, Animation> animations, CharacterInput playerInput, GameRepository repository)
             : base(new Transform2D(position, Rectangle.Empty), animations, repository)
         {
             this.movementVectors = new Dictionary<string, Vector2>
@@ -43,9 +43,9 @@
             this.Inventory = new Inventory();
             this.CurrentSpeed = DefaultSpeed;
 
-            inputManager.Jump += this.OnJump;
-            inputManager.MoveRight += this.MoveRight;
-            inputManager.MoveLeft += this.MoveLeft;
+            playerInput.Jump += this.OnJump;
+            playerInput.MoveRight += this.MoveRight;
+            playerInput.MoveLeft += this.MoveLeft;
         }
 
         public Inventory Inventory { get; }
@@ -105,8 +105,8 @@
                 this.HandleJumping();
             }
 
-            Debug.WriteLine(this.currentJumpVelocity);
-            Debug.WriteLine(this.State);
+            //Debug.WriteLine(this.currentJumpVelocity);
+            //Debug.WriteLine(this.State);
 
             this.Inventory.Update(gameTime, this);
             this.UpdateCurrentAnimation(gameTime);
@@ -130,7 +130,7 @@
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.DebugCollision(spriteBatch);
+            //this.DrawBoundingBox(spriteBatch);
 
             spriteBatch.Draw(
                 this.Texture,
@@ -145,7 +145,7 @@
 
         // Debugging collision, might come in handy again.
         private Texture2D tex;
-        private void DebugCollision(SpriteBatch spriteBatch)
+        private void DrawBoundingBox(SpriteBatch spriteBatch)
         {
             if (this.tex == null)
             {
@@ -155,7 +155,6 @@
                     this.GameRepository.GraphicsDevice,
                     this.BoundingBox.Width,
                     this.BoundingBox.Height);
-
 
                     Color[] data = new Color[this.BoundingBox.Width * this.BoundingBox.Height];
                     for (int i = 0; i < data.Length; ++i) data[i] = Color.Chocolate;

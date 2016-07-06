@@ -2,29 +2,15 @@
 {
     using System.Linq;
 
-    using CSharpGame.EventHandlers;
     using CSharpGame.Models;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
-    public class InputManager : GameComponent
+    public class PlayerInput : CharacterInput
     {
-        public event PointerEventHandler PointerPress;
 
-        public event PointerEventHandler PointerDrag;
-
-        public event PointerEventHandler PointerRelease;
-
-        public event GameActionEventHandler MoveRight;
-
-        public event GameActionEventHandler MoveLeft;
-
-        public event GameActionEventHandler Jump;
-
-        public event GameActionEventHandler Attack;
-
-        private Camera2D currentCamera;
+        private readonly Camera2D currentCamera;
 
         public Keys[] MoveRightKeys { get; set; }
 
@@ -34,7 +20,7 @@
 
         public Keys[] ExitKeys { get; set; }
 
-        public InputManager(Game game, Camera2D camera)
+        public PlayerInput(Game game, Camera2D camera)
             : base(game)
         {
             game.Components.Add(this);
@@ -46,7 +32,7 @@
             this.ExitKeys = new[] { Keys.Escape };
         }
 
-        private Vector2 LastMouseClick { get; set; }
+        private Vector2 LastPointerPress { get; set; }
 
         private bool Pressed { get; set; }
 
@@ -66,35 +52,35 @@
                 // Taking into account the camera position since it is causing issues when the camera is moved.
                 var currentMousePosition = mState.Position.ToVector2() + this.currentCamera.Position;
                 var delta = Vector2.Zero;
-                if (!this.LastMouseClick.Equals(Vector2.Zero))
+                if (!this.LastPointerPress.Equals(Vector2.Zero))
                 {
-                    delta = currentMousePosition - this.LastMouseClick;
+                    delta = currentMousePosition - this.LastPointerPress;
                 }
 
                 if (!this.Pressed)
                 {
-                    this.PointerPress?.Invoke(new PointerEventDataArgs(currentMousePosition, delta));
+                    this.InvokePointerPress(currentMousePosition, delta);
                     this.Pressed = true;
                 }
 
-                this.LastMouseClick = currentMousePosition;
+                this.LastPointerPress = currentMousePosition;
 
                 if (delta != Vector2.Zero)
                 {
-                    this.PointerDrag?.Invoke(new PointerEventDataArgs(currentMousePosition, delta));
+                    this.InvokePointerDrag(currentMousePosition, delta);
                 }
 
-                if (this.LastMouseClick.Equals(Vector2.Zero))
+                if (this.LastPointerPress.Equals(Vector2.Zero))
                 {
-                    this.LastMouseClick = currentMousePosition;
+                    this.LastPointerPress = currentMousePosition;
                 }
             }
             else if (this.Pressed)
             {
-                this.PointerRelease?.Invoke(new PointerEventDataArgs(this.LastMouseClick, Vector2.Zero));
+                this.InvokePointerRelease(this.LastPointerPress, Vector2.Zero);
                 this.Pressed = false;
 
-                this.LastMouseClick = Vector2.Zero;
+                this.LastPointerPress = Vector2.Zero;
             }
         }
 
@@ -107,17 +93,17 @@
 
             if (this.MoveRightKeys.Any(kState.IsKeyDown))
             {
-                this.MoveRight?.Invoke();
+                this.InvokeMoveRight();
             }
 
             if (this.MoveLeftKeys.Any(kState.IsKeyDown))
             {
-                this.MoveLeft?.Invoke();
+                this.InvokeMoveLeft();
             }
 
             if (this.JumpKeys.Any(kState.IsKeyDown))
             {
-                this.Jump?.Invoke();
+                this.InvokeJump();
             }
 
             // TODO: Attack

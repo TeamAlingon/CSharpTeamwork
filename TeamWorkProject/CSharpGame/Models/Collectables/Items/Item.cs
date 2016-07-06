@@ -36,7 +36,7 @@ namespace CSharpGame.Models.Collectables.Items
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            this.DebugCollision(spriteBatch);
+            //this.DrawBoundingBox(spriteBatch);
 
             if (!this.IsCollected)
             {
@@ -47,7 +47,7 @@ namespace CSharpGame.Models.Collectables.Items
 
         // Debugging collision, might come in handy again.
         private Texture2D tex;
-        private void DebugCollision(SpriteBatch spriteBatch)
+        private void DrawBoundingBox(SpriteBatch spriteBatch)
         {
             if (this.tex == null)
             {
@@ -57,7 +57,6 @@ namespace CSharpGame.Models.Collectables.Items
                     this.GameRepository.GraphicsDevice,
                     this.BoundingBox.Width,
                     this.BoundingBox.Height);
-
 
                     Color[] data = new Color[this.BoundingBox.Width * this.BoundingBox.Height];
                     for (int i = 0; i < data.Length; ++i) data[i] = Color.Chocolate;
