@@ -92,12 +92,11 @@
             var playerInput = new PlayerInput(this.Game, camera);
             var playerTexture = this.LoadContent<Texture2D>("Images/maincharacter");
             var playerSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
-            var playerAnimations = AnimationParser.ReadSpriteSheetData(playerTexture, playerSpriteData);
+            var playerAnimations = Animation.ReadSpriteSheetData(playerTexture, playerSpriteData);
             var player = new Character(new Vector2(startX, 860), playerAnimations, playerInput, this);
             player.Transform.Scale = 0.4f;
 
             this.level.Player = player;
-
 
             startX += 1000;
             var enemyInput = new EnemyInput(this.Game);
@@ -105,14 +104,14 @@
             for (int i = 0; i < 5; i++)
             {
                 var guitarEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyGuitar.spriteData");
-                var guitarEnemyAnimations = AnimationParser.ReadSpriteSheetData(enemyTexture, guitarEnemySpriteData, 0.2f);
+                var guitarEnemyAnimations = Animation.ReadSpriteSheetData(enemyTexture, guitarEnemySpriteData, 0.2f);
                 var guitarEnemy = new Character(new Vector2(startX + i * 1500, 800), guitarEnemyAnimations, enemyInput, this);
                 guitarEnemy.Transform.Scale = 0.7f;
 
                 this.level.Enemies.Add(guitarEnemy);
 
                 var battonEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyBatton.spriteData");
-                var battonEnemyAnimations = AnimationParser.ReadSpriteSheetData(enemyTexture, battonEnemySpriteData, 0.2f);
+                var battonEnemyAnimations = Animation.ReadSpriteSheetData(enemyTexture, battonEnemySpriteData, 0.2f);
                 var battonEnemy = new Character(new Vector2(startX + i * 2000, 800), battonEnemyAnimations, enemyInput, this);
                 battonEnemy.Transform.Scale = 0.7f;
 
