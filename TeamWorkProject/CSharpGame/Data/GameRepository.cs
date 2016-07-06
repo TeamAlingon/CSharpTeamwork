@@ -33,7 +33,7 @@
 
         public ContentManager ContentManager => this.Game.Content;
 
-        public Character MainCharacter => this.level.Player;
+        public Character Player => this.level.Player;
 
         public T LoadContent<T>(string path)
         {

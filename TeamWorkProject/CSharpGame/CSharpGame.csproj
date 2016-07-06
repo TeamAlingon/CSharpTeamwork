@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Audio\PlayerAudioManager.cs" />
     <Compile Include="CollisionHandler\CollisionHandler.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Enums\CharacterState.cs" />
