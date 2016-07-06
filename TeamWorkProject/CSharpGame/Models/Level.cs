@@ -11,7 +11,6 @@
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
 
     public class Level : GameObject, IDrawableGameObject
     {
@@ -59,19 +58,16 @@
 
         public override void Update(GameTime gameTime)
         {
-            KeyboardState kb = Keyboard.GetState();
+            this.Player.Update(gameTime);
+
             foreach (IGameObject gameObject in this.AllLevelObjects)
             {
                 gameObject.Update(gameTime);
+            }
 
-                if (kb.IsKeyDown(Keys.Space))
-                {
-                    gameObject.Transform.Scale += 0.1f;
-                }
-                else if (kb.IsKeyDown(Keys.LeftAlt))
-                {
-                    gameObject.Transform.Scale -= 0.1f;
-                }
+            foreach (ICollectable collectableObject in this.CollectableObjects)
+            {
+                this.collisionHandler.CollectableCollision(this.Player, collectableObject);
             }
 
             foreach (Character enemy in this.Enemies)
@@ -80,16 +76,9 @@
 
                 if (this.collisionHandler.EnemyCollision(this.Player, enemy))
                 {
-                    // TODO: handle collision.
+                    this.GameRepository.PlayerDied = true;
                 }
             }
-
-            foreach (ICollectable collectableObject in this.CollectableObjects)
-            {
-                this.collisionHandler.CollectableCollision(this.Player, collectableObject);
-            }
-
-            this.Player.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -9,7 +9,6 @@
 
     public class PlayerInput : CharacterInput
     {
-
         private readonly Camera2D currentCamera;
 
         public Keys[] MoveRightKeys { get; set; }

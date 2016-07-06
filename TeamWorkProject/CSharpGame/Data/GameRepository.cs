@@ -1,6 +1,7 @@
 ﻿namespace CSharpGame.Data
 {
     using System;
+    using System.Security.Policy;
 
     using CSharpGame.Input;
     using CSharpGame.Models;
@@ -15,21 +16,24 @@
 
     public class GameRepository : DrawableGameComponent
     {
-        public readonly Level Level;
+        private Level level;
+
+        public bool PlayerDied { get; set; }
 
         public Camera2D Camera { get; private set; }
 
         public GameRepository(Game game)
             : base(game)
         {
-            this.Level = new Level(this);
+            this.level = new Level(this);
+            this.PlayerDied = false;
 
             this.InitializeLevel();
         }
 
         public ContentManager ContentManager => this.Game.Content;
 
-        public Character MainCharacter => this.Level.Player;
+        public Character MainCharacter => this.level.Player;
 
         public T LoadContent<T>(string path)
         {
@@ -38,23 +42,23 @@
 
         public void AddGameObject(TexturedGameObject drawableGameObject)
         {
-            this.Level.AddGameObject(drawableGameObject);
+            this.level.AddGameObject(drawableGameObject);
         }
 
         public void AddGameObject(GameObject gameObject)
         {
-            this.Level.AddGameObject(gameObject);
+            this.level.AddGameObject(gameObject);
         }
 
         public override void Update(GameTime gameTime)
         {
-            this.Camera.LookAt(this.Level.Player.Position);
-            this.Level.Update(gameTime);
+            this.Camera.LookAt(this.level.Player.Position);
+            this.level.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.Level.Draw(spriteBatch);
+            this.level.Draw(spriteBatch);
         }
 
         private void InitializeLevel()
@@ -92,7 +96,7 @@
             var player = new Character(new Vector2(startX, 860), playerAnimations, playerInput, this);
             player.Transform.Scale = 0.4f;
 
-            this.Level.Player = player;
+            this.level.Player = player;
 
 
             startX += 1000;
@@ -105,14 +109,14 @@
                 var guitarEnemy = new Character(new Vector2(startX + i * 1500, 800), guitarEnemyAnimations, enemyInput, this);
                 guitarEnemy.Transform.Scale = 0.7f;
 
-                this.Level.Enemies.Add(guitarEnemy);
+                this.level.Enemies.Add(guitarEnemy);
 
                 var battonEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyBatton.spriteData");
                 var battonEnemyAnimations = AnimationParser.ReadSpriteSheetData(enemyTexture, battonEnemySpriteData, 0.2f);
                 var battonEnemy = new Character(new Vector2(startX + i * 2000, 800), battonEnemyAnimations, enemyInput, this);
                 battonEnemy.Transform.Scale = 0.7f;
 
-                this.Level.Enemies.Add(battonEnemy);
+                this.level.Enemies.Add(battonEnemy);
             }
         }
     }
