@@ -1,10 +1,16 @@
 ﻿namespace CSharpGame.Input
 {
+    using System;
+
     using Microsoft.Xna.Framework;
 
     public class EnemyInput : CharacterInput
     {
-        private const float DirectionSwitchTime = 5;
+        private const int DirectionSwitchTimeMin = 3;
+
+        private const int DirectionSwitchTimeMax = 8;
+
+        private static readonly Random Rng = new Random();
 
         public float CurrentSwitchTime { get; private set; }
 
@@ -14,16 +20,16 @@
             : base(game)
         {
             this.Game.Components.Add(this);
-            this.CurrentSwitchTime = DirectionSwitchTime;
+            this.CurrentSwitchTime = Rng.Next(DirectionSwitchTimeMin, DirectionSwitchTimeMax);
             this.MovingRight = false;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.CurrentSwitchTime > DirectionSwitchTime)
+            if (this.CurrentSwitchTime < 0)
             {
                 this.MovingRight = !this.MovingRight;
-                this.CurrentSwitchTime = 0;
+                this.CurrentSwitchTime = Rng.Next(DirectionSwitchTimeMin, DirectionSwitchTimeMax);
             }
 
             if (this.MovingRight)
@@ -35,7 +41,7 @@
                 this.InvokeMoveLeft();
             }
 
-            this.CurrentSwitchTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.CurrentSwitchTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

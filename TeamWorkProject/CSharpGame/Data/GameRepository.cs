@@ -16,7 +16,7 @@
 
     public class GameRepository : DrawableGameComponent
     {
-        private Level level;
+        private readonly Level level;
 
         public bool PlayerDied { get; set; }
 
@@ -99,20 +99,21 @@
             this.level.Player = player;
 
             startX += 1000;
-            var enemyInput = new EnemyInput(this.Game);
             var enemyTexture = this.LoadContent<Texture2D>("Images/enemies");
             for (int i = 0; i < 5; i++)
             {
+                var guitarEnemyInput = new EnemyInput(this.Game);
                 var guitarEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyGuitar.spriteData");
                 var guitarEnemyAnimations = Animation.ReadSpriteSheetData(enemyTexture, guitarEnemySpriteData, 0.2f);
-                var guitarEnemy = new Character(new Vector2(startX + i * 1500, 800), guitarEnemyAnimations, enemyInput, this);
+                var guitarEnemy = new Character(new Vector2(startX + i * 1500, 800), guitarEnemyAnimations, guitarEnemyInput, this);
                 guitarEnemy.Transform.Scale = 0.7f;
 
                 this.level.Enemies.Add(guitarEnemy);
 
+                var battonEnemyInput = new EnemyInput(this.Game);
                 var battonEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyBatton.spriteData");
                 var battonEnemyAnimations = Animation.ReadSpriteSheetData(enemyTexture, battonEnemySpriteData, 0.2f);
-                var battonEnemy = new Character(new Vector2(startX + i * 2000, 800), battonEnemyAnimations, enemyInput, this);
+                var battonEnemy = new Character(new Vector2(startX + i * 2000, 800), battonEnemyAnimations, battonEnemyInput, this);
                 battonEnemy.Transform.Scale = 0.7f;
 
                 this.level.Enemies.Add(battonEnemy);
