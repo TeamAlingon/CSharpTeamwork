@@ -82,10 +82,13 @@
     <Content Include="Content\Images\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\GameOver.png" />
     <Content Include="Content\Images\MainChar.png" />
     <Content Include="Content\Images\MapSample.png" />
     <Content Include="Icon.ico" />
-    <Content Include="Content\Fonts\*.*" />
+    <Content Include="Content\Fonts\game_over.spritefont" />
+    <Content Include="Content\Fonts\Score.spritefont" />
+    <Content Include="Content\Fonts\STENCIL.TTF" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
