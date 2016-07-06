@@ -52,7 +52,7 @@
 
         public override void Update(GameTime gameTime)
         {
-            this.Camera.LookAt(this.level.Player.Position);
+            this.Camera.Follow(this.level.Player.Position);
             this.level.Update(gameTime);
         }
 
@@ -97,6 +97,8 @@
             player.Transform.Scale = 0.4f;
 
             this.level.Player = player;
+
+            this.Camera.LookAt(player.Position);
 
             startX += 1000;
             var enemyTexture = this.LoadContent<Texture2D>("Images/enemies");

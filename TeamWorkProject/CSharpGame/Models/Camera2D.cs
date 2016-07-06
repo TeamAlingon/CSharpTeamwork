@@ -22,7 +22,7 @@
             this.viewport = viewport;
             this.offset = offset;
 
-            this.Speed = 250;
+            this.Speed = 0.9f;
             this.Zoom = 1f;
         }
 
@@ -36,11 +36,32 @@
                 Matrix.CreateTranslation(new Vector3(this.Transform.Origin, 0.0f));
         }
 
+        public void Follow(Vector2 targetPosition)
+        {
+            targetPosition = this.CenterTargetPositionX(targetPosition);
+
+            var speed = (targetPosition - this.Transform.Position) / 10;
+
+            this.Transform.Position += speed * this.Speed;
+        }
+
         public void LookAt(Vector2 targetPosition)
+        {
+            this.Transform.Position = this.CenterTargetPosition(targetPosition);
+        }
+
+        private Vector2 CenterTargetPositionX(Vector2 targetPosition)
         {
             var viewportSize = this.Transform.BoundingBox.Size.ToVector2();
 
-            this.Transform.Position = new Vector2(targetPosition.X - viewportSize.X / 3, targetPosition.Y - viewportSize.Y + this.offset.Y);
+            return new Vector2(targetPosition.X - viewportSize.X / 2, this.Transform.Position.Y);
+        }
+
+        private Vector2 CenterTargetPosition(Vector2 targetPosition)
+        {
+            var viewportSize = this.Transform.BoundingBox.Size.ToVector2();
+
+            return new Vector2(targetPosition.X - viewportSize.X / 2, targetPosition.Y - viewportSize.Y + this.offset.Y);
         }
     }
 }
