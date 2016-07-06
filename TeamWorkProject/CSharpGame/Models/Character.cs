@@ -67,7 +67,7 @@
 
         public SpriteEffects Orientation { get; private set; }
 
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
 
         public Texture2D Texture => this.Animations[this.CurrentAnimationKey].SpriteSheet;
 

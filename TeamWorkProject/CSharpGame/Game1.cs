@@ -1,7 +1,6 @@
 ﻿namespace CSharpGame
 {
     using System.Collections.Generic;
-
     using CSharpGame.Input;
     using Interfaces;
     using Microsoft.Xna.Framework;
@@ -18,9 +17,8 @@
     using System.Threading.Tasks;
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         private InputManager input;
         private Texture2D background;
         private Character mainCharacter;
@@ -34,15 +32,17 @@
         private SpriteFont fontGameOver;
         private CollisionHandler.CollisionHandler collisionHandler;
         private GameState stateOfGame;
-
-        SoundEffect walkEffect;
-        SoundEffectInstance walkInstance;
-        SoundEffect levelTheme;
-        SoundEffect jumpEffect;
-        SoundEffectInstance jumpInstance;
-        SoundEffect hitEffect;
-        SoundEffectInstance hitInstance;
-
+        private Texture2D gameoverImage;
+        private Vector2 gameoverPosition = new Vector2(160, 100);
+        private Texture2D menuImage;
+        private Vector2 menuPosition = new Vector2(100, 330);
+        private SoundEffect walkEffect;
+        private SoundEffectInstance walkInstance;
+        private SoundEffect levelTheme;
+        private SoundEffect jumpEffect;
+        private SoundEffectInstance jumpInstance;
+        private SoundEffect hitEffect;
+        private SoundEffectInstance hitInstance;
 
         public Game1()
         {
@@ -60,7 +60,6 @@
             this.input = new InputManager(this, this.camera);
             this.collisionHandler = new CollisionHandler.CollisionHandler();
             base.Initialize();
-            stateOfGame = GameState.Gameplay;
         }
 
         protected override void LoadContent()
@@ -82,7 +81,6 @@
             this.speedUp.ImageTexture2D = this.Content.Load<Texture2D>(this.speedUp.GetImage());
 
             this.font = this.Content.Load<SpriteFont>("Score");
-            this.fontGameOver = this.Content.Load<SpriteFont>("Fonts/game_over");
 
             this.walkEffect = this.Content.Load<SoundEffect>("Soundtrack/footstep_cut");
             this.walkInstance = this.walkEffect.CreateInstance();
@@ -104,6 +102,9 @@
             levelThemeInstance.IsLooped = true;
             levelThemeInstance.Volume = 0.1f;
             levelThemeInstance.Play();
+
+            this.gameoverImage = this.Content.Load<Texture2D>("Images/GameOver");
+            this.menuImage = this.Content.Load<Texture2D>("Images/Menu/PlayButtonRed");
         }
 
         protected override void UnloadContent()
@@ -116,7 +117,10 @@
             switch (stateOfGame)
             {
                 case GameState.MainMenu:
-
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    {
+                        stateOfGame = GameState.Gameplay;
+                    }
                     break;
                 case GameState.Gameplay:
                     this.camera.LookAt(this.mainCharacter.Position);
@@ -150,6 +154,7 @@
                             stateOfGame = GameState.EndOfGame;
                         }
                     }
+
                     this.mainCharacter.Update(gameTime);
                     foreach (var collectable in this.coins)
                     {
@@ -167,7 +172,14 @@
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
-                        stateOfGame = GameState.MainMenu;
+                        this.stateOfGame = GameState.MainMenu;
+                        this.camera.LookAt(new Vector2(0, 0));
+                        this.mainCharacter.Position = new Vector2(0, 0);
+                        this.mainCharacter.Inventory.ScoreCoins = -mainCharacter.Inventory.ScoreCoins;
+                        foreach (var coin in this.coins)
+                        {
+                            coin.IsCollected = false;
+                        }
                     }
                     break;
             }
@@ -178,7 +190,13 @@
             switch (stateOfGame)
             {
                 case GameState.MainMenu:
-
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(
+                        this.background,
+                        new Rectangle(0, -120, (int)(this.background.Width * 1.7), (int)(this.background.Height * 1.7)),
+                        Color.White);
+                    spriteBatch.Draw(menuImage, menuPosition);
+                    spriteBatch.End();
                     break;
                 case GameState.Gameplay:
                     GraphicsDevice.Clear(Color.Black);
@@ -203,14 +221,14 @@
                     spriteBatch.DrawString(
                         font,
                         $"SCORE: {this.mainCharacter.Inventory.ScoreCoins}",
-                        new Vector2(-390 + this.mainCharacter.Position.X, 120),
+                        new Vector2(this.mainCharacter.Position.X - 390, 120),
                         Color.Silver);
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
                 case GameState.EndOfGame:
                     spriteBatch.Begin();
-                    spriteBatch.DrawString(fontGameOver, $"GAME OVER", new Vector2(210, 180), Color.DarkRed);
+                    spriteBatch.Draw(gameoverImage, gameoverPosition);
                     spriteBatch.End();
                     break;
             }

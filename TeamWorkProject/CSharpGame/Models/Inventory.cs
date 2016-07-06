@@ -22,7 +22,6 @@
 
         public IList<ICollectable> PowerUps
         {
-
             get { return this.powerUps; }
             set { this.powerUps = value; }
         }
@@ -42,12 +41,7 @@
         public int ScoreCoins
         {
             get { return this.scoreCoins; }
-
-            set
-            {
-                this.scoreCoins += value;
-                
-            }
+            set { this.scoreCoins += value; }
         }
     }
 }
