@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     using CSharpGame.CollisionHandler;
     using CSharpGame.Data;
@@ -16,7 +17,7 @@
     {
         private readonly CollisionHandler collisionHandler;
 
-        public Character MainCharacter { get; set; }
+        public Character Player { get; set; }
 
         public List<Character> Enemies { get; private set; }
 
@@ -73,17 +74,22 @@
                 }
             }
 
-            foreach (Character character in this.Enemies)
+            foreach (Character enemy in this.Enemies)
             {
-                character.Update(gameTime);
+                enemy.Update(gameTime);
+
+                if (this.collisionHandler.EnemyCollision(this.Player, enemy))
+                {
+                    // TODO: handle collision.
+                }
             }
 
             foreach (ICollectable collectableObject in this.CollectableObjects)
             {
-                this.collisionHandler.Intersect(this.MainCharacter, collectableObject);
+                this.collisionHandler.CollectableCollision(this.Player, collectableObject);
             }
 
-            this.MainCharacter.Update(gameTime);
+            this.Player.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -98,7 +104,7 @@
                 character.Draw(spriteBatch);
             }
 
-            this.MainCharacter.Draw(spriteBatch);
+            this.Player.Draw(spriteBatch);
         }
     }
 }

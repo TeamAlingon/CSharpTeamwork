@@ -29,7 +29,7 @@
 
         public ContentManager ContentManager => this.Game.Content;
 
-        public Character MainCharacter => this.Level.MainCharacter;
+        public Character MainCharacter => this.Level.Player;
 
         public T LoadContent<T>(string path)
         {
@@ -48,7 +48,7 @@
 
         public override void Update(GameTime gameTime)
         {
-            this.Camera.LookAt(this.Level.MainCharacter.Position);
+            this.Camera.LookAt(this.Level.Player.Position);
             this.Level.Update(gameTime);
         }
 
@@ -92,7 +92,7 @@
             var player = new Character(new Vector2(startX, 860), playerAnimations, playerInput, this);
             player.Transform.Scale = 0.4f;
 
-            this.Level.MainCharacter = player;
+            this.Level.Player = player;
 
 
             startX += 1000;

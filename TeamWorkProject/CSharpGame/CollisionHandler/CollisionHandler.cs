@@ -5,9 +5,21 @@
 
     using Microsoft.Xna.Framework;
 
-    class CollisionHandler
+    public class CollisionHandler
     {
-        public bool Intersect(Character charater, ICollectable collectable)
+        public bool EnemyCollision(Character character, Character enemy)
+        {
+            Rectangle characterRectangle = character.BoundingBox;
+            Rectangle enemyRectangle = enemy.BoundingBox;
+            if (enemyRectangle.Intersects(characterRectangle))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CollectableCollision(Character charater, ICollectable collectable)
         {
             Rectangle characterRectangle = charater.BoundingBox;
             Rectangle coinRectangle = collectable.BoundingBox;
