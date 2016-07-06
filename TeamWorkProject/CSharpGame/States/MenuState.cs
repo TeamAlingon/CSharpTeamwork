@@ -1,35 +1,31 @@
 ﻿namespace CSharpGame.States
 {
     using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
 
     public class MenuState : State
     {
-        private GameStateManager stateManager;
-        public MenuState(GameStateManager stateManager)
+        public MenuState(Game game)
+            : base(game)
         {
-            this.stateManager = stateManager;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {
-                this.stateManager.Set(new PlayState(this.stateManager));
-            }
+            throw new NotImplementedException();
         }
 
-        public override void Draw(SpriteBatch batch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             throw new NotImplementedException();
         }
 
         public override void LoadContent()
         {
+            throw new NotImplementedException();
         }
-
 
         public override void UnloadContent()
         {

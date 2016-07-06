@@ -1,6 +1,7 @@
 ﻿namespace CSharpGame.States
 {
     using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -25,7 +26,7 @@
 
         public void Set(State state)
         {
-            this.states.Pop();
+            this.Pop();
             this.states.Push(state);
         }
 
@@ -36,12 +37,12 @@
 
         public void Update(GameTime gameTime)
         {
-            states.Peek().Update(gameTime);
+            this.Peek().Update(gameTime);
         }
 
         public void Draw(SpriteBatch batch)
         {
-            states.Peek().Draw(batch);
+            this.Peek().Draw(batch);
         }
     }
 }

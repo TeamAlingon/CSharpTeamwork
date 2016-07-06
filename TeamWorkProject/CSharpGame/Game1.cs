@@ -1,7 +1,6 @@
 ﻿namespace CSharpGame
 {
-    using CSharpGame.Audio;
-    using CSharpGame.Data;
+    using CSharpGame.States;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -11,9 +10,7 @@
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private GameRepository gameRepository;
-        private PlayerAudioManager playerAudioManager;
-        SpriteFont font;
+        private GameStateManager gameStateManager;
 
         public Game1()
         {
@@ -23,8 +20,8 @@
 
         protected override void Initialize()
         {
-            this.gameRepository = new GameRepository(this);
-            this.playerAudioManager = new PlayerAudioManager(this, this.gameRepository.Player);
+            this.gameStateManager = new GameStateManager();
+            this.gameStateManager.Push(new GameOverState(this.gameStateManager, this));
 
             base.Initialize();
         }
@@ -32,8 +29,6 @@
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
-            this.font = this.Content.Load<SpriteFont>("Score");
         }
 
         protected override void UnloadContent()
@@ -43,26 +38,13 @@
 
         protected override void Update(GameTime gameTime)
         {
-            this.gameRepository.Update(gameTime);
-            this.playerAudioManager.Update(gameTime);
-
+            this.gameStateManager.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(Color.Black);
-            var transformMatrix = this.gameRepository.Camera.GetViewMatrix();
-            this.spriteBatch.Begin(transformMatrix: transformMatrix);
-
-            this.gameRepository.Draw(this.spriteBatch);
-
-            this.spriteBatch.DrawString(this.font,
-                $"SCORE: {this.gameRepository.Player.ScoreCoins}",
-                new Vector2(this.gameRepository.Camera.Position.X + 5, this.gameRepository.Camera.Position.Y + 5),
-                Color.Silver);
-
-            this.spriteBatch.End();
+            this.gameStateManager.Draw(this.spriteBatch);
             base.Draw(gameTime);
         }
     }

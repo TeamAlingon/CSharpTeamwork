@@ -130,7 +130,7 @@
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.DrawBoundingBox(spriteBatch);
+            //this.DrawBoundingBox(spriteBatch);
 
             spriteBatch.Draw(
                 this.Texture,
