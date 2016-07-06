@@ -25,18 +25,21 @@ namespace CSharpGame.Models.Collectables.Effects
 
         public override void Update(GameTime gameTime)
         {
-            this.Duration -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (!this.effectIsApplied && this.Collector != null)
+            if (this.IsCollected)
             {
-                this.effectIsApplied = true;
-                this.ApplyEffect();
-            }
+                this.Duration -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.Duration <= 0 && !this.HasBeenUsed)
-            {
-                this.HasBeenUsed = true;
-                this.RemoveEffect();
+                if (this.Collector != null && !this.effectIsApplied)
+                {
+                    this.effectIsApplied = true;
+                    this.ApplyEffect();
+                }
+
+                if (this.Collector != null && this.Duration <= 0 && !this.HasBeenUsed)
+                {
+                    this.HasBeenUsed = true;
+                    this.RemoveEffect();
+                }
             }
         }
 

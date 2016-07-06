@@ -1,8 +1,8 @@
-walkAndAttack_0 - Rect(45, 3, 81, 185);
-walkAndAttack_1 - Rect(160, 3, 69, 185);
-walkAndAttack_2 - Rect(256, 3, 98, 185);
-walkAndAttack_3 - Rect(409, 2, 65, 204);
-walkAndAttack_4 - Rect(488, 3, 85, 185);
-walkAndAttack_5 - Rect(648, 3, 68, 185);
-walkAndAttack_6 - Rect(759, 3, 81, 185);
-walkAndAttack_7 - Rect(869, 2, 94, 191);
+running_0 - Rect(0, 229, 127, 229);
+running_1 - Rect(127, 229, 127, 229);
+running_2 - Rect(254, 229, 127, 229);
+running_3 - Rect(381, 229, 127, 229);
+running_4 - Rect(508, 229, 127, 229);
+running_5 - Rect(635, 229, 127, 229);
+running_6 - Rect(762, 229, 127, 229);
+running_7 - Rect(889, 229, 127, 229);

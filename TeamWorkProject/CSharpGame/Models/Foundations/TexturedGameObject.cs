@@ -55,11 +55,10 @@
         public TexturedGameObject(Transform2D transform, string path, GameRepository gameRepository)
             : base(transform, gameRepository)
         {
-            gameRepository.AddGameObject(this);
             this.TextureFilePath = path;
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.Texture, this.Transform.BoundingBox, Color.White);
         }

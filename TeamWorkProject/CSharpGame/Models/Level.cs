@@ -18,6 +18,8 @@
 
         public Character MainCharacter { get; set; }
 
+        public List<Character> Enemies { get; private set; }
+
         private List<TexturedGameObject> DrawableLevelObjects { get; set; }
 
         private List<GameObject> AllLevelObjects { get; set; }
@@ -27,6 +29,7 @@
         public Level(GameRepository gameRepository)
             : base(gameRepository)
         {
+            this.Enemies = new List<Character>();
             this.DrawableLevelObjects = new List<TexturedGameObject>();
             this.AllLevelObjects = new List<GameObject>();
             this.CollectableObjects = new List<ICollectable>();
@@ -70,6 +73,11 @@
                 }
             }
 
+            foreach (Character character in this.Enemies)
+            {
+                character.Update(gameTime);
+            }
+
             foreach (ICollectable collectableObject in this.CollectableObjects)
             {
                 this.collisionHandler.Intersect(this.MainCharacter, collectableObject);
@@ -78,11 +86,16 @@
             this.MainCharacter.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (IDrawableGameObject levelObject in this.DrawableLevelObjects)
             {
-                levelObject.Draw(gameTime, spriteBatch);
+                levelObject.Draw(spriteBatch);
+            }
+
+            foreach (Character character in this.Enemies)
+            {
+                character.Draw(spriteBatch);
             }
 
             this.MainCharacter.Draw(spriteBatch);

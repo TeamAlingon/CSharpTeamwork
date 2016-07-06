@@ -46,6 +46,7 @@
     <Compile Include="EventHandlers\TransformMovedEventArgs.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Input\CharacterInput.cs" />
+    <Compile Include="Input\EnemyInput.cs" />
     <Compile Include="Input\PlayerInput.cs" />
     <Compile Include="Interfaces\ICollectable.cs" />
     <Compile Include="Interfaces\IDrawableGameObject.cs" />

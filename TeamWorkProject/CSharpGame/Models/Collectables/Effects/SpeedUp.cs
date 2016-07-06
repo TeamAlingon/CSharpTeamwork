@@ -14,14 +14,14 @@ namespace CSharpGame.Models.Collectables.Effects
             this.speedBonus = speedBonus;
         }
 
-        public override void RemoveEffect()
-        {
-            this.Collector.CurrentSpeed -= this.speedBonus;
-        }
-
         public override void ApplyEffect()
         {
             this.Collector.CurrentSpeed += this.speedBonus;
+        }
+
+        public override void RemoveEffect()
+        {
+            this.Collector.CurrentSpeed -= this.speedBonus;
         }
     }
 }

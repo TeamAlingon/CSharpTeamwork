@@ -5,6 +5,6 @@
 
     public interface IDrawableGameObject : IGameObject
     {
-        void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        void Draw(SpriteBatch spriteBatch);
     }
 }

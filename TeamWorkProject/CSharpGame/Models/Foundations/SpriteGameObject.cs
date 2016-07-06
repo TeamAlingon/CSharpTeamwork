@@ -54,9 +54,9 @@
                 this.CurrentAnimationKey = "running";
             }
             else if (this.State == CharacterState.Jumping
-                && this.CurrentAnimationKey != "runningJump")
+                && this.CurrentAnimationKey != "jumping")
             {
-                this.CurrentAnimationKey = "runningJump";
+                this.CurrentAnimationKey = "jumping";
             }
             else if (this.State == CharacterState.Attacking)
             {

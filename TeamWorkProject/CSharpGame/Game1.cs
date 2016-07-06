@@ -102,7 +102,7 @@
             var transformMatrix = this.gameRepository.Camera.GetViewMatrix();
             this.spriteBatch.Begin(transformMatrix: transformMatrix);
 
-            this.gameRepository.Draw(gameTime, this.spriteBatch);
+            this.gameRepository.Draw(this.spriteBatch);
 
             this.spriteBatch.DrawString(this.font,
                 $"SCORE: {this.gameRepository.MainCharacter.ScoreCoins}",

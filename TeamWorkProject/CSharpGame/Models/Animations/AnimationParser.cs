@@ -11,7 +11,8 @@
     {
         public static Dictionary<string, Animation> ReadSpriteSheetData(
             Texture2D animationSpriteSheet,
-            IEnumerable<string> frameData)
+            IEnumerable<string> frameData,
+            float timeBetweenFrames = 0.05f)
         {
             var animationFrames = new Dictionary<string, List<Rectangle>>();
             foreach (string element in frameData)
@@ -51,7 +52,7 @@
 
                 animations.Add(
                     animationFrame.Key,
-                    new Animation(animationName, animationSpriteSheet, animationFrameData));
+                    new Animation(animationName, animationSpriteSheet, animationFrameData, timeBetweenFrames));
             }
 
             return animations;

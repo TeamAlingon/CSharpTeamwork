@@ -34,7 +34,7 @@ namespace CSharpGame.Models.Collectables.Items
             this.IsCollected = true;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             //this.DrawBoundingBox(spriteBatch);
 

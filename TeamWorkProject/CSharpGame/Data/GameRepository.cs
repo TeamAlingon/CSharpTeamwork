@@ -52,36 +52,68 @@
             this.Level.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            this.Level.Draw(gameTime, spriteBatch);
+            this.Level.Draw(spriteBatch);
         }
 
         private void InitializeLevel()
         {
-            Camera2D camera = new Camera2D(this, this.Game.GraphicsDevice.Viewport);
+            var cameraOfset = new Vector2(0, 150);
+            Camera2D camera = new Camera2D(this, this.Game.GraphicsDevice.Viewport, cameraOfset);
             this.Camera = camera;
 
             var background = new TexturedGameObject(this, "Images/MapSample");
-            background.Transform.Scale = 2.8f;
+            background.Transform.Scale = 2;
 
+            this.AddGameObject(background);
+
+            var startX = 1500;
             var random = new Random();
             for (int i = 0; i < 100; i++)
             {
-                var coin = new RegularCoin((400 + i * 400), random.Next(300, 600), this) { Transform = { Scale = 2f } };
+                var coin = new RegularCoin((startX + i * 400), random.Next(700, 900), this);
+                this.AddGameObject(coin);
             }
 
-            SpeedUp speedUp = new SpeedUp(70, 200, 20, 7, this);
-            speedUp.Texture = this.LoadContent<Texture2D>(speedUp.GetImage());
-            speedUp.Transform.Scale = 0.2f;
+            for (int i = 0; i < 3; i++)
+            {
+                var speedUp = new SpeedUp(startX + i * 10000, 700, 20, 7, this);
+                speedUp.Texture = this.LoadContent<Texture2D>(speedUp.GetImage());
+                speedUp.Transform.Scale = 0.2f;
 
-            PlayerInput playerInput = new PlayerInput(this.Game, camera);
-            var mainCharTexture = this.LoadContent<Texture2D>("Images/maincharacter");
-            var mainCharSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
-            var mainCharAnimations = AnimationParser.ReadSpriteSheetData(mainCharTexture, mainCharSpriteData);
-            var mainCharacter = new Character(new Vector2(-500, 600), mainCharAnimations, playerInput, this) { Transform = { Scale = 0.7f } };
+                this.AddGameObject(speedUp);
+            }
 
-            this.Level.MainCharacter = mainCharacter;
+            var playerInput = new PlayerInput(this.Game, camera);
+            var playerTexture = this.LoadContent<Texture2D>("Images/maincharacter");
+            var playerSpriteData = LevelEditor.IO.File.ReadTextFile("maincharacter.spriteData");
+            var playerAnimations = AnimationParser.ReadSpriteSheetData(playerTexture, playerSpriteData);
+            var player = new Character(new Vector2(startX, 860), playerAnimations, playerInput, this);
+            player.Transform.Scale = 0.4f;
+
+            this.Level.MainCharacter = player;
+
+
+            startX += 1000;
+            var enemyInput = new EnemyInput(this.Game);
+            var enemyTexture = this.LoadContent<Texture2D>("Images/enemies");
+            for (int i = 0; i < 5; i++)
+            {
+                var guitarEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyGuitar.spriteData");
+                var guitarEnemyAnimations = AnimationParser.ReadSpriteSheetData(enemyTexture, guitarEnemySpriteData, 0.2f);
+                var guitarEnemy = new Character(new Vector2(startX + i * 1500, 800), guitarEnemyAnimations, enemyInput, this);
+                guitarEnemy.Transform.Scale = 0.7f;
+
+                this.Level.Enemies.Add(guitarEnemy);
+
+                var battonEnemySpriteData = LevelEditor.IO.File.ReadTextFile("enemyBatton.spriteData");
+                var battonEnemyAnimations = AnimationParser.ReadSpriteSheetData(enemyTexture, battonEnemySpriteData, 0.2f);
+                var battonEnemy = new Character(new Vector2(startX + i * 2000, 800), battonEnemyAnimations, enemyInput, this);
+                battonEnemy.Transform.Scale = 0.7f;
+
+                this.Level.Enemies.Add(battonEnemy);
+            }
         }
     }
 }

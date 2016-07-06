@@ -10,17 +10,20 @@
     {
         private Viewport viewport;
 
+        private Vector2 offset;
+
         public float Speed { get; set; }
 
         public float Zoom { get; set; }
 
-        public Camera2D(GameRepository gameRepository, Viewport viewport)
+        public Camera2D(GameRepository gameRepository, Viewport viewport, Vector2 offset)
             : base(new Transform2D(Vector2.Zero, viewport.Bounds), gameRepository)
         {
             this.viewport = viewport;
+            this.offset = offset;
 
             this.Speed = 250;
-            this.Zoom = 0.5f;
+            this.Zoom = 1f;
         }
 
         public Matrix GetViewMatrix()
@@ -35,7 +38,9 @@
 
         public void LookAt(Vector2 targetPosition)
         {
-            this.Transform.Position = targetPosition - this.Transform.BoundingBox.Size.ToVector2();
+            var viewportSize = this.Transform.BoundingBox.Size.ToVector2();
+
+            this.Transform.Position = new Vector2(targetPosition.X - viewportSize.X / 3, targetPosition.Y - viewportSize.Y + this.offset.Y);
         }
     }
 }

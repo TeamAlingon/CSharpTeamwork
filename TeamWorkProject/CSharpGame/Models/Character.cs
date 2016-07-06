@@ -16,8 +16,8 @@
 
     public class Character : SpriteGameObject
     {
-        private const float DefaultSpeed = 7f;
-        private const float DefaultGroundPosition = 630;
+        private const float DefaultSpeed = 4f;
+        private const float DefaultGroundPosition = 950;
         private const float DefaultJumpVelocity = 4f;
         private const float DefaultVelocityDampingSpeed = 0.1f;
         private readonly Dictionary<string, Vector2> movementVectors;
@@ -54,22 +54,22 @@
 
         public float CurrentSpeed { get; set; }
 
-        public bool IsGrounded => this.Position.Y >= DefaultGroundPosition;
+        public bool IsGrounded => this.Position.Y + this.BoundingBox.Height - DefaultGroundPosition > 5;
 
         public Texture2D Texture => this.Animations[this.CurrentAnimationKey].SpriteSheet;
 
         public Rectangle CurrentFrame => this.Animations[this.CurrentAnimationKey].CurrentFrame;
 
-        public Rectangle BoundingBox => new Rectangle(this.Position.ToPoint(), this.CurrentFrame.Size);
+        public Rectangle BoundingBox => this.Transform.ScaleBoundingBoxIfNeeded(new Rectangle(this.Position.ToPoint(), this.CurrentFrame.Size));
 
         private void MoveRight()
         {
             if (this.State != CharacterState.Jumping)
             {
                 this.State =  CharacterState.RunningRight;
-                this.Orientation = SpriteEffects.None;
             }
 
+            this.Orientation = SpriteEffects.None;
             this.Transform.Position += this.movementVectors["right"] * this.CurrentSpeed;
         }
 
@@ -78,9 +78,9 @@
             if (this.State != CharacterState.Jumping)
             {
                 this.State = CharacterState.RunningLeft;
-                this.Orientation = SpriteEffects.FlipHorizontally;
             }
 
+            this.Orientation = SpriteEffects.FlipHorizontally;
             this.Transform.Position += this.movementVectors["left"] * this.CurrentSpeed;
         }
 
@@ -130,7 +130,7 @@
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //this.DrawBoundingBox(spriteBatch);
+            this.DrawBoundingBox(spriteBatch);
 
             spriteBatch.Draw(
                 this.Texture,
@@ -164,12 +164,11 @@
             else
             {
                 spriteBatch.Draw(
-                    texture: this.tex, 
-                    destinationRectangle: this.BoundingBox, 
-                    color: Color.White, 
+                    texture: this.tex,
+                    destinationRectangle: this.BoundingBox,
+                    color: Color.White,
                     origin: this.Transform.Origin);
             }
         }
-
     }
 }

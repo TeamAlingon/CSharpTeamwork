@@ -115,18 +115,18 @@
                 var size = inputRectangle.Size.ToVector2();
                 var scaledSize = size * this.Scale;
 
-                var scaledPosition = inputRectangle.Location.ToVector2() - (scaledSize - size) / 2;
+                //var scaledPosition = inputRectangle.Location.ToVector2() - (scaledSize - size) / 2;
 
-                result = new Rectangle(scaledPosition.ToPoint(), scaledSize.ToPoint());
+                result = new Rectangle(inputRectangle.Location, scaledSize.ToPoint());
             }
             else if (this.Scale < 1)
             {
                 var size = inputRectangle.Size.ToVector2();
                 var scaledSize = size * this.Scale;
 
-                var scaledPosition = inputRectangle.Location.ToVector2() + (size - scaledSize) / 2;
+                //var scaledPosition = inputRectangle.Location.ToVector2() + (size - scaledSize) / 2;
 
-                result = new Rectangle(scaledPosition.ToPoint(), scaledSize.ToPoint());
+                result = new Rectangle(inputRectangle.Location, scaledSize.ToPoint());
             }
 
             return result;
